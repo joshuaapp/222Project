@@ -11,5 +11,9 @@ public class Button implements InteractableItem {
 	public boolean isUsable() {
 		return true;
 	}
+	
+	public void pushButton(){
+		
+	}
 
 }
