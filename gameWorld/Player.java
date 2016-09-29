@@ -1,37 +1,85 @@
 package gameWorld;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import items.Item;
+
+import ui.RenderPerspective;
 
 public class Player {
 	
-	private String name;
-	private List<Item> inventory;
-	private enum direction {NORTH, SOUTH, EAST, WEST};
-	private direction directionFacing = direction.NORTH; //have player facing north initially
+	private Position playerPosition;
+	public Direction facing = Direction.North;
+	public RenderPerspective rp;
+	private Board board;
+	
+	public enum Direction{
+		North,
+		South,
+		East,
+		West;
+	}
+	
+	public Player(int x, int y, Board b){
+		this.board=b;
+		playerPosition = new Position(x,y);
+		rp = new RenderPerspective(this, b);
+		b.placePlayerOnBoard(this);
+		
+	}
+	
+	public void move(Player.Direction dir){
+		if(dir.equals(Direction.North)){
+			int oldY = playerPosition.getY();
+			playerPosition.setY(oldY-1);
+		}
+		if(dir.equals(Direction.South)){
+			int oldY = playerPosition.getY();
+			playerPosition.setY(oldY+1);
+		}
+		if(dir.equals(Direction.East)){
+			int oldX = playerPosition.getX();
+			playerPosition.setX(oldX+1);
+		}
+		if(dir.equals(Direction.West)){
+			int oldX = playerPosition.getX();
+			playerPosition.setX(oldX-1);
+		}
+		board.updatePlayerPos(this);
+	}
+	
+	public void parseMove(int move){	
+		if(move == 0){
+			move(facing);
+		}
+		if(move == 1){
+			facing = getRightDirection(facing);
+			
+		}
+		if(move == 2){
+			move(getRightDirection(getRightDirection(facing)));
+		}
+		if(move == 3){
+			facing = getRightDirection(getRightDirection(getRightDirection(facing)));
+		}
+		rp.updatePerspective();
+	}
 
-	
-	public Player(String name){
-		this.name = name;
-		this.inventory = new ArrayList<Item>();
+	public RenderPerspective getRP(){
+		return rp;
 	}
 	
-	public void move(String direction){
-		
-	}
-	
-	public void pickupItem(Item toPickup){
-		
-	}
-	
-	public void dropItem(Item toDrop){
-		
-	}
-	
-	public void interactWithItem(Item toInteractWith){
-		
+	private Direction getRightDirection(Direction dir){
+		if(dir.equals(Direction.North)){return Direction.East;}
+		else if(dir.equals(Direction.East)){return Direction.South;}
+		else if(dir.equals(Direction.South)){return Direction.West;}
+		else{return Direction.North;}
 	}
 
+	public Board getBoard() {
+		return this.board;
+	}
+
+	public Position getPosition() {
+		return this.playerPosition;
+	}	
+	
 }

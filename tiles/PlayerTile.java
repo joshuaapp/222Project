@@ -1,24 +1,25 @@
 package tiles;
 
-public class StartTile implements Tile{
+import gameWorld.Player;
 
-	private int xPos;
-	private int yPos;
-	public StartTile(int xPos, int yPos) {
-		this.xPos = xPos;
-		this.yPos = yPos;
+public class PlayerTile implements Tile {
+	
+	
+	private Player player;
+
+	public PlayerTile(Player p) {
+		this.player = p;
 	}
 
 	@Override
 	public void setTileImage(String i) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void setItemImage(String i) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -31,6 +32,15 @@ public class StartTile implements Tile{
 	public String getTileImage() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override 
+	public String toString(){
+		return "*";
+	}
+
+	public Player getPlayer() {
+		return this.player;
 	}
 
 }

@@ -111,6 +111,11 @@ import java.io.PrintStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+
+import gameWorld.GameState;
+import gameWorld.Player;
+import ui.ApplicationWindow;
+
 import java.net.ServerSocket;
 
 /**This is the sever application which allows up to maxNumClients to connect to the serverSocket.
@@ -119,42 +124,40 @@ import java.net.ServerSocket;
  * @author Joshua
  *
  */
-public class Server {
-
-	private static ServerSocket serverSocket = null;
-	private static Socket clientSocket = null;
-	private static final int maxClientsCount = 4;
+public class Server implements Runnable{
+	
+	private GameState currentGameState;
+	private ServerSocket serverSocket = null;
+	private Socket clientSocket = null;
+	private final int maxClientsCount = 3;
+	private final int portNum = 8001;
 	//all the threads (clients) that are connected
-	private static final clientThread[] threads = new clientThread[maxClientsCount];
-
-	public static void main(String args[]) {
-
-		// The default port number incase it isn't specified
-		int portNum = 8000;
-		if (args.length < 1) {
-			System.out.println("Usage: java Server <portNumber>\n"
-					+ "Using the default port number: " + portNum);
-		} else {
-			portNum = Integer.valueOf(args[0]).intValue();
-		}
+	private final Client[] threads = new Client[maxClientsCount];
+	
+	public Server(GameState gameState) throws IOException{
+		this.currentGameState = gameState;
 		//attempt to create server socket
-		try {
-			serverSocket = new ServerSocket(portNum);
-		} catch (IOException e) {
-			System.out.println("Error creating server socket: "+e);
-		}
-
-		/*
-		 * Create a client socket for each connection and pass it to a new client
-		 * thread.
-		 */
+				try {
+					serverSocket = new ServerSocket(portNum);
+				}
+				/*In this case there is already an existing server running */
+				catch (java.net.BindException e){
+					System.out.println("Server already running");
+				} 
+				catch (IOException e) {
+					throw new IOException("Error creating server socket: "+e);
+				}			
+	}
+	
+	public synchronized void run(){
+		System.out.println("Hello, server is running!");
 		while (true) {
 			try {
 				clientSocket = serverSocket.accept();
 				int i = 0;
 				for (i = 0; i < maxClientsCount; i++) {
 					if (threads[i] == null) {
-						(threads[i] = new clientThread(clientSocket, threads)).start();
+						//(threads[i] = new clientThread(clientSocket, threads)).start();
 						break;
 					}
 				}
@@ -169,6 +172,18 @@ public class Server {
 			}
 		}
 	}
+	
+	/**Method to update player positions in game state
+	 * 
+	 */
+	public void updateGameStatePlayerPositions(){
+		
+	}
+	
+	public void addNewPlayer(Player p){
+		
+	}
+	
 }
 
 /*
@@ -179,9 +194,10 @@ public class Server {
  * other clients. The thread broadcast the incoming messages to all clients and
  * routes the private message to the particular client. When a client leaves the
  * chat room this thread informs also all the clients about that and terminates.
- */
+ *
 class clientThread extends Thread {
-
+	
+	private Player clientThreadPlayer = null;
 	private String clientName = null;
 	private BufferedReader input = null;
 	private PrintStream os = null;
@@ -196,13 +212,17 @@ class clientThread extends Thread {
 	}
 
 	public void run() {
+		
 		int maxClientsCount = this.maxClientsCount;
 		clientThread[] threads = this.threads;
-
+		
+		ApplicationWindow clientsWindow = new ApplicationWindow("TEAM14'S wicked game!");
+		clientsWindow.createAndShowGUI();
+/*
 		try {
 			/*
 			 * Create input and output streams for this client.
-			 */
+			 *
 			input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			os = new PrintStream(clientSocket.getOutputStream());
 			String name;
@@ -216,7 +236,7 @@ class clientThread extends Thread {
 				}
 			}
 
-			/* Welcome the new the client. */
+			/* Welcome the new the client. 
 			os.println("Welcome " + name
 					+ " to our chat room.\nTo leave enter /quit in a new line.");
 			synchronized (this) {
@@ -233,13 +253,13 @@ class clientThread extends Thread {
 					}
 				}
 			}
-			/* Start the conversation. */
+			/* Start the conversation. 
 			while (true) {
 				String line = input.readLine();
 				if (line.startsWith("/quit")) {
 					break;
 				}
-				/* If the message is private sent it to the given client. */
+				/* If the message is private sent it to the given client. 
 				if (line.startsWith("@")) {
 					String[] words = line.split("\\s", 2);
 					if (words.length > 1 && words[1] != null) {
@@ -254,7 +274,7 @@ class clientThread extends Thread {
 										/*
 										 * Echo this message to let the client know the private
 										 * message was sent.
-										 */
+										 
 										this.os.println(">" + name + "> " + words[1]);
 										break;
 									}
@@ -263,7 +283,7 @@ class clientThread extends Thread {
 						}
 					}
 				} else {
-					/* The message is public, broadcast it to all other clients. */
+					/* The message is public, broadcast it to all other clients. 
 					synchronized (this) {
 						for (int i = 0; i < maxClientsCount; i++) {
 							if (threads[i] != null && threads[i].clientName != null) {
@@ -286,8 +306,8 @@ class clientThread extends Thread {
 
 			/*
 			 * Clean up. Set the current thread variable to null so that a new client
-			 * could be accepted by the server.
-			 */
+			 * could be acepted by the server.
+			 
 			synchronized (this) {
 				for (int i = 0; i < maxClientsCount; i++) {
 					if (threads[i] == this) {
@@ -297,11 +317,12 @@ class clientThread extends Thread {
 			}
 			/*
 			 * Close the output stream, close the input stream, close the socket.
-			 */
+			 
 			input.close();
 			os.close();
 			clientSocket.close();
 		} catch (IOException e) {
 		}
+		*
 	}
-}
+}*/

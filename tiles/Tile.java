@@ -1,6 +1,9 @@
 package tiles;
 
-public abstract class Tile {
-	int xPos;
-	int yPos;
-}
+public interface Tile {
+	public void setTileImage(String i);
+	public void setItemImage(String i);	
+	public String getItemImage();
+	public String getTileImage();
+
+	}

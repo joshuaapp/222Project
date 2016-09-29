@@ -76,6 +76,9 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import gameWorld.Player;
+import ui.ApplicationWindow;
+
 public class Client implements Runnable {
 
 	//fields for various socker readers/writers
@@ -84,26 +87,19 @@ public class Client implements Runnable {
 	private static BufferedReader serverInput = null;
 	private static BufferedReader userInput = null;
 	private static boolean closed = false;
+	private Player player;
+	
+	private int portNum = 8001;
+	private String host = "localhost";
 
-	public static void main(String[] args) {
-
-		// The default port and host values if they are left out of args
-		int portNum = 8000;
-		String host = "localhost";
-
-		if (args.length < 2) {
-			System.out
-			.println("Usage: java Client <host> <portNumber>\n"
-					+ "Using default host=" + host + ", with default portNumber=" + portNum);
-		} else {
-			host = args[0];
-			portNum = Integer.valueOf(args[1]).intValue();
-		}
+	
+	public Client(Player player){
+		this.player = player;
 		//create client socket and open the input/output readers/writers
 		try {
 			clientSocket = new Socket(host, portNum);
 			//for user input
-			userInput = new BufferedReader(new InputStreamReader(System.in));
+			//userInput = new BufferedReader(new InputStreamReader(System.in));
 			//for server input
 			serverInput = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			//output to server
@@ -114,37 +110,47 @@ public class Client implements Runnable {
 			System.err.println("I/O Error: "+e+" on host "+host);
 		}
 		//In theory, everything should be initialised. 
-		if (clientSocket != null && output != null && serverInput != null) {
-			try {
-				new Thread(new Client()).start();
-				while (!closed) {
-					output.println(userInput.readLine().trim());
-				}
-				//close all resources now that thread is terminated
-				output.close();
-				serverInput.close();
-				clientSocket.close();
-			} catch (IOException e) {
-				System.err.println("IOException:  " + e);
-			}
-		}
+//		if (clientSocket != null && output != null && serverInput != null) {
+//			try {
+//				//new Thread(new Client(this.player)).start();
+//				while (!closed) {
+//					output.println(userInput.readLine().trim());
+//				}
+//				//close all resources now that thread is terminated
+//				output.close();
+//				serverInput.close();
+//				clientSocket.close();
+//			} catch (IOException e) {
+//				System.err.println("IOException:  " + e);
+//			}
+//		}
+	}
+	
+/**Here we want to wait for input from the board and carry out movement based on the key entered.
+ * The client simply hands down the responsibility to the Server which talks to the GameLogic and updates
+ * GameState. 
+ * 
+ */
+	public void run() {
+		System.out.println("Hello, client is running and connected to server");
+		ApplicationWindow clientsWindow = new ApplicationWindow("Team14's awesome game yeeeh");
+		clientsWindow.createAndShowGUI();
+		clientsWindow.getGameCanvas().setPlayer(player);
+
+//		String responseLine;
+//		try {
+//			while ((responseLine = serverInput.readLine()) != null) {
+//				System.out.println(responseLine);
+//				if (responseLine.indexOf("*** Bye") != -1)
+//					break;
+//			}
+//			closed = true;
+//		} catch (IOException e) {
+//			System.err.println("I/O Error:  " + e);
+//		}
 	}
 
-	public void run() {
-		/*
-		 * Keep on reading from the socket till we receive "Bye" from the
-		 * server. Once we received that then we want to break.
-		 */
-		String responseLine;
-		try {
-			while ((responseLine = serverInput.readLine()) != null) {
-				System.out.println(responseLine);
-				if (responseLine.indexOf("*** Bye") != -1)
-					break;
-			}
-			closed = true;
-		} catch (IOException e) {
-			System.err.println("I/O Error:  " + e);
-		}
+	public Player getPlayer() {
+		return this.player;
 	}
 }
