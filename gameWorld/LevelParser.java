@@ -93,7 +93,7 @@ public class LevelParser {
 		//* represents a starting tile
 		else if(c == 'S'){
 			//return new StartTile(xPos, yPos);
-			return new GroundTile("FLOOR", xPos,yPos); //for now until door img is done
+			return new StartTile(new Position(xPos,yPos)); //for now until door img is done
 		}
 		//~ represents an end tile
 		else if(c == 'E'){

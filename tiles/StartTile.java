@@ -1,12 +1,13 @@
 package tiles;
 
+import gameWorld.Position;
+
 public class StartTile implements Tile{
 
-	private int xPos;
-	private int yPos;
-	public StartTile(int xPos, int yPos) {
-		this.xPos = xPos;
-		this.yPos = yPos;
+	private Position position;
+	
+	public StartTile(Position p) {
+		this.position = p;
 	}
 
 	@Override
@@ -31,6 +32,10 @@ public class StartTile implements Tile{
 	public String getTileImage() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Position getPosition() {
+		return this.position;
 	}
 
 }

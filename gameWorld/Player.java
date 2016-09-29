@@ -18,12 +18,12 @@ public class Player {
 		West;
 	}
 	
-	public Player(int x, int y, Board b){
+	public Player(Board b){
 		this.board=b;
-		playerPosition = new Position(x,y);
-		rp = new RenderPerspective(this, b);
-		b.placePlayerOnBoard(this);
-		
+	}
+	
+	public void createRenderPerspective(){
+		rp = new RenderPerspective(this, board);		
 	}
 	
 	public void move(Player.Direction dir){
@@ -81,5 +81,9 @@ public class Player {
 	public Position getPosition() {
 		return this.playerPosition;
 	}	
+	
+	public void setPosition(Position toSet){
+		this.playerPosition = toSet;
+	}
 	
 }

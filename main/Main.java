@@ -1,11 +1,13 @@
 package main;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
 import control.Client;
 import control.Server;
 import gameWorld.Player;
+import tiles.StartTile;
 import gameWorld.Board;
 import gameWorld.GameState;
 import gameWorld.LevelParser;
@@ -14,6 +16,7 @@ import ui.ApplicationWindow;
 public class Main {
 
 	public static void main(String[] args) {
+		ArrayList<Player> players = new ArrayList<>();
 		GameState state = new GameState();
 		LevelParser parser = new LevelParser();
 		Board b = parser.buildBoard("src/level1.txt");
@@ -23,12 +26,26 @@ public class Main {
 		Server gameServer = new Server(state);
 		new Thread(gameServer).start();
 		//gameServer.run();
-		Player p1 = new Player(5,5,b);
+		Player p1 = new Player(b);
+		players.add(p1);	
+		Player p2 = new Player(b);
+		players.add(p2);
+		ArrayList<StartTile> startTiles = b.getStartingTiles();
+		if(players.size() < startTiles.size()){
+			for(int i=0;i<players.size();i++){
+				StartTile t = startTiles.get(i);
+				players.get(i).setPosition(t.getPosition());
+				b.placePlayerOnBoard(players.get(i));
+			}
+		}
+		p1.createRenderPerspective();
+		p2.createRenderPerspective();
 		Client c = new Client(p1);
-		new Thread(c).start();
-		Player p2 = new Player(8,8,b);
 		Client c1 = new Client(p2);
+		new Thread(c).start();
 		new Thread(c1).start();
+
+		
 		//Player p2 = new Player(10,10,b);
 		//Client c2 = new Client(p2);		
 		}
@@ -45,9 +62,7 @@ public class Main {
         		Player player = new Player(5, 5, b);
         		ApplicationWindow appWind = new ApplicationWindow("TEAM 14 SWEN GAME");
         		appWind.createAndShowGUI();
-        		appWind.getGameCanvas().setPlayer(player);
-        		
-        		
+        		appWind.getGameCanvas().setPlayer(player);  		
                 
             }
         });*/

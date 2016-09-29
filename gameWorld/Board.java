@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import tiles.PlayerTile;
+import tiles.StartTile;
 import tiles.Tile;
 
 public class Board {
@@ -53,6 +54,19 @@ public class Board {
 			}
 			toReturn.add(toAdd);
 			toAdd = "";
+		}
+		return toReturn;
+	}
+	
+	public ArrayList<StartTile> getStartingTiles(){
+		ArrayList<StartTile> toReturn = new ArrayList<>();
+		for(int row=0;row<this.ROWS;row++){
+			for(int col=0;col<this.COLS;col++){
+				if(templateBoard[row][col] instanceof StartTile){
+					toReturn.add((StartTile) templateBoard[row][col]);
+				}
+			}
+			
 		}
 		return toReturn;
 	}
