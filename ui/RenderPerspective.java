@@ -97,7 +97,7 @@ public class RenderPerspective {
 	 private void addTileImageToSight(int x, int y){
 		if(x >= 0 && x < board.ROWS){
 			if(y >= 0 && y < board.COLS){
-				Tile t = board.getTile(x, y);
+				Tile t = board.getTile(y, x);
 				if(t.getTileImage() != null){
 					tilesInSight.add(t.getTileImage());
 				}

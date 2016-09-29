@@ -59,10 +59,7 @@ public class DungeonCanvas extends JPanel{
 			int count = 0;
 			int spriteSize = 212;
 			
-			while(!tiles.isEmpty()){
-				
-				
-				
+			while(!tiles.isEmpty()){		
 				if(col != 2){
 					spriteSize = 212;
 				}
@@ -97,8 +94,6 @@ public class DungeonCanvas extends JPanel{
 					g.drawImage(item, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
-				
-
 				col++;
 				count++;
 				
