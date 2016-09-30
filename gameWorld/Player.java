@@ -10,6 +10,10 @@ public class Player {
 	public Direction facing = Direction.North;
 	public RenderPerspective rp;
 	private Board board;
+	String name;
+	
+	int Xcoord;
+	int Ycoord;
 	
 	public enum Direction{
 		North,
@@ -18,8 +22,9 @@ public class Player {
 		West;
 	}
 	
-	public Player(Board b){
+	public Player(Board b, String name){
 		this.board=b;
+		this.name = name;
 	}
 	
 	public void createRenderPerspective(){

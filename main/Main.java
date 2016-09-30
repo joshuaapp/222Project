@@ -26,9 +26,9 @@ public class Main {
 		Server gameServer = new Server(state);
 		new Thread(gameServer).start();
 		//gameServer.run();
-		Player p1 = new Player(b);
+		Player p1 = new Player(b, "Player 1");
 		players.add(p1);	
-		Player p2 = new Player(b);
+		Player p2 = new Player(b, "Player 2");
 		players.add(p2);
 		ArrayList<StartTile> startTiles = b.getStartingTiles();
 		if(players.size() < startTiles.size()){
