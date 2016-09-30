@@ -32,7 +32,7 @@ public class StartTile implements Tile{
 	@Override
 	public String getTileImage() {
 		// TODO Auto-generated method stub
-		return null;
+		return "empty.png";
 	}
 	
 	@Override 

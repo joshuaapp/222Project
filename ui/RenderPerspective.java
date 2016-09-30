@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import gameWorld.Board;
 import gameWorld.Player;
 import tiles.Tile;
+import tiles.WallTile;
 import gameWorld.Player.Direction;
 import gameWorld.Position;
 
@@ -20,8 +21,7 @@ public class RenderPerspective {
 	
 	private Player player;
 	private Board board;
-	private Queue<String> tilesInSight = new LinkedList<String>();
-	private Queue<String> itemsInSight = new LinkedList<String>();
+	private Queue<Tile> tilesInSight = new LinkedList<Tile>();
 	
 	public RenderPerspective(Player p, Board b){
 		player = p;
@@ -95,33 +95,18 @@ public class RenderPerspective {
 	}
 	
 	 private void addTileImageToSight(int x, int y){
-		if(x >= 0 && x < board.ROWS){
-			if(y >= 0 && y < board.COLS){
-				Tile t = board.getTile(y, x);
-				if(t.getTileImage() != null){
-					tilesInSight.add(t.getTileImage());
-				}
-				else{
-					tilesInSight.add("empty.png");
-				}
-				if(t.getItemImage() != null){
-					itemsInSight.add(t.getItemImage());
-				}
-				else{
-					itemsInSight.add("empty.png");
-				}
-			}
-			else{tilesInSight.add("empty.png");itemsInSight.add("empty.png");}
+		Tile t = board.getTile(y, x);
+		if(t.getTileImage() != null){
+			tilesInSight.add(t);
 		}
-		else{tilesInSight.add("empty.png");itemsInSight.add("empty.png");}
+		else{
+			Tile blank = new WallTile(x,y);
+			blank.setTileImage("empty");
+			tilesInSight.add(blank);
+		}
 	}	
-
-	
-	public Queue<String> getTilesInSight(){
+	 
+	public Queue<Tile> getTilesInSight(){
 		return tilesInSight;
-	}
-	
-	public Queue<String> getItemsInSight(){
-		return itemsInSight;
 	}
 }
