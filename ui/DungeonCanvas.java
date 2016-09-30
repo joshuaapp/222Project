@@ -32,11 +32,11 @@ public class DungeonCanvas extends JPanel{
 	private int[] screenXPositions = {0, 388, 100};
 
 	public DungeonCanvas(){
-		flat = loadImage("src/placeholder_flat.png");
-		tile = loadImage("src/placeholder_tile.png");
-		wall = loadImage("src/placeholder_wall.png");
-		item = loadImage("src/placeholder_item.png");
-		empty = loadImage("src/empty.png");
+		flat = loadImage("placeholder_flat.png");
+		tile = loadImage("placeholder_tile.png");
+		wall = loadImage("placeholder_wall.png");
+		item = loadImage("placeholder_item.png");
+		empty = loadImage("empty.png");
 	}
 	
 	
