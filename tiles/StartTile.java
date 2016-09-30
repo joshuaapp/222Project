@@ -33,6 +33,11 @@ public class StartTile implements Tile{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override 
+	public String toString(){
+		return "_";
+	}
 
 	public Position getPosition() {
 		return this.position;

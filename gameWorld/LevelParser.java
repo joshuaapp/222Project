@@ -114,6 +114,44 @@ public class LevelParser {
 		}
 		return null;
 	}
+	
+	/**Parse file containing information about items in a level.
+	 * format: type_position, e.g: 
+	 * 
+	 * @param filename
+	 */
+	private void ParseItemsAndAddToBoard(String filename){
+		try {
+			//Makes a reader
+			BufferedReader br = new BufferedReader(new FileReader(filename));
+			//Splits line into characters
+			char[] line = br.readLine().toCharArray();
+			Tile[][] board = new Tile[ROWS][COLS];
+			//int y is used to store the info for which line is in use
+			// this is mainly used for assigning the tile to board
+			int row = 0;
+			while(line != null){
+				//Iterates through the line and creates a tile for each character
+				for(int col = 0 ; col < line.length; col++){
+					Tile t = parseTile(line[col], col, row);
+					board[row][col] = t;
+				}
+				//Moves to the nest line in the text file
+				String s = br.readLine();
+				if(s != null){
+					row++;
+					line = s.toCharArray();
+				}
+				else{line = null;}
+
+			}
+			br.close();
+
+		} catch (IOException e) {
+			throw new RuntimeException("file reading failed."+e);
+		}
+
+	}
 
 	//Reads the text file with all the info on player names, icons and positions.
 	//The numPlayers is used to limit how many players are added.
