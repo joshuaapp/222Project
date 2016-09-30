@@ -1,5 +1,7 @@
 package tiles;
 
+import items.Item;
+
 public class EndTile implements Tile{
 
 	private int xPos;
@@ -17,7 +19,7 @@ public class EndTile implements Tile{
 	}
 
 	@Override
-	public void setItemImage(String i) {
+	public void setItem(Item i) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -33,5 +35,6 @@ public class EndTile implements Tile{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

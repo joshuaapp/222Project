@@ -1,6 +1,7 @@
 package tiles;
 
 import gameWorld.Position;
+import items.Item;
 
 public class StartTile implements Tile{
 
@@ -17,7 +18,7 @@ public class StartTile implements Tile{
 	}
 
 	@Override
-	public void setItemImage(String i) {
+	public void setItem(Item i) {
 		// TODO Auto-generated method stub
 		
 	}

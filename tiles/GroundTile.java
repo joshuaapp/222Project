@@ -1,10 +1,12 @@
 package tiles;
 
+import items.Item;
+
 public class GroundTile implements Tile{
 	//type of ground tile it is, e.g GRASS, FLOOR.
 	private String type;
 	private String image;
-	private String item;
+	private Item item;
 	private int xPos;
 	private int yPos;
 	
@@ -31,12 +33,12 @@ public class GroundTile implements Tile{
 		this.image = i;
 	}
 	@Override
-	public void setItemImage(String i) {
+	public void setItem(Item i) {
 		this.item = i;
 	}
 	@Override
 	public String getItemImage() {
-		return this.item;
+		return this.item.getName();
 	}
 	@Override public String toString(){
 		return " ";

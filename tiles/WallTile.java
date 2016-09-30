@@ -1,9 +1,11 @@
 package tiles;
 
+import items.Item;
+
 public class WallTile implements Tile{
 	
 	private String image;
-	private String item;
+	private Item item;
 	private int xPos;
 	private int yPos;
 	
@@ -19,13 +21,13 @@ public class WallTile implements Tile{
 	}
 
 	@Override
-	public void setItemImage(String i) {
+	public void setItem(Item i) {
 		this.item = i;
 	}
 
 	@Override
 	public String getItemImage() {
-		return this.item;
+		return this.item.getName();
 	}
 
 	@Override

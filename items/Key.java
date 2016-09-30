@@ -11,6 +11,11 @@ public class Key implements InteractableItem{
 	public boolean isRetrieveable() {
 		return true;
 	}
+
+	@Override
+	public String getName() {
+		return "key";
+	}
 	
 	
 

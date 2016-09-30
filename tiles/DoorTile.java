@@ -1,5 +1,7 @@
 package tiles;
 
+import items.Item;
+
 public class DoorTile implements Tile{
 
 	private int xPos;
@@ -17,7 +19,7 @@ public class DoorTile implements Tile{
 	}
 
 	@Override
-	public void setItemImage(String i) {
+	public void setItem(Item i) {
 		// TODO Auto-generated method stub
 		
 	}

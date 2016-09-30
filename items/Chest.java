@@ -51,4 +51,9 @@ public class Chest implements StorageItem, InteractableItem{
 		else return null;
 	}
 
+	@Override
+	public String getName() {
+		return "chest";
+	}
+
 }
