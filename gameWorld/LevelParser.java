@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import items.Button;
 import items.Chest;
+import items.Door;
 import items.Item;
+import items.Key;
 import tiles.DoorTile;
 import tiles.EndTile;
 import tiles.GroundTile;
@@ -131,10 +134,17 @@ public class LevelParser {
 			String[] line = br.readLine().split(" ");
 			//int y is used to store the info for which line is in use
 			// this is mainly used for assigning the tile to board
-			Item itemToAddToBoard = parseItem(line[0]);
-			Position p = new Position(Integer.parseInt(line[1]), Integer.parseInt(line[2]));
-			Tile tileToAddItemTo = board.getTile(p.getY(), p.getX()); //row, col
-			tileToAddItemTo.setItem(itemToAddToBoard);
+			while(line != null){
+				Item itemToAddToBoard = parseItem(line[0]);
+				Position p = new Position(Integer.parseInt(line[1]), Integer.parseInt(line[2]));
+				Tile tileToAddItemTo = board.getTile(p.getY(), p.getX()); //row, col
+				tileToAddItemTo.setItem(itemToAddToBoard);
+				String s = br.readLine();
+				if(s != null){
+					line = s.split(" ");
+				}
+				else break;
+			}
 			br.close();
 
 		} catch (IOException e) {
@@ -147,21 +157,27 @@ public class LevelParser {
 		switch(itemName){
 		case "chest": 
 			return new Chest();
+		case "key":
+			return new Key();
+		case "door":
+			return new Door();
+		case "button":
+			return new Button();
 		default: return null;
 		}
 	}
 
-		//Reads the text file with all the info on player names, icons and positions.
-		//The numPlayers is used to limit how many players are added.
-		/**
-		 * Returns an ArrayList of players after parsing the specified number of players
-		 * from the text file given.
-		 * 
-		 * @param String
-		 * @param int
-		 * @return ArrayLice<Player>
-		 */
-		/*public ArrayList<Player> fillPlayers(String playerFile){	
+	//Reads the text file with all the info on player names, icons and positions.
+	//The numPlayers is used to limit how many players are added.
+	/**
+	 * Returns an ArrayList of players after parsing the specified number of players
+	 * from the text file given.
+	 * 
+	 * @param String
+	 * @param int
+	 * @return ArrayLice<Player>
+	 */
+	/*public ArrayList<Player> fillPlayers(String playerFile){	
 		try {
 			//Makes a reader
 			BufferedReader br = new BufferedReader(new FileReader(playerFile));
@@ -188,15 +204,15 @@ public class LevelParser {
 
 	}*/
 
-		//Reads a file and adds the items to the game level. A card has a specific type
-		//that is stored in the card object
-		/**
-		 * Fills the deck of cards into an ArrayList from the given String
-		 * 
-		 * @param String
-		 * @return ArrayList<Card>
-		 */
-		/*public ArrayList<Item> fillCards(String file){	
+	//Reads a file and adds the items to the game level. A card has a specific type
+	//that is stored in the card object
+	/**
+	 * Fills the deck of cards into an ArrayList from the given String
+	 * 
+	 * @param String
+	 * @return ArrayList<Card>
+	 */
+	/*public ArrayList<Item> fillCards(String file){	
 		try {
 			//Makes a reader
 			BufferedReader br = new BufferedReader(new FileReader(file));
@@ -233,17 +249,17 @@ public class LevelParser {
 			}
 	}*/
 
-		//Fills an array but with only a specific type of card eg, WEAPON.
-		//The String input must be in capitals
-		/**
-		 * Returns an ArrayList of a specific type of card as it parses the String given
-		 * looking for only that type
-		 * 
-		 * @param String
-		 * @param String
-		 * @return ArrayList<Card>
-		 */
-		/*public ArrayList<Card> fillCardType(String file, String type){	
+	//Fills an array but with only a specific type of card eg, WEAPON.
+	//The String input must be in capitals
+	/**
+	 * Returns an ArrayList of a specific type of card as it parses the String given
+	 * looking for only that type
+	 * 
+	 * @param String
+	 * @param String
+	 * @return ArrayList<Card>
+	 */
+	/*public ArrayList<Card> fillCardType(String file, String type){	
 		try {
 			//Makes a Reader
 			BufferedReader br = new BufferedReader(new FileReader(file));
@@ -293,11 +309,11 @@ public class LevelParser {
 	//in the door tile so when a door tile is found it is assigned the name of
 	//the room.
 	/**
-		 * Reads the text file for the coordinates of the doors and finds the Door Tiles
-		 * at those locations and adds the Name for those doors to them
-		 * 
-		 * @param String
-		 * @param Board
+	 * Reads the text file for the coordinates of the doors and finds the Door Tiles
+	 * at those locations and adds the Name for those doors to them
+	 * 
+	 * @param String
+	 * @param Board
 
 	public void parseRooms(String roomFile, Board board){			
 
@@ -349,4 +365,4 @@ public class LevelParser {
 		}
 	}
 }*/
-	}
+}
