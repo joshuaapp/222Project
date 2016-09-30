@@ -2,6 +2,10 @@ package gameWorld;
 
 import java.util.ArrayList;
 
+import gameWorld.GameState.direction;
+import gameWorld.Player.Direction;
+import tiles.GroundTile;
+
 public class GameState {
 	public Board curMap;
 	public int level = 1;
@@ -51,17 +55,42 @@ public class GameState {
 		level++;
 		initMap();
 	}
-
-	public boolean movePlayer(Player p, direction dir){
-		if(logic.legalPlayerMove(p, dir)){
-			switch(dir){
-			case NORTH: p.Ycoord = p.Ycoord - 1; return true;
-			case SOUTH: p.Ycoord = p.Ycoord + 1; return true;
-			case EAST: p.Xcoord = p.Xcoord + 1; return true;
-			case WEST: p.Xcoord = p.Xcoord - 1; return true;
-			default: return false;
-			}
-		}
-		return false;
+	
+	public void updatePlayerPosition(Player p, String d){
+		logic.rotateOrMove(p, d);
 	}
+	
+
+//	public void move(Player.Direction dir){
+//		if(dir.equals(Direction.North)){
+//			int oldY = playerPosition.getY();
+//			playerPosition.setY(oldY-1);
+//		}
+//		if(dir.equals(Direction.South)){
+//			int oldY = playerPosition.getY();
+//			playerPosition.setY(oldY+1);
+//		}
+//		if(dir.equals(Direction.East)){
+//			int oldX = playerPosition.getX();
+//			playerPosition.setX(oldX+1);
+//		}
+//		if(dir.equals(Direction.West)){
+//			int oldX = playerPosition.getX();
+//			playerPosition.setX(oldX-1);
+//		}
+//		board.updatePlayerPos(this);
+//	}
+
+//	public boolean movePlayer(Player p, direction dir){
+//		if(logic.legalPlayerMove(p, dir)){
+//			switch(dir){
+//			case NORTH: p.Ycoord = p.Ycoord - 1; return true;
+//			case SOUTH: p.Ycoord = p.Ycoord + 1; return true;
+//			case EAST: p.Xcoord = p.Xcoord + 1; return true;
+//			case WEST: p.Xcoord = p.Xcoord - 1; return true;
+//			default: return false;
+//			}
+//		}
+//		return false;
+//	}
 }

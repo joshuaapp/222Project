@@ -173,11 +173,19 @@ public class Server implements Runnable{
 		}
 	}
 	
+	//JOSH NEEDS TO WRITE A METHOD THAT
+	//Recieves a message from the client
+	//From this he needs to get a string saying "UP", "DOWN"," "LEFT", "RIGHT"
+	//and he also needs to find out which player the client who sendt that message is
+	//This is then sent to updateGameStatePlayerPositions
+	
 	/**Method to update player positions in game state
-	 * 
+	 * This method should recieve an input from the client over its socket,
+	 * it will reiceve a string form the player indicating which button it has pressed
 	 */
-	public void updateGameStatePlayerPositions(){
-		
+	
+	public void updateGameStatePlayerPositions(String s, Player p){
+		currentGameState.updatePlayerPosition(p, s);
 	}
 	
 	public void addNewPlayer(Player p){

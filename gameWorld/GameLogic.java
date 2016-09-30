@@ -1,6 +1,7 @@
 package gameWorld;
 
 import gameWorld.GameState.direction;
+import gameWorld.Player.Direction;
 import tiles.GroundTile;
 import tiles.Tile;
 
@@ -9,29 +10,62 @@ public class GameLogic {
 	public GameLogic(GameState game){
 		game = new GameState();
 	}
-	
-	public boolean legalPlayerMove(Player p, direction dir){
-		switch(dir){
-		case NORTH: 
-			if(game.curMap.getBoard()[p.Xcoord][p.Ycoord-1] instanceof GroundTile){
-				return true;
+
+	//If an up or down key has been pressed the player will move
+	//If a left or right key is pressed, rotate the users direction facing
+	public void rotateOrMove(Player p, String movement){
+		switch(movement){
+		case "UP": 
+			legalPlayerMove(p, p.facing);
+		case "DOWN": 
+			legalPlayerMove(p, getRightDirection(getRightDirection(p.facing)));
+		case "LEFT": 
+			p.facing = getRightDirection(getRightDirection(getRightDirection(p.facing)));
+		case "RIGHT": 
+			p.facing = getRightDirection(p.facing);
+		}
+		p.rp.updatePerspective();
+	}
+
+	public void legalPlayerMove(Player player, Direction facing){
+		switch(facing){
+		case North: 
+			if(game.curMap.getBoard()[player.Xcoord][player.Ycoord-1] instanceof GroundTile){
+				actuallyMove(player, facing);
 			};
-		case SOUTH: 
-			if(game.curMap.getBoard()[p.Xcoord][p.Ycoord+1] instanceof GroundTile){
-				return true;
+		case South: 
+			if(game.curMap.getBoard()[player.Xcoord][player.Ycoord+1] instanceof GroundTile){
+				actuallyMove(player, facing);
 			};
-		case EAST: 
-			if(game.curMap.getBoard()[p.Xcoord][p.Xcoord+1] instanceof GroundTile){
-				return true;
+		case East: 
+			if(game.curMap.getBoard()[player.Xcoord+1][player.Ycoord] instanceof GroundTile){
+				actuallyMove(player, facing);
 			};
-		case WEST: 
-			if(game.curMap.getBoard()[p.Xcoord][p.Xcoord-1] instanceof GroundTile){
-			return true;
-		};
-		default: return false;
+		case West: 
+			if(game.curMap.getBoard()[player.Xcoord-1][player.Ycoord] instanceof GroundTile){
+				actuallyMove(player, facing);
+			};
+		default:;
 		}
 	}
 	
+	public void actuallyMove(Player p, Direction facing){
+		switch(facing){
+		case North: p.Ycoord = p.Ycoord -1;
+		case South: p.Ycoord = p.Ycoord +1;
+		default:
+			break;
+		}
+	}
+
+	//This rotates the users view to right 90 degrees
+	private Direction getRightDirection(Direction dir){
+		if(dir.equals(Direction.North)){return Direction.East;}
+		else if(dir.equals(Direction.East)){return Direction.South;}
+		else if(dir.equals(Direction.South)){return Direction.West;}
+		else{return Direction.North;}
+	}
+
 	//method to return what the player is attempting to interact with
 	public Tile interactWith(Player p, direction facing){
 		switch(facing){
@@ -46,7 +80,7 @@ public class GameLogic {
 		default: return null;
 		}
 	}
-	
+
 	public void pickUp(Player p){
 		//
 	}

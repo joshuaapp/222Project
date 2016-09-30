@@ -83,7 +83,7 @@ public class Client implements Runnable {
 
 	//fields for various socker readers/writers
 	private static Socket clientSocket = null;
-	private static PrintWriter output = null;
+	private PrintWriter output = null;
 	private static BufferedReader serverInput = null;
 	private static BufferedReader userInput = null;
 	private static boolean closed = false;
@@ -124,6 +124,10 @@ public class Client implements Runnable {
 //				System.err.println("IOException:  " + e);
 //			}
 //		}
+	}
+	
+	public void tellServerImMoving(String movement){
+		output.print(movement);
 	}
 	
 /**Here we want to wait for input from the board and carry out movement based on the key entered.
