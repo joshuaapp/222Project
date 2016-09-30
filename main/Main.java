@@ -19,7 +19,7 @@ public class Main {
 		ArrayList<Player> players = new ArrayList<>();
 		GameState state = new GameState();
 		LevelParser parser = new LevelParser();
-		Board b = parser.buildBoard("src/level1.txt");
+		Board b = parser.buildBoard("level1.txt");
 		//System.out.println(b.toString());
 		//state.ensureStateIsAtBeginning();
 		try{
