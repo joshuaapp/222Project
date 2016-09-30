@@ -95,15 +95,25 @@ public class RenderPerspective {
 	}
 	
 	 private void addTileImageToSight(int x, int y){
-		Tile t = board.getTile(y, x);
-		if(t.getTileImage() != null){
-			tilesInSight.add(t);
-		}
-		else{
-			Tile blank = new WallTile(x,y);
-			blank.setTileImage("empty");
-			tilesInSight.add(blank);
-		}
+		 
+		 Tile t = null;
+		 
+		 //Checks to see if the tile is on the board
+		 if(x < board.ROWS && x >= 0){
+			 if(y < board.COLS && y >= 0){
+				 t = board.getTile(y, x);
+			 }
+		 }
+		 
+		 //If not then creates a transparent wall tile 
+		 if(t == null){
+			t = new WallTile(x,y);
+			t.setTileImage("empty.png");
+		 }
+		 
+		 //Finally adds the tile to the queue
+		 tilesInSight.add(t);
+		
 	}	
 	 
 	public Queue<Tile> getTilesInSight(){
