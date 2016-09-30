@@ -123,7 +123,7 @@ public class LevelParser {
 	 * 
 	 * @param filename
 	 */
-	private void ParseItemsAndAddToBoard(String filename, Board board){
+	public void parseItemsAndAddToBoard(String filename, Board board){
 		try {
 			//Makes a reader
 			BufferedReader br = new BufferedReader(new FileReader(filename));

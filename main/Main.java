@@ -20,6 +20,7 @@ public class Main {
 		GameState state = new GameState();
 		LevelParser parser = new LevelParser();
 		Board b = parser.buildBoard("src/level1.txt");
+		parser.parseItemsAndAddToBoard("src/level1Items.txt", b);
 		//System.out.println(b.toString());
 		//state.ensureStateIsAtBeginning();
 		try{

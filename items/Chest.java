@@ -53,7 +53,7 @@ public class Chest implements StorageItem, InteractableItem{
 
 	@Override
 	public String getName() {
-		return "chest";
+		return "placeholder_item.png";
 	}
 
 }

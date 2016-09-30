@@ -3,12 +3,12 @@ package tiles;
 import items.Item;
 
 public class WallTile implements Tile{
-	
+
 	private String image;
 	private Item item;
 	private int xPos;
 	private int yPos;
-	
+
 	public WallTile(int xPos, int yPos) {
 		this.xPos = xPos;
 		this.yPos = yPos;
@@ -27,14 +27,17 @@ public class WallTile implements Tile{
 
 	@Override
 	public String getItemImage() {
-		return this.item.getName();
+		if(item != null){
+			return this.item.getName();
+		}
+		else return "empty.png";
 	}
 
 	@Override
 	public String getTileImage() {
 		return this.image;
 	}
-	
+
 	@Override
 	public String toString(){
 		return "W";

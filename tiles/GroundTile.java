@@ -38,7 +38,10 @@ public class GroundTile implements Tile{
 	}
 	@Override
 	public String getItemImage() {
-		return this.item.getName();
+		if(item != null){
+			return this.item.getName();
+		}
+		else return "empty.png";
 	}
 	@Override public String toString(){
 		return " ";
