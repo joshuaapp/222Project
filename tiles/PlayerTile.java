@@ -9,7 +9,4 @@ public class PlayerTile extends Tile {
 		super(imageName);
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-
 }

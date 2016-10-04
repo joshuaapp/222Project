@@ -9,6 +9,4 @@ public class DoorTile extends Tile{
 		// TODO Auto-generated constructor stub
 	}
 
-	
-	
 }

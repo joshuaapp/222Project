@@ -1,5 +1,6 @@
 package tiles;
 
+
 import gameWorld.Player;
 import items.Item;
 
@@ -52,4 +53,5 @@ public abstract class Tile {
 	public Player getPlayer(){
 		return player;
 	}
+
 	}

@@ -29,6 +29,11 @@ public class Board {
 		}
 	}
 	
+
+	public Tile[][] getBoard(){
+		return gameBoard;
+	}
+	
 	public Tile getTile(int x, int y){
 		return templateBoard[x][y];
 	}
@@ -42,13 +47,13 @@ public class Board {
 		}
 	}
 	
+
 	
 	public ArrayList<StartTile> getStartingTiles(){
 		ArrayList<StartTile> toReturn = new ArrayList<>();
 		for(int row=0;row<this.ROWS;row++){
 			for(int col=0;col<this.COLS;col++){
 				if(templateBoard[row][col] instanceof StartTile){
-					//toReturn.add(new Position(row, col));
 					toReturn.add((StartTile) templateBoard[row][col]);
 				}
 			}

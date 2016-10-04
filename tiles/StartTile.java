@@ -20,6 +20,4 @@ public class StartTile extends Tile{
 	public Position getStartPosition(){
 		return pos;
 	}
-	
-
 }

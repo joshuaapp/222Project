@@ -8,7 +8,4 @@ public class EndTile extends Tile{
 		super(imageName);
 		// TODO Auto-generated constructor stub
 	}
-
-	
-
 }

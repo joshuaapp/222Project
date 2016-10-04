@@ -38,7 +38,6 @@ public class DungeonCanvas extends JPanel{
 	//All image sprites are pre loaded when the canvas launches to 
 	//speed it up
 	public DungeonCanvas(){
-		flat = loadImage("placeholder_flat.png");
 		raisedTile = loadImage("placeholder_tile.png");
 		wall = loadImage("placeholder_wall.png");
 		item = loadImage("placeholder_item.png");
@@ -56,7 +55,6 @@ public class DungeonCanvas extends JPanel{
 	public void paint(Graphics g){
 		g.setColor(Color.BLACK);
 		g.fillRect(0,0,getWidth(),getHeight());
-		
 		
 		if(player != null){	
 			rp.updatePerspective();
@@ -148,11 +146,9 @@ public class DungeonCanvas extends JPanel{
 			if(xPos == lineLength){
 				xPos = 0;
 				yPos++;
-			}
-			
-			
+
+			}			
 		}
-		
 	}
 	
 	public void setPlayer(Player p){

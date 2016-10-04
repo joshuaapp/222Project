@@ -35,7 +35,7 @@ public class RenderPerspective {
 	}
 	
 	private void fillTilesInSight(){
-		Direction facing = player.facing;
+		Direction facing = player.getDirectionFacing();
 		Position playerPos = player.getPosition();
 		int xPos = playerPos.getX();
 		int yPos = playerPos.getY();

@@ -5,8 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
+import items.Button;
 import items.Chest;
+import items.Door;
 import items.Item;
+import items.Key;
 import tiles.DoorTile;
 import tiles.EndTile;
 import tiles.GroundTile;
@@ -102,10 +106,12 @@ public class LevelParser {
 		else if(c == 'S'){
 			//return new StartTile(xPos, yPos);
 			return new StartTile("START", xPos, yPos); //for now until door img is done
+
 		}
 		//~ represents an end tile
 		else if(c == 'E'){
 			//return new EndTile(xPos, yPos);
+
 			return new GroundTile("FLOOR"); //for now until door img is done
 		}
 		//* represents a fountain ie decrative tile
@@ -115,6 +121,7 @@ public class LevelParser {
 		//* represents a pillar ie decrative tile
 		else if(c == 'P'){
 			return new WallTile("WALL");
+
 		}
 		return null;
 	}
@@ -132,10 +139,12 @@ public class LevelParser {
 			String[] line = br.readLine().split(" ");
 			//int y is used to store the info for which line is in use
 			// this is mainly used for assigning the tile to board
+
 			Item itemToAddToBoard = parseItem(line[0]);
 			Position p = new Position(Integer.parseInt(line[1]), Integer.parseInt(line[2]));
 			Tile tileToAddItemTo = board.getTile(p.getY(), p.getX()); //row, col
 			tileToAddItemTo.setItem(itemToAddToBoard);
+
 			br.close();
 
 		} catch (IOException e) {
@@ -151,4 +160,4 @@ public class LevelParser {
 		default: return null;
 		}
 	}
-	}
+}
