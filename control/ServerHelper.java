@@ -42,12 +42,16 @@ public class ServerHelper implements Runnable{
 					switch(brokenRequest[0]){
 					case "North":
 						this.server.processClientMovementRequest(brokenRequest[0], brokenRequest[1]);
+						break;
 					case "East":
 						this.server.processClientMovementRequest(brokenRequest[0], brokenRequest[1]);
+						break;
 					case "South":
 						this.server.processClientMovementRequest(brokenRequest[0], brokenRequest[1]);
+						break;
 					case "West":
 						this.server.processClientMovementRequest(brokenRequest[0], brokenRequest[1]);
+						break;
 					}
 				}
 			}

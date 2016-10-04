@@ -159,10 +159,6 @@ public class Server implements Runnable{
 		while (true) {
 			try {
 				Socket client = serverSocket.accept();
-				for(Client c : this.clients){
-					System.out.println(c.getSocket());
-					System.out.println(client);
-				}
 				//inputFromClient = new BuferedReader(new InputStreamReader(client.getInputStream()));
 				//System.out.println("Connected to "+client.getRemoteSocketAddress());
 				ServerHelper helper = new ServerHelper(this, client);
@@ -215,7 +211,8 @@ public class Server implements Runnable{
 		return serverSocket;
 	}
 
-	public synchronized void processClientMovementRequest(String direction, String clientObjectAsString) {
+	public void processClientMovementRequest(String direction, String clientObjectAsString) {
+		System.out.println("Processing client movement request");
 		for(Client c : clients){
 			if(c.toString().equals(clientObjectAsString)){
 				c.getPlayer().parseMove(0);
