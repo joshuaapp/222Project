@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 import items.Button;
 import items.Chest;
 import items.Door;
@@ -139,12 +138,17 @@ public class LevelParser {
 			String[] line = br.readLine().split(" ");
 			//int y is used to store the info for which line is in use
 			// this is mainly used for assigning the tile to board
-
-			Item itemToAddToBoard = parseItem(line[0]);
-			Position p = new Position(Integer.parseInt(line[1]), Integer.parseInt(line[2]));
-			Tile tileToAddItemTo = board.getTile(p.getY(), p.getX()); //row, col
-			tileToAddItemTo.setItem(itemToAddToBoard);
-
+			while(line != null){
+				Item itemToAddToBoard = parseItem(line[0]);
+				Position p = new Position(Integer.parseInt(line[1]), Integer.parseInt(line[2]));
+				Tile tileToAddItemTo = board.getTile(p.getY(), p.getX()); //row, col
+				tileToAddItemTo.setItem(itemToAddToBoard);
+				String s = br.readLine();
+				if(s != null){
+					line = s.split(" ");
+				}
+				else break;
+			}
 			br.close();
 
 		} catch (IOException e) {
@@ -157,6 +161,12 @@ public class LevelParser {
 		switch(itemName){
 		case "chest": 
 			return new Chest();
+		case "key":
+			return new Key();
+		case "door":
+			return new Door();
+		case "button":
+			return new Button();
 		default: return null;
 		}
 	}
