@@ -3,45 +3,18 @@ package tiles;
 import gameWorld.Position;
 import items.Item;
 
-public class StartTile implements Tile{
+public class StartTile extends Tile{
 
-	private Position position;
+	private Position pos;
 	
-	public StartTile(Position p) {
-		this.position = p;
-	}
-
-	@Override
-	public void setTileImage(String i) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setItem(Item i) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getItemImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getTileImage() {
-		// TODO Auto-generated method stub
-		return "placeholder_flat.png";
+	public StartTile(String imageName, int x, int y) {
+		super(imageName);
+		pos = new Position(x,y);
 	}
 	
-	@Override 
-	public String toString(){
-		return "_";
+	public Position getStartPosition(){
+		return pos;
 	}
-
-	public Position getPosition() {
-		return this.position;
-	}
+	
 
 }

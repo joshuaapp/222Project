@@ -75,16 +75,16 @@ public class DungeonCanvas extends JPanel{
 				String tileImageName = tile.getTileImage();	
 				Image tileImage = null;
 				
-				if(tileImageName.equals("placeholder_flat.png")){
+				if(tileImageName.equals("GRASS")){
 					tileImage = flat;
 				}
-				else if(tileImageName.equals("placeholder_wall.png")){
+				else if(tileImageName.equals("WALL")){
 					tileImage = wall;
 				}
-				else if(tileImageName.equals("placeholder_tile.png")){
+				else if(tileImageName.equals("RAISED")){
 					tileImage = raisedTile;
 				}
-				else if(tileImageName.equals("empty.png")){
+				else if(tileImageName.equals("EMPTY")){
 					tileImage = empty;
 				}
 

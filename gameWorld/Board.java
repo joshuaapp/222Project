@@ -37,31 +37,18 @@ public class Board {
 		Position playerPos = p.getPosition();
 		int row = playerPos.getY();
 		int col = playerPos.getX();
-		if((row>0 && row<this.ROWS) && (col>0 && col<this.COLS)){
-			gameBoard[row][col] = new PlayerTile(p);
+		if((row>=0 && row<this.ROWS) && (col>=0 && col<this.COLS)){
+			gameBoard[row][col].setPlayer(p);
 		}
 	}
 	
-	/*
-	public ArrayList<String> getBoardAsListOfStrings(){
-		ArrayList<String> toReturn = new ArrayList<String>();
-		String toAdd = "";
-		for(int row=0;row<this.ROWS;row++){
-			for(int col=0;col<this.COLS;col++){
-				toAdd+=gameBoard[row][col].toString();
-			}
-			toReturn.add(toAdd);
-			toAdd = "";
-		}
-		return toReturn;
-	}
-	*/
 	
 	public ArrayList<StartTile> getStartingTiles(){
 		ArrayList<StartTile> toReturn = new ArrayList<>();
 		for(int row=0;row<this.ROWS;row++){
 			for(int col=0;col<this.COLS;col++){
 				if(templateBoard[row][col] instanceof StartTile){
+					//toReturn.add(new Position(row, col));
 					toReturn.add((StartTile) templateBoard[row][col]);
 				}
 			}
@@ -111,7 +98,8 @@ public class Board {
 		outer :
 		for(int row=0;row<this.ROWS;row++){
 			for(int col=0;col<this.COLS;col++){
-				if(gameBoard[row][col] instanceof PlayerTile){
+				
+				if(gameBoard[row][col].getPlayer() != null){
 					pt = (PlayerTile) gameBoard[row][col];
 					if(pt.getPlayer().equals(player)){
 						oldRow = row;

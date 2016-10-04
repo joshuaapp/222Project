@@ -35,7 +35,7 @@ public class Main {
 		if(players.size() < startTiles.size()){
 			for(int i=0;i<players.size();i++){
 				StartTile t = startTiles.get(i);
-				players.get(i).setPosition(t.getPosition());
+				players.get(i).setPosition(t.getStartPosition());
 				b.placePlayerOnBoard(players.get(i));
 			}
 		}

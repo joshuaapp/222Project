@@ -107,8 +107,7 @@ public class RenderPerspective {
 		 
 		 //If not then creates a transparent wall tile 
 		 if(t == null){
-			t = new WallTile(x,y);
-			t.setTileImage("empty.png");
+			t = new WallTile("EMPTY");
 		 }
 		 
 		 //Finally adds the tile to the queue

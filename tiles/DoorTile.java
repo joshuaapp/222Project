@@ -2,38 +2,13 @@ package tiles;
 
 import items.Item;
 
-public class DoorTile implements Tile{
+public class DoorTile extends Tile{
 
-	private int xPos;
-	private int yPos;
+	public DoorTile(String imageName) {
+		super(imageName);
+		// TODO Auto-generated constructor stub
+	}
+
 	
-	public DoorTile(int xPos, int yPos) {
-		this.xPos = xPos;
-		this.yPos = yPos;
-	}
-
-	@Override
-	public void setTileImage(String i) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setItem(Item i) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getItemImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getTileImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 }
