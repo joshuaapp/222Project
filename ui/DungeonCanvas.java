@@ -13,6 +13,8 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import gameWorld.Board;
 import gameWorld.Player;
 import tiles.Tile;
 
@@ -85,9 +87,7 @@ public class DungeonCanvas extends JPanel{
 				else if(tileImageName.equals("empty.png")){
 					tileImage = empty;
 				}
-				
-				System.out.println("Currently at count: " + count);
-				System.out.println("Currently at x position: " + col);
+
 				g.drawImage(tileImage, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
 						imageXPositions[count] + spriteSize, 600, null);
 				
@@ -106,16 +106,47 @@ public class DungeonCanvas extends JPanel{
 		}
 	}
 
+	
 	public void drawMap(Graphics g){
-		ArrayList<String> board = player.getBoard().getBoardAsListOfStrings();
-		g.setColor(Color.white);
-		int y =10;
-		g.setFont(new Font("Monospaced", Font.PLAIN, 8));
-		for(String s : board){
-			g.drawString(s, 10, y);
-			y+=10;
+		//Gets the entire board as one arrayList of String
+		ArrayList<String> map = player.getBoard().getMiniMap();
+		
+		//As it's just one long arrayList, needs to know how long each line
+		//is going to be to cut it properly
+		
+		int lineLength = player.getBoard().COLS;
+		int xPos = 0;
+		int yPos = 0;
+		int squareWidth = 5;
+		
+		for(String s : map){
+			
+			//Everything other than a wall will be blank so find the wall and 
+			//Use fillRect as opposed to drawRect
+			if(s.equals("w")){
+				g.setColor(Color.ORANGE);
+				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
+			}
+			else if(s.equals("p")){
+				g.setColor(Color.RED);
+				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
+			}
+			else{
+				g.setColor(Color.GRAY);
+				g.drawRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
+			}
+			
+			//Move along in the x Direction and if at the end of the line then
+			//set back to 0 and move down in the y Direction
+			xPos++;
+			if(xPos == lineLength){
+				xPos = 0;
+				yPos++;
+			}
+			
+			
 		}
-		g.drawString(player.facing.name(), 180, 10);
+		
 	}
 	
 	public void setPlayer(Player p){
