@@ -17,7 +17,7 @@ public abstract class Tile {
 	private String image;
 	private Item item;
 	private Boolean walkable = true;
-	private Player player = null;;
+	private Player player = null;
 	
 	public Tile(String imageName){
 		image = imageName;

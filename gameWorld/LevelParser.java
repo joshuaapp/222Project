@@ -39,7 +39,7 @@ public class LevelParser {
 			//Makes a reader
 			BufferedReader br = new BufferedReader(new FileReader(boardFile));
 			//Splits line into characters
-			char[] line = br.readLine().toCharArray();
+			char[] line = br.readLine().toCharArray();		
 			Tile[][] board = new Tile[ROWS][COLS];
 			//int y is used to store the info for which line is in use
 			// this is mainly used for assigning the tile to board

@@ -98,30 +98,15 @@ public class Board {
 		return toReturn;
 	}
 
-	public void updatePlayerPos(Player player) {
-		int oldRow = -1;
-		int oldCol = -1;
-		PlayerTile pt = null;
-		Position newPos = null;
-		outer :
-		for(int row=0;row<this.ROWS;row++){
-			for(int col=0;col<this.COLS;col++){
-				Player p = gameBoard[row][col].getPlayer();
-				if(p!=null){
-					//pt = (PlayerTile) gameBoard[row][col];
-					if(p.equals(player)){
-						oldRow = row;
-						oldCol = col;
-						newPos = player.getPosition();
-						gameBoard[newPos.getY()][newPos.getX()].setPlayer(p);
-						break outer;						
-					}
-				}
-			}
-		}
-		if(oldRow >0 && oldCol >0){
-			gameBoard[oldRow][oldCol] = templateBoard[oldRow][oldCol];
-			gameBoard[oldRow][oldCol].setPlayer(null);
-		}
+	public void updatePlayerPos(Player player, Position oldPos) {
+		
+		//
+		gameBoard[oldPos.getY()][oldPos.getX()].setPlayer(null);
+		//gameBoard[oldPos.getY()][oldPos.getX()] = templateBoard[oldPos.getY()][oldPos.getX()];
+		
+		Position newPos = player.getPosition();
+		gameBoard[newPos.getY()][newPos.getX()].setPlayer(player);
+		gameBoard[newPos.getY()][newPos.getX()] = templateBoard[newPos.getY()][newPos.getX()];
+		
 	}
 }
