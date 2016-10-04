@@ -91,8 +91,7 @@ public class ApplicationWindow extends JFrame{
 		public void keyPressed(KeyEvent e) {
 			int code = e.getKeyCode();
 			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
-
-				//client.tellServerImMoving("UP", );
+				client.tellServerImMoving("UP");
 			} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN) {
 				client.tellServerImMoving("DOWN");
 			}

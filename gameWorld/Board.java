@@ -34,8 +34,8 @@ public class Board {
 		return gameBoard;
 	}
 	
-	public Tile getTile(int x, int y){
-		return templateBoard[x][y];
+	public Tile getTile(int row, int col){
+		return templateBoard[row][col]; //row col
 	}
 	
 	public void placePlayerOnBoard(Player p){

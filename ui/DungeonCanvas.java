@@ -53,6 +53,7 @@ public class DungeonCanvas extends JPanel{
 
 	@Override
 	public void paint(Graphics g){
+		rp.updatePerspective();
 		g.setColor(Color.BLACK);
 		g.fillRect(0,0,getWidth(),getHeight());
 		
