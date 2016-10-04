@@ -90,22 +90,18 @@ public class ApplicationWindow extends JFrame{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int code = e.getKeyCode();
-			if(client != null){
-				if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
-					//gameCanvas.getPlayer().parseMove(0);
-					client.requestMove(gameCanvas.getPlayer().getDirectionFacing());
-				} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN) {
-					//player.parseMove(2);
-					gameCanvas.getPlayer().parseMove(2);
-				}
-				else if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT) {
-					gameCanvas.getPlayer().parseMove(1);
-				}
-				else if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT) {
-					gameCanvas.getPlayer().parseMove(3);
-				}
-				gameCanvas.repaint();
+			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
+				client.tellServerImMoving("UP");
+			} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN) {
+				client.tellServerImMoving("RIGHT");
 			}
+			else if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT) {
+				client.tellServerImMoving("DOWN");
+			}
+			else if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT) {
+				client.tellServerImMoving("LEFT");
+			}
+			gameCanvas.repaint();
 		}
 
 		@Override

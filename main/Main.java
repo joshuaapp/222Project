@@ -1,9 +1,7 @@
 package main;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.SwingUtilities;
-
 import control.Client;
 import control.Server;
 import gameWorld.Player;
@@ -12,9 +10,7 @@ import gameWorld.Board;
 import gameWorld.GameState;
 import gameWorld.LevelParser;
 import ui.ApplicationWindow;
-
 public class Main {
-
 	public static void main(String[] args) {
 		ArrayList<Player> players = new ArrayList<>();
 		GameState state = new GameState();
@@ -27,8 +23,8 @@ public class Main {
 		Server gameServer = new Server(state);
 		new Thread(gameServer).start();
 		//gameServer.run();
-		Player p1 = new Player(b);
-		Player p2 = new Player(b);
+		Player p1 = new Player(b, "Player1");
+		Player p2 = new Player(b, "Player2");
 		players.add(p1);	
 		players.add(p2);
 		ArrayList<StartTile> startTiles = b.getStartingTiles();
@@ -47,7 +43,6 @@ public class Main {
 		new Thread(c1).start();
 		gameServer.addClientToConnectedClients(c);
 		gameServer.addClientToConnectedClients(c1);
-
 		
 		//Player p2 = new Player(10,10,b);
 		//Client c2 = new Client(p2);		

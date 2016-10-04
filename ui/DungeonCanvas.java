@@ -29,6 +29,7 @@ public class DungeonCanvas extends JPanel{
 	private Image wall;
 	private Image item;
 	private Image empty;
+	private Image tile;
 	
 	private int[] imageXPositions = {0, 212, 424, 824, 1036, 1248,
 			1648, 1860, 2072, 2472};
@@ -37,11 +38,11 @@ public class DungeonCanvas extends JPanel{
 	//All image sprites are pre loaded when the canvas launches to 
 	//speed it up
 	public DungeonCanvas(){
-		flat = loadImage("src/placeholder_flat.png");
-		raisedTile = loadImage("src/placeholder_tile.png");
-		wall = loadImage("src/placeholder_wall.png");
-		item = loadImage("src/placeholder_item.png");
-		empty = loadImage("src/empty.png");
+		flat = loadImage("placeholder_flat.png");
+		tile = loadImage("placeholder_tile.png");
+		wall = loadImage("placeholder_wall.png");
+		item = loadImage("placeholder_item.png");
+		empty = loadImage("empty.png");
 	}
 	
 	
@@ -145,9 +146,7 @@ public class DungeonCanvas extends JPanel{
 			if(xPos == lineLength){
 				xPos = 0;
 				yPos++;
-			}
-			
-			
+			}			
 		}
 
 	}

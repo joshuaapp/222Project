@@ -104,11 +104,16 @@ public class Client implements Runnable {
 			System.err.println("I/O Error: "+e+" on host "+host);
 		}
 	}
-	/**Here we want to wait for input from the board and carry out movement based on the key entered.
-	 * The client simply hands down the responsibility to the Server which talks to the GameLogic and updates
-	 * GameState. 
-	 * 
-	 */
+
+	public void tellServerImMoving(String movement){
+		//output.print(movement);
+	}
+	
+/**Here we want to wait for input from the board and carry out movement based on the key entered.
+ * The client simply hands down the responsibility to the Server which talks to the GameLogic and updates
+ * GameState. 
+ * 
+ */
 	public synchronized void run() {
 		ApplicationWindow clientsWindow = new ApplicationWindow("Team14's awesome game yeeeh");
 		clientsWindow.attatchClientToWindow(this);

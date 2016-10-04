@@ -29,6 +29,10 @@ public class Board {
 		}
 	}
 	
+	public Tile[][] getBoard(){
+		return gameBoard;
+	}
+	
 	public Tile getTile(int x, int y){
 		return templateBoard[x][y];
 	}
