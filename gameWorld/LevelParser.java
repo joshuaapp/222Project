@@ -88,7 +88,7 @@ public class LevelParser {
 		}
 		//F represents a floor tile (non-grassy)
 		else if(c == 'R'){
-			return new GroundTile("FLOOR",xPos,yPos);
+			return new GroundTile("BRICK",xPos,yPos);
 		}
 		//* represents a starting tile
 		else if(c == 'S'){

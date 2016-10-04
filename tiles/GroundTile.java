@@ -15,6 +15,9 @@ public class GroundTile implements Tile{
 		if(type.equals("GRASS")){
 			this.image = "placeholder_flat.png";
 		}
+		else if(type.equals("BRICK")){
+			this.image = "raised_brick.png";
+		}
 		else{
 			this.image = "placeholder_tile.png";
 		}

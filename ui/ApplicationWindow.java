@@ -24,7 +24,7 @@ public class ApplicationWindow extends JFrame{
 	private DungeonCanvas gameCanvas;
 	private Client user;
 
-	public ApplicationWindow(String title) {
+	public ApplicationWindow(String title, Client user) {
 		super(title);	
 		this.user = user;
 		gameCanvas = new DungeonCanvas();
@@ -92,9 +92,11 @@ public class ApplicationWindow extends JFrame{
 
 		@Override
 		public void keyPressed(KeyEvent e) {
+			try{
 			int code = e.getKeyCode();
 			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
 				user.tellServerImMoving("UP");
+				//updateGameStatePlayerPositions();
 			} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN) {
 				user.tellServerImMoving("RIGHT");
 			}
@@ -105,7 +107,10 @@ public class ApplicationWindow extends JFrame{
 				user.tellServerImMoving("LEFT");
 			}
 			gameCanvas.repaint();
-
+			}
+			catch(NullPointerException ee){
+				System.out.println(ee.getMessage());
+			}
 		}
 
 		@Override

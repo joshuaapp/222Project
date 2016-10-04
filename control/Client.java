@@ -137,7 +137,7 @@ public class Client implements Runnable {
  */
 	public void run() {
 		System.out.println("Hello, client is running and connected to server");
-		ApplicationWindow clientsWindow = new ApplicationWindow("Team14's awesome game yeeeh");
+		ApplicationWindow clientsWindow = new ApplicationWindow("Team14's awesome game yeeeh", this);
 		clientsWindow.createAndShowGUI();
 		clientsWindow.getGameCanvas().setPlayer(player);
 
