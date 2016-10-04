@@ -73,7 +73,6 @@ public class GameLogic {
 			break;
 		default:;
 		}
-		System.out.println(currentBoard.toString());
 	}
 	
 	public void actuallyMove(Player p, Direction facing){

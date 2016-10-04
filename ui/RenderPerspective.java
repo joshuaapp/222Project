@@ -99,8 +99,8 @@ public class RenderPerspective {
 		 Tile t = null;
 		 
 		 //Checks to see if the tile is on the board
-		 if(x < board.ROWS && x >= 0){
-			 if(y < board.COLS && y >= 0){
+		 if(x < board.COLS && x >= 0){
+			 if(y < board.ROWS && y >= 0){
 				 t = board.getTile(y, x);
 			 }
 		 }

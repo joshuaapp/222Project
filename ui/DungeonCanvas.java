@@ -30,6 +30,7 @@ public class DungeonCanvas extends JPanel{
 	private Image item;
 	private Image empty;
 	private Image brick;
+	private Image players;
 	
 	private int[] imageXPositions = {0, 212, 424, 824, 1036, 1248,
 			1648, 1860, 2072, 2472};
@@ -44,6 +45,7 @@ public class DungeonCanvas extends JPanel{
 		empty = loadImage("empty.png");
 		brick = loadImage("raised_brick.png");
 		flat = loadImage("placeholder_flat.png");
+		players = loadImage("placeholder_player.png");
 		
 	}
 	
@@ -100,6 +102,12 @@ public class DungeonCanvas extends JPanel{
 
 				g.drawImage(tileImage, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
 						imageXPositions[count] + spriteSize, 600, null);
+				
+				if(tile.getPlayer() != null){
+					g.drawImage(players, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
+							imageXPositions[count] + spriteSize, 600, null);
+				}
+				
 				
 				col++;
 				count++;
