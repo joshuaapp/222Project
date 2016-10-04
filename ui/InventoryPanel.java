@@ -58,7 +58,7 @@ public class InventoryPanel extends JPanel {
 				    img = img.getScaledInstance(100, 120, Image.SCALE_SMOOTH);
 				    button.setIcon(new ImageIcon(img));
 				  } catch (IOException ex) {
-					  System.out.println("Image Button issue");
+					  //System.out.println("Image Button issue");
 				  }
 			buttonPanel.add(button);
 		}

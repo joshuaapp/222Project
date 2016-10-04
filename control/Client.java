@@ -70,6 +70,8 @@ package control;
 
 
 import java.io.PrintWriter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
@@ -77,22 +79,22 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import gameWorld.Player;
+import gameWorld.Player.Direction;
 import ui.ApplicationWindow;
 
 public class Client implements Runnable {
 
 	//fields for various socker readers/writers
 	private static Socket clientSocket = null;
-	private static PrintWriter output = null;
-	private static BufferedReader serverInput = null;
-	private static BufferedReader userInput = null;
+	private static PrintWriter outputToServer = null;
+	private static BufferedReader inputFromServer = null;
 	private static boolean closed = false;
 	private Player player;
-	
+
 	private int portNum = 8001;
 	private String host = "localhost";
 
-	
+
 	public Client(Player player){
 		this.player = player;
 		//create client socket and open the input/output readers/writers
@@ -101,56 +103,108 @@ public class Client implements Runnable {
 			//for user input
 			//userInput = new BufferedReader(new InputStreamReader(System.in));
 			//for server input
-			serverInput = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			//inputFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			//output to server
-			output = new PrintWriter(clientSocket.getOutputStream());
+			outputToServer = new PrintWriter(clientSocket.getOutputStream());
 		} catch (UnknownHostException e) {
 			System.err.println("Unknown host " + host);
 		} catch (IOException e) {
 			System.err.println("I/O Error: "+e+" on host "+host);
 		}
-		//In theory, everything should be initialised. 
-//		if (clientSocket != null && output != null && serverInput != null) {
-//			try {
-//				//new Thread(new Client(this.player)).start();
-//				while (!closed) {
-//					output.println(userInput.readLine().trim());
-//				}
-//				//close all resources now that thread is terminated
-//				output.close();
-//				serverInput.close();
-//				clientSocket.close();
-//			} catch (IOException e) {
-//				System.err.println("IOException:  " + e);
-//			}
-//		}
 	}
-	
-/**Here we want to wait for input from the board and carry out movement based on the key entered.
- * The client simply hands down the responsibility to the Server which talks to the GameLogic and updates
- * GameState. 
- * 
- */
-	public void run() {
-		System.out.println("Hello, client is running and connected to server");
+
+	/**Here we want to wait for input from the board and carry out movement based on the key entered.
+	 * The client simply hands down the responsibility to the Server which talks to the GameLogic and updates
+	 * GameState. 
+	 * 
+	 */
+	public synchronized void run() {
 		ApplicationWindow clientsWindow = new ApplicationWindow("Team14's awesome game yeeeh");
+		clientsWindow.attatchClientToWindow(this);
 		clientsWindow.createAndShowGUI();
 		clientsWindow.getGameCanvas().setPlayer(player);
-
-//		String responseLine;
-//		try {
-//			while ((responseLine = serverInput.readLine()) != null) {
-//				System.out.println(responseLine);
-//				if (responseLine.indexOf("*** Bye") != -1)
-//					break;
+		
+//		while(true){
+//			String serverRequest = null;
+//			try {
+//				serverRequest = inputFromServer.readLine();
+//				if(serverRequest != null){
+//					if(serverRequest.equals("need id")){
+//						
+//					}
+//				}
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
 //			}
-//			closed = true;
-//		} catch (IOException e) {
-//			System.err.println("I/O Error:  " + e);
+//		
 //		}
+		//clientsWindow.getGameCanvas().addKeyListener(new MovementKeyListener());
+		
+//		outputToServer.println("sending shit");
+//				String responseLine;
+//				try {
+//					while ((responseLine = inputFromServer.readLine()) != null) {
+//						System.out.println(responseLine);
+//					}
+//					closed = true;
+//				} catch (IOException e) {
+//					System.err.println("I/O Error:  " + e);
+//				}
 	}
 
 	public Player getPlayer() {
 		return this.player;
 	}
+	
+	public PrintWriter getClientOutputWriter(){
+		return this.outputToServer;
+	}
+
+	/**Methods client will need to communicate to server
+	 *04/10/16 - Josh 
+	 */ 
+
+	/**Client must make a request each time they want to move to see if that move is valid.
+	 * This method passes on this request to the server to be processed further down the pipeline
+	 * (validity is calculated by the server and executes action if valid. otherwise it does nothing
+	 */
+	public synchronized void requestMove(Direction directionToMove){
+		outputToServer.println(directionToMove.toString() + " "+this.toString());
+		outputToServer.flush();
+	}
+
+	public BufferedReader getClientBufferedReader() {
+		return inputFromServer;
+	}
+	
+	private class MovementKeyListener implements KeyListener{
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+
+	public Socket getSocket() {
+		return this.clientSocket;
+	}
 }
+
+
+
+

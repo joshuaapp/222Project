@@ -2,13 +2,14 @@ package gameWorld;
 
 
 
+import gameWorld.Player.Direction;
 import ui.RenderPerspective;
 
 public class Player {
 	
 	private Position playerPosition;
-	public Direction facing = Direction.North;
-	public RenderPerspective rp;
+	private Direction facing = Direction.North;
+	private RenderPerspective rp;
 	private Board board;
 	
 	public enum Direction{
@@ -84,6 +85,10 @@ public class Player {
 	
 	public void setPosition(Position toSet){
 		this.playerPosition = toSet;
+	}
+
+	public Direction getDirectionFacing() {
+		return this.facing;
 	}
 	
 }

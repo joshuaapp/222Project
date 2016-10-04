@@ -35,11 +35,11 @@ public class DungeonCanvas extends JPanel{
 	//All image sprites are pre loaded when the canvas launches to 
 	//speed it up
 	public DungeonCanvas(){
-		flat = loadImage("placeholder_flat.png");
-		raisedTile = loadImage("placeholder_tile.png");
-		wall = loadImage("placeholder_wall.png");
-		item = loadImage("placeholder_item.png");
-		empty = loadImage("empty.png");
+		flat = loadImage("src/placeholder_flat.png");
+		raisedTile = loadImage("src/placeholder_tile.png");
+		wall = loadImage("src/placeholder_wall.png");
+		item = loadImage("src/placeholder_item.png");
+		empty = loadImage("src/empty.png");
 	}
 	
 	
@@ -86,8 +86,8 @@ public class DungeonCanvas extends JPanel{
 					tileImage = empty;
 				}
 				
-				System.out.println("Currently at count: " + count);
-				System.out.println("Currently at x position: " + col);
+				//System.out.println("Currently at count: " + count);
+				//System.out.println("Currently at x position: " + col);
 				g.drawImage(tileImage, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
 						imageXPositions[count] + spriteSize, 600, null);
 				
@@ -115,7 +115,7 @@ public class DungeonCanvas extends JPanel{
 			g.drawString(s, 10, y);
 			y+=10;
 		}
-		g.drawString(player.facing.name(), 180, 10);
+		g.drawString(player.getDirectionFacing().name(), 180, 10);
 	}
 	
 	public void setPlayer(Player p){

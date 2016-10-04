@@ -108,12 +108,16 @@ package control;
 
 import java.io.BufferedReader;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import gameWorld.GameState;
 import gameWorld.Player;
+import gameWorld.Player.Direction;
 import ui.ApplicationWindow;
 
 import java.net.ServerSocket;
@@ -128,17 +132,19 @@ public class Server implements Runnable{
 	
 	private GameState currentGameState;
 	private ServerSocket serverSocket = null;
-	private Socket clientSocket = null;
+	private BufferedReader inputFromClient;
+	private PrintWriter outputToClient;
 	private final int maxClientsCount = 3;
 	private final int portNum = 8001;
 	//all the threads (clients) that are connected
-	private final Client[] threads = new Client[maxClientsCount];
+	private List<Client> clients;
 	
 	public Server(GameState gameState) throws IOException{
 		this.currentGameState = gameState;
 		//attempt to create server socket
 				try {
 					serverSocket = new ServerSocket(portNum);
+					clients = new ArrayList<Client>();
 				}
 				/*In this case there is already an existing server running */
 				catch (java.net.BindException e){
@@ -150,23 +156,40 @@ public class Server implements Runnable{
 	}
 	
 	public synchronized void run(){
-		System.out.println("Hello, server is running!");
 		while (true) {
 			try {
-				clientSocket = serverSocket.accept();
-				int i = 0;
-				for (i = 0; i < maxClientsCount; i++) {
-					if (threads[i] == null) {
-						//(threads[i] = new clientThread(clientSocket, threads)).start();
-						break;
-					}
+				Socket client = serverSocket.accept();
+				for(Client c : this.clients){
+					System.out.println(c.getSocket());
+					System.out.println(client);
 				}
-				if (i == maxClientsCount) {
-					PrintStream os = new PrintStream(clientSocket.getOutputStream());
-					os.println("Server too busy. Try later.");
-					os.close();
-					clientSocket.close();
-				}
+				//inputFromClient = new BuferedReader(new InputStreamReader(client.getInputStream()));
+				//System.out.println("Connected to "+client.getRemoteSocketAddress());
+				ServerHelper helper = new ServerHelper(this, client);
+				new Thread(helper).start();
+
+//				int i = 0;
+//				for (i = 0; i < maxClientsCount; i++) {
+//					if (threads[i] == null) {
+//						//(threads[i] = new clientThread(clientSocket, threads)).start();
+//						break;
+//					}
+//				}
+//				if (i == maxClientsCount) {
+//					PrintStream os = new PrintStream(clientSocket.getOutputStream());
+//					os.println("Server too busy. Try later.");
+//					os.close();
+//					clientSocket.close();
+//				}
+//				CommunicationProtocol cp = new CommunicationProtocol();
+//				String inputLine,outputLine;
+//				outputLine = cp.processInput(null);
+//				outputToClient.println(outputLine);
+//				while((inputLine = inputFromClient.readLine()) != null){
+//					outputLine = cp.processInput(inputLine);
+//					System.out.println(outputLine);
+//				}
+				//cp.run();
 			} catch (IOException e) {
 				System.out.println(e);
 			}
@@ -180,8 +203,24 @@ public class Server implements Runnable{
 		
 	}
 	
-	public void addNewPlayer(Player p){
-		
+	public void addClientToConnectedClients(Client c){
+		clients.add(c);
+	}
+
+	public List<Client> getClients() {
+		return clients;
+	}
+
+	public ServerSocket getServerSocket() {
+		return serverSocket;
+	}
+
+	public synchronized void processClientMovementRequest(String direction, String clientObjectAsString) {
+		for(Client c : clients){
+			if(c.toString().equals(clientObjectAsString)){
+				c.getPlayer().parseMove(0);
+			}
+		}
 	}
 	
 }

@@ -19,8 +19,8 @@ public class Main {
 		ArrayList<Player> players = new ArrayList<>();
 		GameState state = new GameState();
 		LevelParser parser = new LevelParser();
-		Board b = parser.buildBoard("level1.txt");
-		parser.parseItemsAndAddToBoard("level1Items.txt", b);
+		Board b = parser.buildBoard("src/level1.txt");
+		parser.parseItemsAndAddToBoard("src/level1Items.txt", b);
 		//System.out.println(b.toString());
 		//state.ensureStateIsAtBeginning();
 		try{
@@ -28,8 +28,8 @@ public class Main {
 		new Thread(gameServer).start();
 		//gameServer.run();
 		Player p1 = new Player(b);
-		players.add(p1);	
 		Player p2 = new Player(b);
+		players.add(p1);	
 		players.add(p2);
 		ArrayList<StartTile> startTiles = b.getStartingTiles();
 		if(players.size() < startTiles.size()){
@@ -45,6 +45,8 @@ public class Main {
 		Client c1 = new Client(p2);
 		new Thread(c).start();
 		new Thread(c1).start();
+		gameServer.addClientToConnectedClients(c);
+		gameServer.addClientToConnectedClients(c1);
 
 		
 		//Player p2 = new Player(10,10,b);
@@ -67,5 +69,8 @@ public class Main {
                 
             }
         });*/
+		finally{
+			
+		}
 	}
 }

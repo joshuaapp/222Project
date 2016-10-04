@@ -22,11 +22,10 @@ public class ApplicationWindow extends JFrame{
 	private InventoryPanel inventoryPanel; 
 	private Console console;
 	private DungeonCanvas gameCanvas;
-	private Client user;
+	private Client client;
 
 	public ApplicationWindow(String title) {
 		super(title);	
-		this.user = user;
 		gameCanvas = new DungeonCanvas();
 		this.messagePanel = new MessagePanel();
 		this.inventoryPanel = new InventoryPanel();
@@ -39,8 +38,8 @@ public class ApplicationWindow extends JFrame{
 	}
 
 	public void createAndShowGUI() {
-		System.out.println("Created GUI on EDT? "+
-				SwingUtilities.isEventDispatchThread());
+		//System.out.println("Created GUI on EDT? "+
+				//SwingUtilities.isEventDispatchThread());
 		JFrame f = new JFrame(this.getTitle());
 		f.setSize(800, 900);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,7 +51,6 @@ public class ApplicationWindow extends JFrame{
 		f.add(inventoryPanel, BorderLayout.PAGE_END);
 		f.add(gameCanvas, BorderLayout.CENTER);
 		gameCanvas.addKeyListener(new GameKeyListener());
-
 
 		//  messagePanel.setMaximumSize(getPreferredSize());
 		//  messagePanel.setPreferredSize(getPreferredSize());
@@ -84,8 +82,7 @@ public class ApplicationWindow extends JFrame{
 	 * @param string
 	 */
 	public void writeOut(String string) {
-
-		console.print(string);
+		//console.print(string);
 	}
 
 	public class GameKeyListener implements KeyListener{
@@ -93,21 +90,22 @@ public class ApplicationWindow extends JFrame{
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int code = e.getKeyCode();
-			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
-				gameCanvas.getPlayer().parseMove(0);
-			} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN) {
-				//player.parseMove(2);
-				gameCanvas.getPlayer().parseMove(2);
+			if(client != null){
+				if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
+					//gameCanvas.getPlayer().parseMove(0);
+					client.requestMove(gameCanvas.getPlayer().getDirectionFacing());
+				} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN) {
+					//player.parseMove(2);
+					//gameCanvas.getPlayer().parseMove(2);
+				}
+				else if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT) {
+					gameCanvas.getPlayer().parseMove(1);
+				}
+				else if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT) {
+					gameCanvas.getPlayer().parseMove(3);
+				}
+				gameCanvas.repaint();
 			}
-			else if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT) {
-				gameCanvas.getPlayer().parseMove(1);
-			}
-			else if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT) {
-				gameCanvas.getPlayer().parseMove(3);
-			}
-
-			gameCanvas.repaint();
-
 		}
 
 		@Override
@@ -122,6 +120,16 @@ public class ApplicationWindow extends JFrame{
 
 		}
 
+	}
+
+	/**Method to connect a client to a certain window so the window can send requests
+	 * from client to server.
+	 * @param client
+	 */
+	public void attatchClientToWindow(Client client) {
+		if(client != null){
+			this.client = client;
+		}
 	}
 
 }
