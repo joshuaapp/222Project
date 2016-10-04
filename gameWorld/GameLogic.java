@@ -39,21 +39,21 @@ public class GameLogic {
 		switch(facing){
 		case North: 
 			if(playerY-1 >= 0){
-				if(currentBoard.getTile(playerX, playerY-1) instanceof GroundTile){
+				if(currentBoard.getTile(playerY-1, playerX) instanceof GroundTile){
 					actuallyMove(player, facing);
 				}
 			}
 			break;
 		case South:
 			if(playerY+1 < currentBoard.ROWS){
-				if(currentBoard.getTile(playerX, playerY+1) instanceof GroundTile){
+				if(currentBoard.getTile(playerY+1, playerX) instanceof GroundTile){
 					actuallyMove(player, facing);
 				}
 			}
 			break;
 		case East:
 			if(playerX+1 < currentBoard.COLS){
-				if(currentBoard.getTile(playerX+1, playerY) instanceof GroundTile){
+				if(currentBoard.getTile(playerY, playerX+1) instanceof GroundTile){
 					actuallyMove(player, facing);
 				}
 			}
@@ -61,7 +61,7 @@ public class GameLogic {
 
 		case West:
 			if(playerX-1 >= 0){
-				if(currentBoard.getTile(playerX-1, playerY) instanceof GroundTile){
+				if(currentBoard.getTile(playerY, playerX-1) instanceof GroundTile){
 					actuallyMove(player, facing);
 				}
 			}
@@ -71,9 +71,14 @@ public class GameLogic {
 	}
 	
 	public void actuallyMove(Player p, Direction facing){
+		Position pos = p.getPosition();
+		int y = pos.getY();
+		int x = pos.getX();
 		switch(facing){
-		case North: p.Ycoord = p.Ycoord -1;
-		case South: p.Ycoord = p.Ycoord +1;
+		case North: pos.setY(y-1); break;
+		case South: pos.setY(y+1); break;
+		case East: pos.setX(x+1); break;
+		case West: pos.setX(x-1); break;
 		default:
 			break;
 		}
