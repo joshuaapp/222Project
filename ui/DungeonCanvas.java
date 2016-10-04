@@ -55,7 +55,6 @@ public class DungeonCanvas extends JPanel{
 
 	@Override
 	public void paint(Graphics g){
-		rp.updatePerspective();
 		g.setColor(Color.BLACK);
 		g.fillRect(0,0,getWidth(),getHeight());
 		
@@ -69,7 +68,11 @@ public class DungeonCanvas extends JPanel{
 			
 			//While there is still a tile in the queue adjust the X position
 			//and remove the Tile to get the image. 
-			while(!tiles.isEmpty()){		
+			while(!tiles.isEmpty()){	
+				
+				//The screen is split into 3 columns, the two on the left and right
+				//are 212 and the one in the center is 400. This is used when snipping
+				//the correct sized image off the sprite sheet.
 				if(col != 2){
 					spriteSize = 212;
 				}

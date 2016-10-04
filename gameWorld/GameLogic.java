@@ -14,6 +14,7 @@ public class GameLogic {
 	//If an up or down key has been pressed the player will move
 	//If a left or right key is pressed, rotate the users direction facing
 	public void rotateOrMove(Player p, String movement){
+	
 		switch(movement){
 		case "UP": 
 			legalPlayerMove(p, p.getDirectionFacing());
@@ -28,7 +29,7 @@ public class GameLogic {
 			p.setDirectionFacing(getRightDirection(p.getDirectionFacing()));
 			break;
 		}
-		p.getRenderPerspective().updatePerspective();
+		
 	}
 
 	public void legalPlayerMove(Player player, Direction facing){
@@ -39,24 +40,24 @@ public class GameLogic {
 		switch(facing){
 		case North: 
 			if(playerY-1 >= 0){
-				if(currentBoard.getTile(playerY-1, playerX) instanceof GroundTile 
-						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
+				if(currentBoard.getTile(playerY-1, playerX).isWalkable()  
+						&& currentBoard.getTile(playerY-1, playerX).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
 			}
 			break;
 		case South:
 			if(playerY+1 < currentBoard.ROWS){
-				if(currentBoard.getTile(playerY+1, playerX) instanceof GroundTile 
-						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
+				if(currentBoard.getTile(playerY+1, playerX).isWalkable() 
+						&& currentBoard.getTile(playerY+1, playerX).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
 			}
 			break;
 		case East:
 			if(playerX+1 < currentBoard.COLS){
-				if(currentBoard.getTile(playerY, playerX+1) instanceof GroundTile 
-						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
+				if(currentBoard.getTile(playerY, playerX+1).isWalkable() 
+						&& currentBoard.getTile(playerY, playerX+1).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
 			}
@@ -64,7 +65,7 @@ public class GameLogic {
 
 		case West:
 			if(playerX-1 >= 0){
-				if(currentBoard.getTile(playerY, playerX-1) instanceof GroundTile 
+				if(currentBoard.getTile(playerY, playerX-1).isWalkable()
 						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
@@ -87,7 +88,8 @@ public class GameLogic {
 		default:
 			break;
 		}
-		game.getGameBoard().updatePlayerPos(p);
+		Position oldPos = new Position(x,y);
+		game.getGameBoard().updatePlayerPos(p, oldPos);
 	}
 
 	//This rotates the users view to right 90 degrees
