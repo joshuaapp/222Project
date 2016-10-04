@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import tiles.PlayerTile;
 import tiles.StartTile;
 import tiles.Tile;
+import tiles.WallTile;
 
 public class Board {
 
@@ -13,10 +14,6 @@ public class Board {
 	private Tile[][] gameBoard;
 	public final int ROWS = 20;
 	public final int COLS = 30;
-	private String flat = "placeholder_flat.png";
-	private String tile = "placeholder_tile.png";
-	private String wall = "placeholder_wall.png";
-	private String item = "placeholder_item.png";
 	
 	public Board(Tile[][] newBoard) {
 		//board = new Tile[board.length][board[0].length];
@@ -32,6 +29,11 @@ public class Board {
 		}
 	}
 	
+
+	public Tile[][] getBoard(){
+		return gameBoard;
+	}
+	
 	public Tile getTile(int x, int y){
 		return templateBoard[x][y];
 	}
@@ -40,23 +42,12 @@ public class Board {
 		Position playerPos = p.getPosition();
 		int row = playerPos.getY();
 		int col = playerPos.getX();
-		if((row>0 && row<this.ROWS) && (col>0 && col<this.COLS)){
-			gameBoard[row][col] = new PlayerTile(p);
+		if((row>=0 && row<this.ROWS) && (col>=0 && col<this.COLS)){
+			gameBoard[row][col].setPlayer(p);
 		}
 	}
 	
-	public ArrayList<String> getBoardAsListOfStrings(){
-		ArrayList<String> toReturn = new ArrayList<String>();
-		String toAdd = "";
-		for(int row=0;row<this.ROWS;row++){
-			for(int col=0;col<this.COLS;col++){
-				toAdd+=gameBoard[row][col].toString();
-			}
-			toReturn.add(toAdd);
-			toAdd = "";
-		}
-		return toReturn;
-	}
+
 	
 	public ArrayList<StartTile> getStartingTiles(){
 		ArrayList<StartTile> toReturn = new ArrayList<>();
@@ -69,6 +60,26 @@ public class Board {
 			
 		}
 		return toReturn;
+	}
+	
+	public ArrayList<String> getMiniMap(){
+		ArrayList<String> map = new ArrayList<String>();
+		
+		for(int row=0;row<this.ROWS;row++){
+			for(int col=0;col<this.COLS;col++){
+				Tile t = templateBoard[row][col];
+				if(t instanceof WallTile){
+					map.add("w");
+				}
+				else if(t instanceof PlayerTile){
+					map.add("p");
+				}
+				else{
+					map.add("_");
+				}
+			}
+		}
+		return map;
 	}
 	
 	
@@ -92,7 +103,8 @@ public class Board {
 		outer :
 		for(int row=0;row<this.ROWS;row++){
 			for(int col=0;col<this.COLS;col++){
-				if(gameBoard[row][col] instanceof PlayerTile){
+				Player p = gameBoard[row][col].getPlayer();
+				if(p != null){
 					pt = (PlayerTile) gameBoard[row][col];
 					if(pt.getPlayer().equals(player)){
 						oldRow = row;
@@ -111,75 +123,3 @@ public class Board {
 		}
 	}
 }
-
-/*
-package game;
-
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-public class Board {
-
-	
-
-
-	public Board(){
-		fillBoard();
-	}
-
-	public void fillBoard(){
-
-		for(int i = 0; i < height; i++){
-
-			for(int j = 0; j < width; j++){
-				board[i][j] = new Tile();
-				board[i][j].setTileImage(flat);
-			}
-
-		}
-
-		board[5][3].setTileImage(tile);
-		board[5][3].setItemImage(item);
-
-		board[3][0].setItemImage(item);
-
-		board[4][3].setTileImage(tile);
-
-		for(Tile t : board[0]){
-			t.setTileImage(wall);
-
-		}
-		board[2][1].setTileImage(wall);
-		board[4][1].setTileImage(wall);
-		board[2][2].setTileImage(wall);
-		board[4][2].setTileImage(wall);
-		board[2][3].setTileImage(wall);
-	}
-
-
-
-
-
-	public static Image loadImage(String filename) {
-		// using the URL means the image loads when stored
-		// in a jar or expanded into individual files.
-
-		try {
-			Image img = ImageIO.read(new File(filename));
-
-
-			return img;
-		} catch (IOException e) {
-			// we've encountered an error loading the image. There's not much we
-			// can actually do at this point, except to abort the game.
-			throw new RuntimeException("Unable to load image: " + filename);
-		}
-	}
-
-}
-
-
- */
