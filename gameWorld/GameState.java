@@ -8,8 +8,8 @@ import gameWorld.Player.Direction;
 import tiles.GroundTile;
 
 public class GameState {
-	public Board curMap;
-	public int level = 1;
+	private Board currentBoard;
+	private int level = 1;
 	public ArrayList<Player> curPlayers;
 	public enum direction {NORTH, SOUTH, EAST, WEST};
 	public GameLogic logic;
@@ -19,9 +19,13 @@ public class GameState {
 		//curPlayers.add(new Player(curMap, "Hunter"));
 	}
 	
+	public Board getGameBoard(){
+		return this.currentBoard;
+	}
+	
 	public void initMap(){
 		LevelParser parser = new LevelParser();
-		curMap = parser.buildBoard(""+level);
+		currentBoard = parser.buildBoard(""+level);
 	}
 	
 	public void attachLogic(GameLogic logic){
@@ -41,9 +45,9 @@ public class GameState {
 	public void startingPos() {
 		int playerindex = 0;
 
-		for (int y = 0; y < curMap.getBoard().length; y++) { // Find an empty start locale and place player on it
-			for (int x = 0; x < curMap.getBoard()[0].length; x++) {
-				if (playerindex < curPlayers.size() && curMap.getBoard()[y][x].toString().equals("S")) {
+		for (int y = 0; y < currentBoard.getBoard().length; y++) { // Find an empty start locale and place player on it
+			for (int x = 0; x < currentBoard.getBoard()[0].length; x++) {
+				if (playerindex < curPlayers.size() && currentBoard.getBoard()[y][x].toString().equals("S")) {
 					curPlayers.get(playerindex).Xcoord = y;
 					curPlayers.get(playerindex).Ycoord = x;
 					playerindex++;
@@ -62,7 +66,7 @@ public class GameState {
 	}
 
 	public void attatchBoard(Board b){
-		this.curMap = b;
+		this.currentBoard = b;
 	}
 	
 

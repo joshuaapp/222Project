@@ -35,7 +35,7 @@ public class Board {
 	}
 	
 	public Tile getTile(int row, int col){
-		return templateBoard[row][col]; //row col
+		return gameBoard[row][col]; //row col
 	}
 	
 	public void placePlayerOnBoard(Player p){
@@ -46,8 +46,6 @@ public class Board {
 			gameBoard[row][col].setPlayer(p);
 		}
 	}
-	
-
 	
 	public ArrayList<StartTile> getStartingTiles(){
 		ArrayList<StartTile> toReturn = new ArrayList<>();
@@ -67,12 +65,12 @@ public class Board {
 		
 		for(int row=0;row<this.ROWS;row++){
 			for(int col=0;col<this.COLS;col++){
-				Tile t = templateBoard[row][col];
-				if(t instanceof WallTile){
-					map.add("w");
-				}
-				else if(t instanceof PlayerTile){
+				Tile t = gameBoard[row][col];
+				if(t.getPlayer()!=null){
 					map.add("p");
+				}
+				else if(t instanceof WallTile){
+					map.add("w");
 				}
 				else{
 					map.add("_");
@@ -88,7 +86,12 @@ public class Board {
 		String toReturn = "";
 		for(int row=0;row<this.ROWS;row++){
 			for(int col=0;col<this.COLS;col++){
-				toReturn+=templateBoard[row][col].toString();
+				if(gameBoard[row][col].getPlayer()==null){
+				toReturn+=gameBoard[row][col].toString();
+				}
+				else{
+					toReturn+="*";
+				}
 			}
 			toReturn+="\n";
 		}
@@ -104,12 +107,13 @@ public class Board {
 		for(int row=0;row<this.ROWS;row++){
 			for(int col=0;col<this.COLS;col++){
 				Player p = gameBoard[row][col].getPlayer();
-				if(p != null){
-					pt = (PlayerTile) gameBoard[row][col];
-					if(pt.getPlayer().equals(player)){
+				if(p!=null){
+					//pt = (PlayerTile) gameBoard[row][col];
+					if(p.equals(player)){
 						oldRow = row;
 						oldCol = col;
 						newPos = player.getPosition();
+						gameBoard[newPos.getY()][newPos.getX()].setPlayer(p);
 						break outer;						
 					}
 				}
@@ -117,9 +121,7 @@ public class Board {
 		}
 		if(oldRow >0 && oldCol >0){
 			gameBoard[oldRow][oldCol] = templateBoard[oldRow][oldCol];
-			int row = newPos.getY();
-			int col = newPos.getX();
-			gameBoard[row][col] = pt;
+			gameBoard[oldRow][oldCol].setPlayer(null);
 		}
 	}
 }

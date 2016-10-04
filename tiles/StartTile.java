@@ -20,4 +20,8 @@ public class StartTile extends Tile{
 	public Position getStartPosition(){
 		return pos;
 	}
+	@Override
+	public String toString(){
+		return "@";
+	}
 }

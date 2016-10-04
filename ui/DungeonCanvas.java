@@ -44,6 +44,7 @@ public class DungeonCanvas extends JPanel{
 		empty = loadImage("empty.png");
 		brick = loadImage("raised_brick.png");
 		flat = loadImage("placeholder_flat.png");
+		
 	}
 	
 	

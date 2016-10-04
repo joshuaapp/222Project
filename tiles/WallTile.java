@@ -8,5 +8,10 @@ public class WallTile extends Tile{
 		super(imageName);
 		super.setWalkable(false);
 	}
+	
+	@Override
+	public String toString(){
+		return "W";
+	}
 
 }

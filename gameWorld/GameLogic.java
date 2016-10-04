@@ -35,25 +35,28 @@ public class GameLogic {
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
-		Board currentBoard = game.curMap;
+		Board currentBoard = game.getGameBoard();
 		switch(facing){
 		case North: 
 			if(playerY-1 >= 0){
-				if(currentBoard.getTile(playerY-1, playerX) instanceof GroundTile){
+				if(currentBoard.getTile(playerY-1, playerX) instanceof GroundTile 
+						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
 			}
 			break;
 		case South:
 			if(playerY+1 < currentBoard.ROWS){
-				if(currentBoard.getTile(playerY+1, playerX) instanceof GroundTile){
+				if(currentBoard.getTile(playerY+1, playerX) instanceof GroundTile 
+						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
 			}
 			break;
 		case East:
 			if(playerX+1 < currentBoard.COLS){
-				if(currentBoard.getTile(playerY, playerX+1) instanceof GroundTile){
+				if(currentBoard.getTile(playerY, playerX+1) instanceof GroundTile 
+						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
 			}
@@ -61,13 +64,15 @@ public class GameLogic {
 
 		case West:
 			if(playerX-1 >= 0){
-				if(currentBoard.getTile(playerY, playerX-1) instanceof GroundTile){
+				if(currentBoard.getTile(playerY, playerX-1) instanceof GroundTile 
+						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
 			}
 			break;
 		default:;
 		}
+		System.out.println(currentBoard.toString());
 	}
 	
 	public void actuallyMove(Player p, Direction facing){
@@ -76,12 +81,13 @@ public class GameLogic {
 		int x = pos.getX();
 		switch(facing){
 		case North: pos.setY(y-1); break;
-		case South: pos.setY(y+1); break;
+		case South: pos.setY(y+1);break;
 		case East: pos.setX(x+1); break;
 		case West: pos.setX(x-1); break;
 		default:
 			break;
 		}
+		game.getGameBoard().updatePlayerPos(p);
 	}
 
 	//This rotates the users view to right 90 degrees
@@ -96,13 +102,13 @@ public class GameLogic {
 	public Tile interactWith(Player p, direction facing){
 		switch(facing){
 		case NORTH: 
-			return game.curMap.getBoard()[p.Xcoord][p.Ycoord-1];
+			return game.getGameBoard().getBoard()[p.Xcoord][p.Ycoord-1];
 		case SOUTH: 
-			return game.curMap.getBoard()[p.Xcoord][p.Ycoord+1];
+			return game.getGameBoard().getBoard()[p.Xcoord][p.Ycoord+1];
 		case EAST: 
-			return game.curMap.getBoard()[p.Xcoord][p.Xcoord+1];
+			return game.getGameBoard().getBoard()[p.Xcoord][p.Xcoord+1];
 		case WEST: 
-			return game.curMap.getBoard()[p.Xcoord][p.Xcoord-1];
+			return game.getGameBoard().getBoard()[p.Xcoord][p.Xcoord-1];
 		default: return null;
 		}
 	}
