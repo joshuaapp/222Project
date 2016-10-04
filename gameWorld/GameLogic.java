@@ -39,21 +39,24 @@ public class GameLogic {
 		switch(facing){
 		case North: 
 			if(playerY-1 >= 0){
-				if(currentBoard.getTile(playerY-1, playerX) instanceof GroundTile){
+				if(currentBoard.getTile(playerY-1, playerX) instanceof GroundTile 
+						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
 			}
 			break;
 		case South:
 			if(playerY+1 < currentBoard.ROWS){
-				if(currentBoard.getTile(playerY+1, playerX) instanceof GroundTile){
+				if(currentBoard.getTile(playerY+1, playerX) instanceof GroundTile 
+						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
 			}
 			break;
 		case East:
 			if(playerX+1 < currentBoard.COLS){
-				if(currentBoard.getTile(playerY, playerX+1) instanceof GroundTile){
+				if(currentBoard.getTile(playerY, playerX+1) instanceof GroundTile 
+						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
 			}
@@ -61,7 +64,8 @@ public class GameLogic {
 
 		case West:
 			if(playerX-1 >= 0){
-				if(currentBoard.getTile(playerY, playerX-1) instanceof GroundTile){
+				if(currentBoard.getTile(playerY, playerX-1) instanceof GroundTile 
+						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
 			}
