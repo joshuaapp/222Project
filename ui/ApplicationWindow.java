@@ -96,7 +96,7 @@ public class ApplicationWindow extends JFrame{
 					client.requestMove(gameCanvas.getPlayer().getDirectionFacing());
 				} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN) {
 					//player.parseMove(2);
-					//gameCanvas.getPlayer().parseMove(2);
+					gameCanvas.getPlayer().parseMove(2);
 				}
 				else if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT) {
 					gameCanvas.getPlayer().parseMove(1);
