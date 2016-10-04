@@ -98,8 +98,8 @@ public class Board {
 		outer :
 		for(int row=0;row<this.ROWS;row++){
 			for(int col=0;col<this.COLS;col++){
-				
-				if(gameBoard[row][col].getPlayer() != null){
+				Player p = gameBoard[row][col].getPlayer();
+				if(p != null){
 					pt = (PlayerTile) gameBoard[row][col];
 					if(pt.getPlayer().equals(player)){
 						oldRow = row;

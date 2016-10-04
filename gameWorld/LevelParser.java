@@ -80,6 +80,10 @@ public class LevelParser {
 		if(c == 'W'){
 			return new WallTile("WALL");
 		}
+		//B represents a wall
+		if(c == 'B'){
+			return new WallTile("WALL");
+		}
 		//'G' represents grassy ground tile
 		else if(c == 'G'){
 			return new GroundTile("GRASS");
@@ -91,8 +95,9 @@ public class LevelParser {
 		}
 		//F represents a raised ground tile (non-grassy)
 		else if(c == 'R'){
-			return new GroundTile("RAISED");
+			return new GroundTile("BRICK");
 		}
+		
 		//* represents a starting tile
 		else if(c == 'S'){
 			//return new StartTile(xPos, yPos);

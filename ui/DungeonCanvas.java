@@ -29,6 +29,7 @@ public class DungeonCanvas extends JPanel{
 	private Image wall;
 	private Image item;
 	private Image empty;
+	private Image brick;
 	
 	private int[] imageXPositions = {0, 212, 424, 824, 1036, 1248,
 			1648, 1860, 2072, 2472};
@@ -42,6 +43,7 @@ public class DungeonCanvas extends JPanel{
 		wall = loadImage("placeholder_wall.png");
 		item = loadImage("placeholder_item.png");
 		empty = loadImage("empty.png");
+		brick = loadImage("raised_brick.png");
 	}
 	
 	
@@ -57,6 +59,7 @@ public class DungeonCanvas extends JPanel{
 		
 		
 		if(player != null){	
+			rp.updatePerspective();
 			Queue<Tile> tiles = rp.getTilesInSight();
 			
 			int col = 0;
@@ -86,6 +89,9 @@ public class DungeonCanvas extends JPanel{
 				}
 				else if(tileImageName.equals("EMPTY")){
 					tileImage = empty;
+				}
+				else if(tileImageName.equals("BRICK")){
+					tileImage = brick;
 				}
 
 				g.drawImage(tileImage, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
