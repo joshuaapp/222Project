@@ -17,27 +17,54 @@ public class GameLogic {
 		switch(movement){
 		case "UP": 
 			legalPlayerMove(p, p.getDirectionFacing());
+			break;
 		case "DOWN": 
 			legalPlayerMove(p, getRightDirection(getRightDirection(p.getDirectionFacing())));
+			break;
 		case "LEFT": 
 			p.setDirectionFacing(getRightDirection(getRightDirection(getRightDirection(p.getDirectionFacing()))));
+			break;
 		case "RIGHT": 
 			p.setDirectionFacing(getRightDirection(p.getDirectionFacing()));
+			break;
 		}
 		p.getRenderPerspective().updatePerspective();
 	}
 
 	public void legalPlayerMove(Player player, Direction facing){
+		Position playerPos = player.getPosition();
+		int playerX = playerPos.getX();
+		int playerY = playerPos.getY();
+		Board currentBoard = game.curMap;
 		switch(facing){
 		case North: 
-			if(game.curMap.getBoard()[player.Xcoord][player.Ycoord-1] instanceof GroundTile){
-				actuallyMove(player, facing);
-			};
+			if(playerY-1 >= 0){
+				if(currentBoard.getTile(playerX, playerY-1) instanceof GroundTile){
+					actuallyMove(player, facing);
+				}
+			}
 			break;
-		case South: 
-			if(game.curMap.getBoard()[player.Xcoord][player.Ycoord+1] instanceof GroundTile){
-				actuallyMove(player, facing);
-			};
+		case South:
+			if(playerY+1 < currentBoard.ROWS){
+				if(currentBoard.getTile(playerX, playerY+1) instanceof GroundTile){
+					actuallyMove(player, facing);
+				}
+			}
+			break;
+		case East:
+			if(playerX+1 < currentBoard.COLS){
+				if(currentBoard.getTile(playerX+1, playerY) instanceof GroundTile){
+					actuallyMove(player, facing);
+				}
+			}
+			break;
+
+		case West:
+			if(playerX-1 >= 0){
+				if(currentBoard.getTile(playerX-1, playerY) instanceof GroundTile){
+					actuallyMove(player, facing);
+				}
+			}
 			break;
 		default:;
 		}

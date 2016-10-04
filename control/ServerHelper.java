@@ -39,19 +39,9 @@ public class ServerHelper implements Runnable{
 					System.out.println(clientRequest);
 					//request client id
 					brokenRequest = clientRequest.split(" ");				
-					switch(brokenRequest[0]){
-					case "UP":
+					if(brokenRequest[0].equals("UP") || brokenRequest[0].equals("DOWN") ||
+						brokenRequest[0].equals("LEFT") ||brokenRequest[0].equals("RIGHT")){
 						this.server.processClientMovementRequest(brokenRequest[0], brokenRequest[1]);
-						break;
-					case "RIGHT":
-						this.server.processClientMovementRequest(brokenRequest[0], brokenRequest[1]);
-						break;
-					case "DOWN":
-						this.server.processClientMovementRequest(brokenRequest[0], brokenRequest[1]);
-						break;
-					case "LEFT":
-						this.server.processClientMovementRequest(brokenRequest[0], brokenRequest[1]);
-						break;
 					}
 				}
 			}
