@@ -42,8 +42,8 @@ public class Client implements Runnable {
 		this.outputToServer.flush();
 	}
 	
-	public synchronized void tellServerAction(String action){
-		this.outputToServer.println(action+" "+this.toString());
+	public synchronized void tellServerAction(String action, String item){
+		this.outputToServer.println(action+" "+this.toString()+" "+item);
 		this.outputToServer.flush();
 	}
 

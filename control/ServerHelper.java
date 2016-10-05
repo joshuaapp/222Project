@@ -43,8 +43,11 @@ public class ServerHelper implements Runnable{
 						brokenRequest[0].equals("LEFT") ||brokenRequest[0].equals("RIGHT")){
 						this.server.processClientMovementRequest(brokenRequest[0], brokenRequest[1]);
 					}
-					else if(brokenRequest[0].equals("PICK") || brokenRequest[0].equals("DROP")){
-						this.server.processClientActionRequest(brokenRequest[0], brokenRequest[1]);
+					else if(brokenRequest[0].equals("PICK")){
+						this.server.processClientActionRequest(brokenRequest[0], brokenRequest[1], null);
+					}
+					else if(brokenRequest[0].equals("DROP")){
+						this.server.processClientActionRequest(brokenRequest[0], brokenRequest[1], brokenRequest[2]);
 					}
 				}
 			}

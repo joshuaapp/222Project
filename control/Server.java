@@ -117,6 +117,7 @@ import java.util.List;
 import gameWorld.GameState;
 import gameWorld.Player;
 import gameWorld.Player.Direction;
+import items.Item;
 import ui.ApplicationWindow;
 import java.net.ServerSocket;
 /**This is the sever application which allows up to maxNumClients to connect to the serverSocket.
@@ -223,7 +224,7 @@ public class Server implements Runnable{
 		updateGameStatePlayerPositions(direction, toMove);
 	}
 
-	public void processClientActionRequest(String action, String clientObjectAsString) {
+	public void processClientActionRequest(String action, String clientObjectAsString, String item) {
 		System.out.println("Processing client action request");
 		Player toAct = null;
 		for(Client c : clients){
@@ -231,12 +232,12 @@ public class Server implements Runnable{
 				toAct = c.getPlayer();
 			}
 		}
-		updateGameStatePlayerAction(action, toAct);
+		updateGameStatePlayerAction(action, toAct, item);
 	}
 
 	
-	public void updateGameStatePlayerAction(String s, Player p){
-		currentGameState.updatePlayerAct(p, s);
+	public void updateGameStatePlayerAction(String s, Player p, String item){
+		currentGameState.updatePlayerAct(p, s, item);
 	}
 	
 	
