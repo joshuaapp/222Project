@@ -222,5 +222,23 @@ public class Server implements Runnable{
 		}
 		updateGameStatePlayerPositions(direction, toMove);
 	}
+
+	public void processClientActionRequest(String action, String clientObjectAsString) {
+		System.out.println("Processing client action request");
+		Player toAct = null;
+		for(Client c : clients){
+			if(c.toString().equals(clientObjectAsString)){
+				toAct = c.getPlayer();
+			}
+		}
+		updateGameStatePlayerAction(action, toAct);
+	}
+
+	
+	public void updateGameStatePlayerAction(String s, Player p){
+		currentGameState.updatePlayerAct(p, s);
+	}
+	
+	
 	
 }

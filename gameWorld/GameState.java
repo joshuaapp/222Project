@@ -68,6 +68,13 @@ public class GameState {
 	public void attatchBoard(Board b){
 		this.currentBoard = b;
 	}
+
+	public void updatePlayerAct(Player p, String a) {
+		if(a.equals("PICK")){
+			logic.isThereAnItem(p);
+		}
+		
+	}
 	
 
 //	public void move(Player.Direction dir){

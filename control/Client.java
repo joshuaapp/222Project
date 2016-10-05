@@ -42,9 +42,11 @@ public class Client implements Runnable {
 		this.outputToServer.flush();
 	}
 	
-	public void tellServerImMoving(String movement){
-		output.print(movement);
+	public synchronized void tellServerAction(String action){
+		this.outputToServer.println(action+" "+this.toString());
+		this.outputToServer.flush();
 	}
+
 	
 /**Here we want to wait for input from the board and carry out movement based on the key entered.
  * The client simply hands down the responsibility to the Server which talks to the GameLogic and updates
@@ -52,7 +54,7 @@ public class Client implements Runnable {
  * 
  */
 	public synchronized void run() {
-		ApplicationWindow clientsWindow = new ApplicationWindow("Team14's awesome game yeeeh");
+		ApplicationWindow clientsWindow = new ApplicationWindow("Team14's awesome game yeeeh", this);
 		clientsWindow.attatchClientToWindow(this);
 		clientsWindow.createAndShowGUI();
 		clientsWindow.getGameCanvas().setPlayer(player);

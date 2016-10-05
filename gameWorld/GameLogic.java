@@ -2,6 +2,7 @@ package gameWorld;
 
 import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
+import items.Item;
 import tiles.GroundTile;
 import tiles.Tile;
 
@@ -114,11 +115,51 @@ public class GameLogic {
 		}
 	}
 
-	public void pickUp(Player p){
-		//
+	public void pickUp(Player p, Item item){
+		p.inven.add(item);
 	}
 
-	public void pickUp(Player p){
-		//
+	public void isThereAnItem(Player player) {
+		Direction facing = player.facing;
+		Position playerPos = player.getPosition();
+		int playerX = playerPos.getX();
+		int playerY = playerPos.getY();
+		Board currentBoard = game.getGameBoard();
+		switch(facing){
+		case North: 
+			if(playerY-1 >= 0){
+				if(currentBoard.getTile(playerY-1, playerX).getItem() != null){
+					pickUp(player, currentBoard.getTile(playerY-1, playerX).getItem());
+					currentBoard.getTile(playerY-1, playerX).setItem(null);
+				}
+			}
+			break;
+		case South:
+			if(playerY+1 < currentBoard.ROWS){
+				if(currentBoard.getTile(playerY+1, playerX).getItem() != null){
+					pickUp(player, currentBoard.getTile(playerY+1, playerX).getItem());
+					currentBoard.getTile(playerY+1, playerX).setItem(null);
+				}
+			}
+			break;
+		case East:
+			if(playerX+1 < currentBoard.COLS){
+				if(currentBoard.getTile(playerY, playerX+1).getItem() != null){
+					pickUp(player, currentBoard.getTile(playerY, playerX+1).getItem());
+					currentBoard.getTile(playerY, playerX+1).setItem(null);
+				}
+			}
+			break;
+		case West:
+			if(playerX-1 >= 0){
+				if(currentBoard.getTile(playerY, playerX-1).getItem() != null){
+					pickUp(player, currentBoard.getTile(playerY, playerX-1).getItem());
+					currentBoard.getTile(playerY, playerX-1).setItem(null);
+				}
+			}
+			break;
+		default:;
+		}
 	}
+
 }

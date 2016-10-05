@@ -102,6 +102,9 @@ public class ApplicationWindow extends JFrame{
 			else if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT) {
 				client.tellServerImMoving("LEFT");
 			}
+			else if(code == KeyEvent.VK_SPACE) {
+				client.tellServerAction("PICK");
+			}
 			gameCanvas.repaint();
 			}
 			catch(NullPointerException ee){

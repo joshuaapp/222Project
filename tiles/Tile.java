@@ -34,6 +34,13 @@ public abstract class Tile {
 		else return "";
 	}
 	
+	public Item getItem(){
+		if(item !=null){
+			return this.item;
+		}
+		return null;
+	}
+	
 	public String getTileImage(){
 		return image;
 	}
