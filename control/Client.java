@@ -42,6 +42,10 @@ public class Client implements Runnable {
 		this.outputToServer.flush();
 	}
 	
+	public void tellServerImMoving(String movement){
+		output.print(movement);
+	}
+	
 /**Here we want to wait for input from the board and carry out movement based on the key entered.
  * The client simply hands down the responsibility to the Server which talks to the GameLogic and updates
  * GameState. 

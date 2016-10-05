@@ -25,7 +25,7 @@ public class ApplicationWindow extends JFrame{
 
 	private Client client;
 
-	public ApplicationWindow(String title) {
+	public ApplicationWindow(String title, Client user) {
 		super(title);	
 		gameCanvas = new DungeonCanvas();
 		this.messagePanel = new MessagePanel();
@@ -89,6 +89,7 @@ public class ApplicationWindow extends JFrame{
 
 		@Override
 		public void keyPressed(KeyEvent e) {
+			try{
 			int code = e.getKeyCode();
 			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
 				client.tellServerImMoving("UP");
@@ -102,7 +103,10 @@ public class ApplicationWindow extends JFrame{
 				client.tellServerImMoving("LEFT");
 			}
 			gameCanvas.repaint();
-
+			}
+			catch(NullPointerException ee){
+				System.out.println(ee.getMessage());
+			}
 		}
 
 		@Override
@@ -131,5 +135,4 @@ public class ApplicationWindow extends JFrame{
 	}
 
 }
-
 

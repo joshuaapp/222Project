@@ -189,4 +189,4 @@ public class DungeonCanvas extends JPanel{
 		return this.player;
 	}
 	
-}
+}

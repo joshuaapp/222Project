@@ -118,4 +118,7 @@ public class GameLogic {
 		//
 	}
 
+	public void pickUp(Player p){
+		//
+	}
 }
