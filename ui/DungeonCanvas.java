@@ -31,6 +31,7 @@ public class DungeonCanvas extends JPanel{
 	private Image empty;
 	private Image brick;
 	private Image players;
+	private Image door;
 	
 	private int[] imageXPositions = {0, 212, 424, 824, 1036, 1248,
 			1648, 1860, 2072, 2472};
@@ -46,6 +47,7 @@ public class DungeonCanvas extends JPanel{
 		brick = loadImage("raised_brick.png");
 		flat = loadImage("placeholder_flat.png");
 		players = loadImage("placeholder_player.png");
+		door = loadImage("placeholder_door.png");
 		
 	}
 	
@@ -81,30 +83,23 @@ public class DungeonCanvas extends JPanel{
 				else{spriteSize = 400;}
 				
 				Tile tile = tiles.remove();
-				String tileImageName = tile.getTileImage();	
-				Image tileImage = null;
+				Image tileImage = getTileImage(tile.getTileImage());
+				Image itemImage = getItemImage(tile.getItemImage());
 				
-				if(tileImageName.equals("GRASS")){
-					tileImage = flat;
-				}
-				else if(tileImageName.equals("WALL")){
-					tileImage = wall;
-				}
-				else if(tileImageName.equals("RAISED")){
-					tileImage = raisedTile;
-				}
-				else if(tileImageName.equals("EMPTY")){
-					tileImage = empty;
-				}
-				else if(tileImageName.equals("BRICK")){
-					tileImage = brick;
-				}
-
+				
+				//Draws the Tile first 
 				g.drawImage(tileImage, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
 						imageXPositions[count] + spriteSize, 600, null);
 				
+				//If there is a player then draws them
 				if(tile.getPlayer() != null){
 					g.drawImage(players, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
+							imageXPositions[count] + spriteSize, 600, null);
+				}
+				
+				//Finally draws any items on top of the player
+				if(itemImage != null){
+					g.drawImage(item, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
 				
@@ -124,8 +119,40 @@ public class DungeonCanvas extends JPanel{
 		}
 	}
 
+	private Image getTileImage(String tileImageName){
+		if(tileImageName.equals("GRASS")){
+			return flat;
+		}
+		else if(tileImageName.equals("WALL")){
+			return wall;
+		}
+		else if(tileImageName.equals("RAISED")){
+			return raisedTile;
+		}
+		else if(tileImageName.equals("EMPTY")){
+			return empty;
+		}
+		else if(tileImageName.equals("BRICK")){
+			return brick;
+		}
+		else if(tileImageName.equals("DOOR")){
+			return door;
+		}
+		else{
+			return flat;
+		}
+	}
 	
-	public void drawMap(Graphics g){
+	private Image getItemImage(String tileImageName){
+		if(!tileImageName.equals("")){
+			return item;
+		}
+		else{
+			return null;
+		}
+	}
+	
+	private void drawMap(Graphics g){
 		//Gets the entire board as one arrayList of String
 		ArrayList<String> map = player.getBoard().getMiniMap();
 		

@@ -31,7 +31,7 @@ public abstract class Tile {
 		if(item != null){
 			return this.item.getName();
 		}
-		else return "empty.png";
+		else return "";
 	}
 	
 	public String getTileImage(){

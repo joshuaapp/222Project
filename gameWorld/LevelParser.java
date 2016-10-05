@@ -94,7 +94,7 @@ public class LevelParser {
 		//D represents a door
 		else if(c == 'D'){
 			//return new DoorTile(xPos, yPos);
-			return new GroundTile("FLOOR"); //for now until door img is done
+			return new DoorTile("DOOR"); //for now until door img is done
 		}
 		//F represents a raised ground tile (non-grassy)
 		else if(c == 'R'){
