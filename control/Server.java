@@ -108,16 +108,17 @@ package control;
 
 import java.io.BufferedReader;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-
+import java.util.ArrayList;
+import java.util.List;
 import gameWorld.GameState;
 import gameWorld.Player;
+import gameWorld.Player.Direction;
 import ui.ApplicationWindow;
-
 import java.net.ServerSocket;
-
 /**This is the sever application which allows up to maxNumClients to connect to the serverSocket.
  * It communicates between the clients and the game logic/game state in order to perform game actions.
  * 
@@ -128,17 +129,19 @@ public class Server implements Runnable{
 	
 	private GameState currentGameState;
 	private ServerSocket serverSocket = null;
-	private Socket clientSocket = null;
+	private BufferedReader inputFromClient;
+	private PrintWriter outputToClient;
 	private final int maxClientsCount = 3;
 	private final int portNum = 8001;
 	//all the threads (clients) that are connected
-	private final Client[] threads = new Client[maxClientsCount];
+	private List<Client> clients;
 	
 	public Server(GameState gameState) throws IOException{
 		this.currentGameState = gameState;
 		//attempt to create server socket
 				try {
 					serverSocket = new ServerSocket(portNum);
+					clients = new ArrayList<Client>();
 				}
 				/*In this case there is already an existing server running */
 				catch (java.net.BindException e){
@@ -150,23 +153,35 @@ public class Server implements Runnable{
 	}
 	
 	public synchronized void run(){
-		System.out.println("Hello, server is running!");
 		while (true) {
 			try {
-				clientSocket = serverSocket.accept();
-				int i = 0;
-				for (i = 0; i < maxClientsCount; i++) {
-					if (threads[i] == null) {
-						//(threads[i] = new clientThread(clientSocket, threads)).start();
-						break;
-					}
-				}
-				if (i == maxClientsCount) {
-					PrintStream os = new PrintStream(clientSocket.getOutputStream());
-					os.println("Server too busy. Try later.");
-					os.close();
-					clientSocket.close();
-				}
+				Socket client = serverSocket.accept();
+				//inputFromClient = new BuferedReader(new InputStreamReader(client.getInputStream()));
+				//System.out.println("Connected to "+client.getRemoteSocketAddress());
+				ServerHelper helper = new ServerHelper(this, client);
+				new Thread(helper).start();
+//				int i = 0;
+//				for (i = 0; i < maxClientsCount; i++) {
+//					if (threads[i] == null) {
+//						//(threads[i] = new clientThread(clientSocket, threads)).start();
+//						break;
+//					}
+//				}
+//				if (i == maxClientsCount) {
+//					PrintStream os = new PrintStream(clientSocket.getOutputStream());
+//					os.println("Server too busy. Try later.");
+//					os.close();
+//					clientSocket.close();
+//				}
+//				CommunicationProtocol cp = new CommunicationProtocol();
+//				String inputLine,outputLine;
+//				outputLine = cp.processInput(null);
+//				outputToClient.println(outputLine);
+//				while((inputLine = inputFromClient.readLine()) != null){
+//					outputLine = cp.processInput(inputLine);
+//					System.out.println(outputLine);
+//				}
+				//cp.run();
 			} catch (IOException e) {
 				System.out.println(e);
 			}
@@ -188,149 +203,24 @@ public class Server implements Runnable{
 		currentGameState.updatePlayerPosition(p, s);
 	}
 	
-	public void addNewPlayer(Player p){
-		
+	public void addClientToConnectedClients(Client c){
+		clients.add(c);
+	}
+	public List<Client> getClients() {
+		return clients;
+	}
+	public ServerSocket getServerSocket() {
+		return serverSocket;
+	}
+	public void processClientMovementRequest(String direction, String clientObjectAsString) {
+		System.out.println("Processing client movement request");
+		Player toMove = null;
+		for(Client c : clients){
+			if(c.toString().equals(clientObjectAsString)){
+				toMove = c.getPlayer();
+			}
+		}
+		updateGameStatePlayerPositions(direction, toMove);
 	}
 	
 }
-
-/*
- * The chat client thread. This client thread opens the input and the output
- * streams for a particular client, ask the client's name, informs all the
- * clients connected to the server about the fact that a new client has joined
- * the chat room, and as long as it receive data, echos that data back to all
- * other clients. The thread broadcast the incoming messages to all clients and
- * routes the private message to the particular client. When a client leaves the
- * chat room this thread informs also all the clients about that and terminates.
- *
-class clientThread extends Thread {
-	
-	private Player clientThreadPlayer = null;
-	private String clientName = null;
-	private BufferedReader input = null;
-	private PrintStream os = null;
-	private Socket clientSocket = null;
-	private final clientThread[] threads;
-	private int maxClientsCount;
-
-	public clientThread(Socket clientSocket, clientThread[] threads) {
-		this.clientSocket = clientSocket;
-		this.threads = threads;
-		maxClientsCount = threads.length;
-	}
-
-	public void run() {
-		
-		int maxClientsCount = this.maxClientsCount;
-		clientThread[] threads = this.threads;
-		
-		ApplicationWindow clientsWindow = new ApplicationWindow("TEAM14'S wicked game!");
-		clientsWindow.createAndShowGUI();
-/*
-		try {
-			/*
-			 * Create input and output streams for this client.
-			 *
-			input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			os = new PrintStream(clientSocket.getOutputStream());
-			String name;
-			while (true) {
-				os.println("Enter your name.");
-				name = input.readLine().trim();
-				if (name.indexOf('@') == -1) {
-					break;
-				} else {
-					os.println("The name should not contain '@' character.");
-				}
-			}
-
-			/* Welcome the new the client. 
-			os.println("Welcome " + name
-					+ " to our chat room.\nTo leave enter /quit in a new line.");
-			synchronized (this) {
-				for (int i = 0; i < maxClientsCount; i++) {
-					if (threads[i] != null && threads[i] == this) {
-						clientName = "@" + name;
-						break;
-					}
-				}
-				for (int i = 0; i < maxClientsCount; i++) {
-					if (threads[i] != null && threads[i] != this) {
-						threads[i].os.println("*** A new user " + name
-								+ " entered the chat room !!! ***");
-					}
-				}
-			}
-			/* Start the conversation. 
-			while (true) {
-				String line = input.readLine();
-				if (line.startsWith("/quit")) {
-					break;
-				}
-				/* If the message is private sent it to the given client. 
-				if (line.startsWith("@")) {
-					String[] words = line.split("\\s", 2);
-					if (words.length > 1 && words[1] != null) {
-						words[1] = words[1].trim();
-						if (!words[1].isEmpty()) {
-							synchronized (this) {
-								for (int i = 0; i < maxClientsCount; i++) {
-									if (threads[i] != null && threads[i] != this
-											&& threads[i].clientName != null
-											&& threads[i].clientName.equals(words[0])) {
-										threads[i].os.println("<" + name + "> " + words[1]);
-										/*
-										 * Echo this message to let the client know the private
-										 * message was sent.
-										 
-										this.os.println(">" + name + "> " + words[1]);
-										break;
-									}
-								}
-							}
-						}
-					}
-				} else {
-					/* The message is public, broadcast it to all other clients. 
-					synchronized (this) {
-						for (int i = 0; i < maxClientsCount; i++) {
-							if (threads[i] != null && threads[i].clientName != null) {
-								threads[i].os.println("<" + name + "> " + line);
-							}
-						}
-					}
-				}
-			}
-			synchronized (this) {
-				for (int i = 0; i < maxClientsCount; i++) {
-					if (threads[i] != null && threads[i] != this
-							&& threads[i].clientName != null) {
-						threads[i].os.println("*** The user " + name
-								+ " is leaving the chat room !!! ***");
-					}
-				}
-			}
-			os.println("*** Bye " + name + " ***");
-
-			/*
-			 * Clean up. Set the current thread variable to null so that a new client
-			 * could be acepted by the server.
-			 
-			synchronized (this) {
-				for (int i = 0; i < maxClientsCount; i++) {
-					if (threads[i] == this) {
-						threads[i] = null;
-					}
-				}
-			}
-			/*
-			 * Close the output stream, close the input stream, close the socket.
-			 
-			input.close();
-			os.close();
-			clientSocket.close();
-		} catch (IOException e) {
-		}
-		*
-	}
-}*/

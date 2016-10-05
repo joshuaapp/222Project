@@ -13,7 +13,10 @@ import java.util.Queue;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import gameWorld.Board;
 import gameWorld.Player;
+import tiles.Tile;
 
 public class DungeonCanvas extends JPanel{
 	
@@ -22,23 +25,28 @@ public class DungeonCanvas extends JPanel{
 	private RenderPerspective rp;
 	
 	private Image flat;
-	private Image tile;
+	private Image raisedTile;
 	private Image wall;
 	private Image item;
 	private Image empty;
 	private Image brick;
+	private Image players;
 	
 	private int[] imageXPositions = {0, 212, 424, 824, 1036, 1248,
 			1648, 1860, 2072, 2472};
 	private int[] screenXPositions = {0, 388, 100};
 
+	//All image sprites are pre loaded when the canvas launches to 
+	//speed it up
 	public DungeonCanvas(){
-		brick = loadImage("raised_brick.png");
-		flat = loadImage("placeholder_flat.png");
-		tile = loadImage("placeholder_tile.png");
+		raisedTile = loadImage("placeholder_tile.png");
 		wall = loadImage("placeholder_wall.png");
 		item = loadImage("placeholder_item.png");
 		empty = loadImage("empty.png");
+		brick = loadImage("raised_brick.png");
+		flat = loadImage("placeholder_flat.png");
+		players = loadImage("placeholder_player.png");
+		
 	}
 	
 	
@@ -52,57 +60,55 @@ public class DungeonCanvas extends JPanel{
 		g.setColor(Color.BLACK);
 		g.fillRect(0,0,getWidth(),getHeight());
 		
-		
-		
 		if(player != null){	
-			
 			rp.updatePerspective();
-			
-			Queue<String> tiles = rp.getTilesInSight();
-			Queue<String> items = rp.getItemsInSight();
+			Queue<Tile> tiles = rp.getTilesInSight();
 			
 			int col = 0;
 			int count = 0;
 			int spriteSize = 212;
 			
-			while(!tiles.isEmpty()){		
+			//While there is still a tile in the queue adjust the X position
+			//and remove the Tile to get the image. 
+			while(!tiles.isEmpty()){	
+				
+				//The screen is split into 3 columns, the two on the left and right
+				//are 212 and the one in the center is 400. This is used when snipping
+				//the correct sized image off the sprite sheet.
 				if(col != 2){
 					spriteSize = 212;
 				}
 				else{spriteSize = 400;}
 				
-				String tileName = tiles.remove();
-				Image tileImage = empty;
+				Tile tile = tiles.remove();
+				String tileImageName = tile.getTileImage();	
+				Image tileImage = null;
 				
-				String itemName = items.remove();				
-				
-				
-				if(tileName.equals("placeholder_flat.png")){
+				if(tileImageName.equals("GRASS")){
 					tileImage = flat;
 				}
-				else if(tileName.equals("placeholder_wall.png")){
+				else if(tileImageName.equals("WALL")){
 					tileImage = wall;
 				}
-				else if(tileName.equals("placeholder_tile.png")){
-					tileImage = tile;
+				else if(tileImageName.equals("RAISED")){
+					tileImage = raisedTile;
 				}
-				else if(tileName.equals("raised_brick.png")){
-					tileImage = tile;
+				else if(tileImageName.equals("EMPTY")){
+					tileImage = empty;
 				}
-				else {
-					tileImage = flat;
+				else if(tileImageName.equals("BRICK")){
+					tileImage = brick;
 				}
-				
-				
-				
+
 				g.drawImage(tileImage, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
 						imageXPositions[count] + spriteSize, 600, null);
 				
-				
-				if(itemName.equals("placeholder_item.png")){
-					g.drawImage(item, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
+				if(tile.getPlayer() != null){
+					g.drawImage(players, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
+				
+				
 				col++;
 				count++;
 				
@@ -112,18 +118,51 @@ public class DungeonCanvas extends JPanel{
 				if(count == 9){
 					count = 0;
 				}
+				
 			}	
-			ArrayList<String> board = player.getBoard().getBoardAsListOfStrings();
-			g.setColor(Color.white);
-			int y =10;
-			g.setFont(new Font("Monospaced", Font.PLAIN, 8));
-			for(String s : board){
-				g.drawString(s, 10, y);
-				y+=10;
-			}
-			g.drawString(player.facing.name(), 180, 10);
+			drawMap(g);
 		}
+	}
 
+	
+	public void drawMap(Graphics g){
+		//Gets the entire board as one arrayList of String
+		ArrayList<String> map = player.getBoard().getMiniMap();
+		
+		//As it's just one long arrayList, needs to know how long each line
+		//is going to be to cut it properly
+		
+		int lineLength = player.getBoard().COLS;
+		int xPos = 0;
+		int yPos = 0;
+		int squareWidth = 5;
+		
+		for(String s : map){
+			
+			//Everything other than a wall will be blank so find the wall and 
+			//Use fillRect as opposed to drawRect
+			if(s.equals("w")){
+				g.setColor(Color.ORANGE);
+				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
+			}
+			else if(s.equals("p")){
+				g.setColor(Color.RED);
+				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
+			}
+			else{
+				g.setColor(Color.GRAY);
+				g.drawRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
+			}
+			
+			//Move along in the x Direction and if at the end of the line then
+			//set back to 0 and move down in the y Direction
+			xPos++;
+			if(xPos == lineLength){
+				xPos = 0;
+				yPos++;
+
+			}			
+		}
 	}
 	
 	public void setPlayer(Player p){
@@ -150,4 +189,4 @@ public class DungeonCanvas extends JPanel{
 		return this.player;
 	}
 	
-}
+}

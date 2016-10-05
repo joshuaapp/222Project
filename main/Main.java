@@ -3,38 +3,38 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
-
 import control.Client;
 import control.Server;
 import gameWorld.Player;
 import tiles.StartTile;
 import gameWorld.Board;
+import gameWorld.GameLogic;
 import gameWorld.GameState;
 import gameWorld.LevelParser;
 import ui.ApplicationWindow;
-
 public class Main {
-
 	public static void main(String[] args) {
 		ArrayList<Player> players = new ArrayList<>();
 		GameState state = new GameState();
+		state.attachLogic(new GameLogic(state));
 		LevelParser parser = new LevelParser();
 		Board b = parser.buildBoard("level1.txt");
-		//System.out.println(b.toString());
-		//state.ensureStateIsAtBeginning();
+		parser.parseItemsAndAddToBoard("level1Items.txt", b);
+		state.attatchBoard(b);
+
 		try{
 		Server gameServer = new Server(state);
 		new Thread(gameServer).start();
 		//gameServer.run();
-		Player p1 = new Player(b, "Player 1");
+		Player p1 = new Player(b, "Player1");
+		Player p2 = new Player(b, "Player2");
 		players.add(p1);	
-		Player p2 = new Player(b, "Player 2");
 		players.add(p2);
 		ArrayList<StartTile> startTiles = b.getStartingTiles();
 		if(players.size() < startTiles.size()){
 			for(int i=0;i<players.size();i++){
 				StartTile t = startTiles.get(i);
-				players.get(i).setPosition(t.getPosition());
+				players.get(i).setPosition(t.getStartPosition());
 				b.placePlayerOnBoard(players.get(i));
 			}
 		}
@@ -44,7 +44,8 @@ public class Main {
 		Client c1 = new Client(p2);
 		new Thread(c).start();
 		new Thread(c1).start();
-
+		gameServer.addClientToConnectedClients(c);
+		gameServer.addClientToConnectedClients(c1);
 		
 		//Player p2 = new Player(10,10,b);
 		//Client c2 = new Client(p2);		
@@ -66,5 +67,8 @@ public class Main {
                 
             }
         });*/
+		finally{
+			
+		}
 	}
 }

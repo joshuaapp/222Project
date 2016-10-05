@@ -2,13 +2,16 @@ package gameWorld;
 
 
 
+
+import gameWorld.Player.Direction;
 import ui.RenderPerspective;
 
 public class Player {
 	
 	private Position playerPosition;
-	public Direction facing = Direction.North;
-	public RenderPerspective rp;
+
+	private Direction facing = Direction.North;
+	private RenderPerspective rp;
 	private Board board;
 	String name;
 	
@@ -22,6 +25,7 @@ public class Player {
 		West;
 	}
 	
+
 	public Player(Board b, String name){
 		this.board=b;
 		this.name = name;
@@ -31,9 +35,11 @@ public class Player {
 		rp = new RenderPerspective(this, board);		
 	}
 
+
 	public RenderPerspective getRP(){
 		return rp;
 	}
+
 
 	public Board getBoard() {
 		return this.board;
@@ -46,5 +52,19 @@ public class Player {
 	public void setPosition(Position toSet){
 		this.playerPosition = toSet;
 	}
+
+
+	public Direction getDirectionFacing() {
+		return this.facing;
+	}
+
+	public void setDirectionFacing(Direction direction) {
+		this.facing = direction;
+	}
+
+	public RenderPerspective getRenderPerspective() {
+		return this.rp;
+	}
+
 	
 }

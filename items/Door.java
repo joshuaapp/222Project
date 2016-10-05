@@ -41,4 +41,9 @@ public class Door implements InteractableItem{
 		return false;
 	}
 
+	@Override
+	public String getName() {
+		return "door";
+	}
+
 }

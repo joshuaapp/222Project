@@ -22,11 +22,11 @@ public class ApplicationWindow extends JFrame{
 	private InventoryPanel inventoryPanel; 
 	private Console console;
 	private DungeonCanvas gameCanvas;
-	private Client user;
+
+	private Client client;
 
 	public ApplicationWindow(String title, Client user) {
 		super(title);	
-		this.user = user;
 		gameCanvas = new DungeonCanvas();
 		this.messagePanel = new MessagePanel();
 		this.inventoryPanel = new InventoryPanel();
@@ -39,8 +39,7 @@ public class ApplicationWindow extends JFrame{
 	}
 
 	public void createAndShowGUI() {
-		System.out.println("Created GUI on EDT? "+
-				SwingUtilities.isEventDispatchThread());
+
 		JFrame f = new JFrame(this.getTitle());
 		f.setSize(800, 900);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,7 +51,6 @@ public class ApplicationWindow extends JFrame{
 		f.add(inventoryPanel, BorderLayout.PAGE_END);
 		f.add(gameCanvas, BorderLayout.CENTER);
 		gameCanvas.addKeyListener(new GameKeyListener());
-
 
 		//  messagePanel.setMaximumSize(getPreferredSize());
 		//  messagePanel.setPreferredSize(getPreferredSize());
@@ -85,7 +83,6 @@ public class ApplicationWindow extends JFrame{
 	 */
 	public void writeOut(String string) {
 
-		console.print(string);
 	}
 
 	public class GameKeyListener implements KeyListener{
@@ -95,16 +92,15 @@ public class ApplicationWindow extends JFrame{
 			try{
 			int code = e.getKeyCode();
 			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
-				user.tellServerImMoving("UP");
-				//updateGameStatePlayerPositions();
+				client.tellServerImMoving("UP");
 			} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN) {
-				user.tellServerImMoving("RIGHT");
+				client.tellServerImMoving("DOWN");
 			}
 			else if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT) {
-				user.tellServerImMoving("DOWN");
+				client.tellServerImMoving("RIGHT");
 			}
 			else if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT) {
-				user.tellServerImMoving("LEFT");
+				client.tellServerImMoving("LEFT");
 			}
 			gameCanvas.repaint();
 			}
@@ -127,6 +123,16 @@ public class ApplicationWindow extends JFrame{
 
 	}
 
-}
 
+	/**Method to connect a client to a certain window so the window can send requests
+	 * from client to server.
+	 * @param client
+	 */
+	public void attatchClientToWindow(Client client) {
+		if(client != null){
+			this.client = client;
+		}
+	}
+
+}
 
