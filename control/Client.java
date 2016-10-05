@@ -41,6 +41,11 @@ public class Client implements Runnable {
 		this.outputToServer.println(movement+" "+this.toString());
 		this.outputToServer.flush();
 	}
+	
+	public synchronized void tellServerAction(String action){
+		this.outputToServer.println(action+" "+this.toString());
+		this.outputToServer.flush();
+	}
 
 	
 /**Here we want to wait for input from the board and carry out movement based on the key entered.

@@ -3,17 +3,21 @@ package gameWorld;
 
 
 
+import java.util.ArrayList;
+
 import gameWorld.Player.Direction;
+import items.Item;
 import ui.RenderPerspective;
 
 public class Player {
 	
 	private Position playerPosition;
 
-	private Direction facing = Direction.North;
+	Direction facing = Direction.North;
 	private RenderPerspective rp;
 	private Board board;
 	String name;
+	public ArrayList<Item> inven;
 	
 	int Xcoord;
 	int Ycoord;
