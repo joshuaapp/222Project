@@ -103,7 +103,12 @@ public class ApplicationWindow extends JFrame{
 				client.tellServerImMoving("LEFT");
 			}
 			else if(code == KeyEvent.VK_SPACE) {
-				client.tellServerAction("PICK");
+				client.tellServerAction("PICK", null);
+			}
+			//Need an action here where when a button is pressed it calls client.tellServerAction("DROP", a string called itemName);
+			//for now pressing d will drop an 'item'
+			else if(code == KeyEvent.VK_D) {
+				client.tellServerAction("DROP", "Key");
 			}
 			gameCanvas.repaint();
 			}

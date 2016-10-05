@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
+import items.Item;
 import tiles.GroundTile;
 
 public class GameState {
@@ -69,11 +70,13 @@ public class GameState {
 		this.currentBoard = b;
 	}
 
-	public void updatePlayerAct(Player p, String a) {
+	public void updatePlayerAct(Player p, String a, String item) {
 		if(a.equals("PICK")){
 			logic.isThereAnItem(p);
 		}
-		
+		else if(a.equals("DROP")){
+			logic.drop(p, item);
+		}
 	}
 	
 

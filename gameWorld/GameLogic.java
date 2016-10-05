@@ -3,6 +3,7 @@ package gameWorld;
 import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
 import items.Item;
+import items.Key;
 import tiles.GroundTile;
 import tiles.Tile;
 
@@ -117,6 +118,27 @@ public class GameLogic {
 
 	public void pickUp(Player p, Item item){
 		p.inven.add(item);
+	}
+	
+	public void drop(Player player, String item){
+		//need to add code to get an item object based on the name of the object which is currently a string
+		Item dropit = new Key();
+		switch(item){
+		case "Key": dropit = new Key();
+		//case "empty": dropit = new empty();
+		}
+		Position playerPos = player.getPosition();
+		int playerX = playerPos.getX();
+		int playerY = playerPos.getY();
+		Board currentBoard = game.getGameBoard();
+		if(currentBoard.getTile(playerY, playerX).getItem() == null){
+			currentBoard.getTile(playerY, playerX).setItem(dropit);
+//			for(Item i: player.inven){
+//				if(i.getName().equals(item)){
+//					player.inven.remove(i);
+//				}
+//			}
+		}
 	}
 
 	public void isThereAnItem(Player player) {
