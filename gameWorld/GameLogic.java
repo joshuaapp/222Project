@@ -15,7 +15,7 @@ public class GameLogic {
 	//If an up or down key has been pressed the player will move
 	//If a left or right key is pressed, rotate the users direction facing
 	public void rotateOrMove(Player p, String movement){
-	
+
 		switch(movement){
 		case "UP": 
 			legalPlayerMove(p, p.getDirectionFacing());
@@ -30,7 +30,7 @@ public class GameLogic {
 			p.setDirectionFacing(getRightDirection(p.getDirectionFacing()));
 			break;
 		}
-		
+
 	}
 
 	public void legalPlayerMove(Player player, Direction facing){
@@ -75,7 +75,7 @@ public class GameLogic {
 		default:;
 		}
 	}
-	
+
 	public void actuallyMove(Player p, Direction facing){
 		Position pos = p.getPosition();
 		int y = pos.getY();
@@ -120,46 +120,13 @@ public class GameLogic {
 	}
 
 	public void isThereAnItem(Player player) {
-		Direction facing = player.facing;
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
-		switch(facing){
-		case North: 
-			if(playerY-1 >= 0){
-				if(currentBoard.getTile(playerY-1, playerX).getItem() != null){
-					pickUp(player, currentBoard.getTile(playerY-1, playerX).getItem());
-					currentBoard.getTile(playerY-1, playerX).setItem(null);
-				}
-			}
-			break;
-		case South:
-			if(playerY+1 < currentBoard.ROWS){
-				if(currentBoard.getTile(playerY+1, playerX).getItem() != null){
-					pickUp(player, currentBoard.getTile(playerY+1, playerX).getItem());
-					currentBoard.getTile(playerY+1, playerX).setItem(null);
-				}
-			}
-			break;
-		case East:
-			if(playerX+1 < currentBoard.COLS){
-				if(currentBoard.getTile(playerY, playerX+1).getItem() != null){
-					pickUp(player, currentBoard.getTile(playerY, playerX+1).getItem());
-					currentBoard.getTile(playerY, playerX+1).setItem(null);
-				}
-			}
-			break;
-		case West:
-			if(playerX-1 >= 0){
-				if(currentBoard.getTile(playerY, playerX-1).getItem() != null){
-					pickUp(player, currentBoard.getTile(playerY, playerX-1).getItem());
-					currentBoard.getTile(playerY, playerX-1).setItem(null);
-				}
-			}
-			break;
-		default:;
+		if(currentBoard.getTile(playerY, playerX).getItem() != null){
+			pickUp(player, currentBoard.getTile(playerY, playerX).getItem());
+			currentBoard.getTile(playerY, playerX).setItem(null);
 		}
 	}
-
 }

@@ -17,7 +17,7 @@ public class Player {
 	private RenderPerspective rp;
 	private Board board;
 	String name;
-	public ArrayList<Item> inven;
+	public ArrayList<Item> inven = new ArrayList<Item>();
 	
 	int Xcoord;
 	int Ycoord;
