@@ -42,7 +42,9 @@ public class DungeonCanvas extends JPanel{
 	public DungeonCanvas(){
 		raisedTile = loadImage("placeholder_tile.png");
 		wall = loadImage("placeholder_wall.png");
-		item = loadImage("placeholder_item.png");
+		//item = loadImage("placeholder_item.png");
+		//All items display as keys because i cant figure out how this code
+		item = loadImage("key_item.png");
 		empty = loadImage("empty.png");
 		brick = loadImage("raised_brick.png");
 		flat = loadImage("placeholder_flat.png");

@@ -15,7 +15,7 @@ public class Key implements InteractableItem{
 	@Override
 	public String getName() {
 		//return "key";
-		return "placeholder_item.png";
+		return "key_item.png";
 	}
 	
 	
