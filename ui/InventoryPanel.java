@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -18,9 +19,12 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
+import items.Item;
+
 public class InventoryPanel extends JPanel {
 	JTextField text = new JTextField();
 	JPanel buttonPanel = new JPanel();
+	int nextBut = 0;
 	 public InventoryPanel() {
 	        setBorder(BorderFactory.createLineBorder(Color.black));
 			text.setText("Select inventory item");
@@ -50,6 +54,19 @@ public class InventoryPanel extends JPanel {
 	       
 	        
 		}
+		
+		public void updateButton(Item item){
+			Image img;
+			try {
+				img = ImageIO.read(new File(item.getName()));
+			    img = img.getScaledInstance(100, 120, Image.SCALE_SMOOTH);
+				((AbstractButton) buttonPanel.getComponent(nextBut)).setIcon(new ImageIcon(img));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			nextBut++;
+		}
+		
 		public void addButton(){
 			JButton button = new JButton();
 			button.setPreferredSize(new Dimension(125, 125));

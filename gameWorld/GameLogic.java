@@ -125,6 +125,8 @@ public class GameLogic {
 		Item dropit = new Key();
 		switch(item){
 		case "Key": dropit = new Key();
+		case "Key1": dropit = new Key();
+		case "Key2": dropit = new Key();
 		//case "empty": dropit = new empty();
 		}
 		Position playerPos = player.getPosition();
@@ -136,6 +138,7 @@ public class GameLogic {
 //			for(Item i: player.inven){
 //				if(i.getName().equals(item)){
 //					player.inven.remove(i);
+					
 //				}
 //			}
 		}

@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 
 import gameWorld.Board;
 import gameWorld.Player;
+import tiles.DoorTile;
+import tiles.StartTile;
 import tiles.Tile;
 
 public class DungeonCanvas extends JPanel{
@@ -32,6 +34,7 @@ public class DungeonCanvas extends JPanel{
 	private Image brick;
 	private Image players;
 	private Image door;
+	private Image back;
 	
 	private int[] imageXPositions = {0, 212, 424, 824, 1036, 1248,
 			1648, 1860, 2072, 2472};
@@ -50,7 +53,7 @@ public class DungeonCanvas extends JPanel{
 		flat = loadImage("placeholder_flat.png");
 		players = loadImage("placeholder_player.png");
 		door = loadImage("placeholder_door.png");
-		
+		back = loadImage("background.png");
 	}
 	
 	
@@ -61,8 +64,17 @@ public class DungeonCanvas extends JPanel{
 
 	@Override
 	public void paint(Graphics g){
-		g.setColor(Color.BLACK);
-		g.fillRect(0,0,getWidth(),getHeight());
+		if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
+				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof StartTile)
+				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof DoorTile)){
+			g.setColor(Color.BLACK);
+			g.fillRect(0,0,getWidth(),getHeight());
+		}
+		else{
+			back = back.getScaledInstance(600, 600, 0);
+			g.drawImage(back, 0, 0, null);
+		}
+		
 		
 		if(player != null){	
 			rp.updatePerspective();

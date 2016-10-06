@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -15,6 +16,8 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import control.Client;
+import items.Button;
+import items.Item;
 
 public class ApplicationWindow extends JFrame{
 	//private static BoardPanel boardPanel;
@@ -109,6 +112,20 @@ public class ApplicationWindow extends JFrame{
 			//for now pressing d will drop an 'item'
 			else if(code == KeyEvent.VK_D) {
 				client.tellServerAction("DROP", "Key");
+//				for(Item i: client.getPlayer().inven){
+//					if(i.getName().contains("Key")){
+//						for(Component c : inventoryPanel.buttonPanel.getComponents()){
+//								JButton b = (JButton) c;
+//								b.getIcon().toString();
+//
+//								//if(c instaneof JButton){
+//							}
+//						}
+//					}
+//				}
+//				if(){
+//					
+//				}
 			}
 			gameCanvas.repaint();
 			}
