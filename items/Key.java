@@ -1,6 +1,12 @@
 package items;
 
 public class Key implements InteractableItem{
+	
+	private String color;
+
+	public Key(String color){
+		this.color = color;
+	} 
 
 	@Override
 	public boolean isUsable() {
@@ -18,6 +24,8 @@ public class Key implements InteractableItem{
 		return "key_item.png";
 	}
 	
-	
+	public String getColor(){
+		return color;
+	}
 
 }

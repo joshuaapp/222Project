@@ -29,7 +29,7 @@ public class ApplicationWindow extends JFrame{
 		super(title);	
 		gameCanvas = new DungeonCanvas();
 		this.messagePanel = new MessagePanel();
-		this.inventoryPanel = new InventoryPanel();
+		this.inventoryPanel = new InventoryPanel(user);
 		this.console = new Console();
 		this.messagePanel.makeMessagePanel(console);
 		this.pack(); // pack components tightly together
@@ -93,28 +93,43 @@ public class ApplicationWindow extends JFrame{
 			int code = e.getKeyCode();
 			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
 				client.tellServerImMoving("UP");
+				inventoryPanel.updateInventoryPanel();
 			} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN) {
 				client.tellServerImMoving("DOWN");
+				inventoryPanel.updateInventoryPanel();
 			}
 			else if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT) {
 				client.tellServerImMoving("RIGHT");
+				inventoryPanel.updateInventoryPanel();
 			}
 			else if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT) {
 				client.tellServerImMoving("LEFT");
+				inventoryPanel.updateInventoryPanel();
 			}
 			else if(code == KeyEvent.VK_SPACE) {
 				client.tellServerAction("PICK", null);
+				Thread.sleep(100);
+				inventoryPanel.updateInventoryPanel();
+				
 			}
 			//Need an action here where when a button is pressed it calls client.tellServerAction("DROP", a string called itemName);
 			//for now pressing d will drop an 'item'
 			else if(code == KeyEvent.VK_D) {
 				client.tellServerAction("DROP", "Key");
+				Thread.sleep(100);
+				inventoryPanel.updateInventoryPanel();
 			}
 			gameCanvas.repaint();
 			}
 			catch(NullPointerException ee){
 				System.out.println(ee.getMessage());
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
+			
+			gameCanvas.repaint();
+			
 		}
 
 		@Override
