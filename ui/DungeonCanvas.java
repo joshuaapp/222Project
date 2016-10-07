@@ -33,6 +33,7 @@ public class DungeonCanvas extends JPanel{
 	private Image empty;
 	private Image brick;
 	private Image players;
+	private Image monster;
 	private Image door;
 	public Image back;
 	
@@ -43,17 +44,19 @@ public class DungeonCanvas extends JPanel{
 	//All image sprites are pre loaded when the canvas launches to 
 	//speed it up
 	public DungeonCanvas(){
+		int level = 2;
 		raisedTile = loadImage("placeholder_tile.png");
-		wall = loadImage("placeholder_wall.png");
+		wall = loadImage("wall"+level+".png");
 		//item = loadImage("placeholder_item.png");
 		//All items display as keys because i cant figure out how this code
 		item = loadImage("key_item.png");
 		empty = loadImage("empty.png");
 		brick = loadImage("raised_brick.png");
-		flat = loadImage("placeholder_flat.png");
+		flat = loadImage("flat"+level+".png");
 		players = loadImage("placeholder_player.png");
+		monster = loadImage("monster.png");
 		door = loadImage("placeholder_door.png");
-		back = loadImage("background.png");
+		back = loadImage("back"+level+".png");
 	}
 	
 	
@@ -106,8 +109,13 @@ public class DungeonCanvas extends JPanel{
 						imageXPositions[count] + spriteSize, 600, null);
 				
 				//If there is a player then draws them
-				if(tile.getPlayer() != null){
+				if(tile.getPlayer() != null && !tile.getPlayer().isMonster){
 					g.drawImage(players, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
+							imageXPositions[count] + spriteSize, 600, null);
+				}
+				
+				if(tile.getPlayer() != null && tile.getPlayer().isMonster){
+					g.drawImage(monster, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
 				
@@ -190,6 +198,10 @@ public class DungeonCanvas extends JPanel{
 				g.setColor(Color.RED);
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
 			}
+//			else if(s.equals("m")){
+//				g.setColor(Color.green);
+//				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
+//			}
 			else{
 				g.setColor(Color.GRAY);
 				g.drawRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);

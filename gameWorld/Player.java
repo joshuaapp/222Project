@@ -18,6 +18,7 @@ public class Player {
 	private Board board;
 	String name;
 	public ArrayList<Item> inven = new ArrayList<Item>();
+	public boolean isMonster = false;
 	
 	int Xcoord;
 	int Ycoord;

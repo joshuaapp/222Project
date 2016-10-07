@@ -3,6 +3,7 @@ package gameWorld;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import tiles.GroundTile;
 import tiles.PlayerTile;
 import tiles.StartTile;
 import tiles.Tile;
@@ -60,6 +61,18 @@ public class Board {
 		return toReturn;
 	}
 	
+	public ArrayList<Position> getMonsterStartingTiles(){
+		ArrayList<Position> toReturn = new ArrayList<>();
+		for(int row=0;row<this.ROWS;row++){
+			for(int col=0;col<this.COLS;col++){
+				if(templateBoard[row][col] instanceof GroundTile){
+					toReturn.add(new Position(col, row));
+				}
+			}
+		}
+		return toReturn;
+	}
+	
 	public ArrayList<String> getMiniMap(){
 		ArrayList<String> map = new ArrayList<String>();
 		
@@ -69,6 +82,9 @@ public class Board {
 				if(t.getPlayer()!=null){
 					map.add("p");
 				}
+//				if(t.getPlayer()!=null && t.getPlayer().isMonster){
+//					map.add("m");
+//				}
 				else if(t instanceof WallTile){
 					map.add("w");
 				}

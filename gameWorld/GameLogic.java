@@ -12,6 +12,14 @@ public class GameLogic {
 	public GameLogic(GameState game){
 		this.game = game;
 	}
+	//NEED to implement
+	//monsters
+	//random tiles have point bubbles
+	//chest gives you a bag
+	//collect keys to open doors, certain number of keys lets you open doors
+	//maze, to get to the chest and some keys
+	//avoid standing near monster
+	
 
 	//If an up or down key has been pressed the player will move
 	//If a left or right key is pressed, rotate the users direction facing
