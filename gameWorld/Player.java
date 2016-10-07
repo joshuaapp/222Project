@@ -11,6 +11,7 @@ import ui.RenderPerspective;
 
 public class Player {
 	
+	public int hp = 3;
 	private Position playerPosition;
 
 	Direction facing = Direction.North;
@@ -18,6 +19,7 @@ public class Player {
 	private Board board;
 	String name;
 	public ArrayList<Item> inven = new ArrayList<Item>();
+	public boolean isMonster = false;
 	
 	int Xcoord;
 	int Ycoord;
