@@ -59,7 +59,6 @@ public class DungeonCanvas extends JPanel{
 		back = loadImage("back"+level+".png");
 	}
 	
-	
 	@Override
 	public Dimension getPreferredSize() {
 	    return new Dimension(600, 600);

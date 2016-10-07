@@ -1,5 +1,7 @@
 package gameWorld;
 
+import java.util.Random;
+
 import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
 import items.Item;
@@ -9,6 +11,7 @@ import tiles.Tile;
 
 public class GameLogic {
 	GameState game;
+	int monsterTime = 10;
 	public GameLogic(GameState game){
 		this.game = game;
 	}
@@ -19,7 +22,7 @@ public class GameLogic {
 	//collect keys to open doors, certain number of keys lets you open doors
 	//maze, to get to the chest and some keys
 	//avoid standing near monster
-	
+
 
 	//If an up or down key has been pressed the player will move
 	//If a left or right key is pressed, rotate the users direction facing
@@ -42,11 +45,21 @@ public class GameLogic {
 
 	}
 
+	public void lowerHP(Player player){
+		player.hp--;
+		if(player.hp <= 0){
+			//player.isMonster = true;
+		}
+	}
+
 	public void legalPlayerMove(Player player, Direction facing){
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
+		if(!player.isMonster){
+			monsterTime--;
+		}
 		switch(facing){
 		case North: 
 			if(playerY-1 >= 0){
@@ -83,6 +96,26 @@ public class GameLogic {
 			break;
 		default:;
 		}
+		if(monsterTime == 0){
+			Random rand = new Random();
+			monsterTime = rand.nextInt(6);
+			moveMonsters();
+		}
+	}
+
+
+	public void moveMonsters(){
+		for(Player m: game.curMonsters){
+			Random rand = new Random();
+			int rand2 = rand.nextInt(4);
+			switch(rand2){
+			case 1: m.setDirectionFacing(Direction.North); break;
+			case 2: m.setDirectionFacing(Direction.South); break;
+			case 3: m.setDirectionFacing(Direction.East); break;
+			case 4: m.setDirectionFacing(Direction.West); break;
+			}
+			legalPlayerMove(m, m.facing);
+		}
 	}
 
 	public void actuallyMove(Player p, Direction facing){
@@ -99,6 +132,23 @@ public class GameLogic {
 		}
 		Position oldPos = new Position(x,y);
 		game.getGameBoard().updatePlayerPos(p, oldPos);
+
+		if(!p.isMonster){
+			for(int i = y-1; i<=y+1; i++){
+				for(int j = x-1; j<=x+1; j++){
+					try{
+						Player monster = game.getGameBoard().getTile(i, j).getPlayer();
+						if(monster.isMonster){
+							lowerHP(p);
+							System.out.println("Player HP: "+p.hp);
+							return;
+						}
+					}catch(NullPointerException e){
+						continue;
+					}
+				}
+			}
+		}
 	}
 
 	//This rotates the users view to right 90 degrees
@@ -127,7 +177,7 @@ public class GameLogic {
 	public void pickUp(Player p, Item item){
 		p.inven.add(item);
 	}
-	
+
 	public void drop(Player player, String item){
 		//need to add code to get an item object based on the name of the object which is currently a string
 		Item dropit = new Key("YELLOW");
@@ -142,14 +192,14 @@ public class GameLogic {
 		if(currentBoard.getTile(playerY, playerX).getItem() == null){
 			currentBoard.getTile(playerY, playerX).setItem(dropit);
 			for(Item i: player.inven){
-				
+
 				if(i instanceof Key){
 					player.inven.remove(i);
 					break;
 				}
 			}
 		}
-		
+
 	}
 
 	public void isThereAnItem(Player player) {

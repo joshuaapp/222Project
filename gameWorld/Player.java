@@ -11,6 +11,7 @@ import ui.RenderPerspective;
 
 public class Player {
 	
+	public int hp = 3;
 	private Position playerPosition;
 
 	Direction facing = Direction.North;
