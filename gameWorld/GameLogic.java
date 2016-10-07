@@ -122,11 +122,9 @@ public class GameLogic {
 	
 	public void drop(Player player, String item){
 		//need to add code to get an item object based on the name of the object which is currently a string
-		Item dropit = new Key();
+		Item dropit = new Key("YELLOW");
 		switch(item){
-		case "Key": dropit = new Key();
-		case "Key1": dropit = new Key();
-		case "Key2": dropit = new Key();
+		case "Key": dropit = new Key("YELLOW");
 		//case "empty": dropit = new empty();
 		}
 		Position playerPos = player.getPosition();
@@ -135,13 +133,15 @@ public class GameLogic {
 		Board currentBoard = game.getGameBoard();
 		if(currentBoard.getTile(playerY, playerX).getItem() == null){
 			currentBoard.getTile(playerY, playerX).setItem(dropit);
-//			for(Item i: player.inven){
-//				if(i.getName().equals(item)){
-//					player.inven.remove(i);
-					
-//				}
-//			}
+			for(Item i: player.inven){
+				
+				if(i instanceof Key){
+					player.inven.remove(i);
+					break;
+				}
+			}
 		}
+		
 	}
 
 	public void isThereAnItem(Player player) {
