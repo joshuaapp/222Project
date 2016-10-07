@@ -32,13 +32,16 @@ public class InventoryPanel extends JPanel {
 	JTextField text = new JTextField();
 	JPanel buttonPanel = new JPanel();
 	JButton[] itemButtons = new JButton[5];
+	boolean gotInventoryBag = true;
 	private Client client;
 	Icon placeholderKey;
+	DungeonCanvas gameCanvas;
 	private Icon activeKey;
-	public InventoryPanel(Client client) {
+	public InventoryPanel(Client client, DungeonCanvas gameCanvas) {
 		this.client = client;
+		this.gameCanvas = gameCanvas;
 		setBorder(BorderFactory.createLineBorder(Color.black));
-		text.setText("Select inventory item");
+		text.setText("Find the Chest to gain your Backpack");
 		text.setBackground(Color.green);
 		this.setLayout(new BorderLayout());
 		text.setBorder(null);
@@ -46,6 +49,7 @@ public class InventoryPanel extends JPanel {
 		this.add(buttonPanel, BorderLayout.CENTER);
 		this.add(text, BorderLayout.PAGE_END);
 		setupIcons();
+		
 		int x = 0;
 		while(x < 5){
 			//addButton();
@@ -96,7 +100,7 @@ public class InventoryPanel extends JPanel {
 		JButton button = new JButton();
 		button.setActionCommand(i+"");
 		button.setPreferredSize(new Dimension(125, 125));
-
+		button.setFocusable(false);
 		button.setIcon(placeholderKey);
 
 		button.addActionListener(new ButtonListener());
@@ -109,39 +113,55 @@ public class InventoryPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
 			System.out.println(command);
+			try {
 			switch(command){
 			case "0":
 				client.tellServerAction("DROP", "Key1");
 				System.out.println("Key1");
+				
 				break;
 			case "1":
 				client.tellServerAction("DROP", "Key2");
 				System.out.println("Key2");
+				
 				break;
 			case "2":
 				client.tellServerAction("DROP", "Key3");
 				System.out.println("Key3");
+				
 				break;
 			case "3":
 				client.tellServerAction("DROP", "Key4");
 				System.out.println("Key4");
+				
 				break;
 			case "4":
 				client.tellServerAction("DROP", "Key5");
 				System.out.println("Key5");
+				
 				break;
 			default:
 			}
-			System.out.println("LE FUCKING BUTTON PRESSED");
+			
+				Thread.sleep(200);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			updateInventoryPanel();
+			gameCanvas.repaint();
 		}
 	}
 
 	public void updateInventoryPanel(){
+		if(gotInventoryBag){
+		text.setText("Select Inventory Item to drop");	
 		System.out.println("FountUpdate");
 		ArrayList<Item> inventory = client.getPlayer().inven;
 		for(JButton button: itemButtons){
 			button.setIcon(placeholderKey);
 		}
+		int bagCount = 0;
 		for(Item m : inventory){
 			System.out.println(m.getName());
 			if(m instanceof Key){
@@ -150,13 +170,14 @@ public class InventoryPanel extends JPanel {
 				switch(key.getColor()){
 				case "YELLOW":
 					System.out.println("Change button");
-					itemButtons[0].setIcon(activeKey);
+					itemButtons[bagCount].setIcon(activeKey);
+					if(bagCount < 4){bagCount++;}
 					break;
 				default:
 					System.out.println("YOU found DEFAULT");
 				}
 			}
 		}
-	
+		}
 	}
 }

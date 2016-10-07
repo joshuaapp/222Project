@@ -197,6 +197,21 @@ public class GameLogic {
 					player.inven.remove(i);
 					break;
 				}
+				Position playerPos = player.getPosition();
+				int playerX = playerPos.getX();
+				int playerY = playerPos.getY();
+				Board currentBoard = game.getGameBoard();
+				if(currentBoard.getTile(playerY, playerX).getItem() == null){
+					currentBoard.getTile(playerY, playerX).setItem(dropit);
+					for(Item i: player.inven){
+						
+						if(i instanceof Key){
+							player.inven.remove(i);
+							return;
+						}
+					}
+				}
+				
 			}
 		}
 
