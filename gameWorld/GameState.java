@@ -10,7 +10,7 @@ import tiles.GroundTile;
 
 public class GameState {
 	private Board currentBoard;
-	private int level = 1;
+	private int level = 2;
 	public ArrayList<Player> curPlayers;
 	public enum direction {NORTH, SOUTH, EAST, WEST};
 	public GameLogic logic;
@@ -26,7 +26,7 @@ public class GameState {
 	
 	public void initMap(){
 		LevelParser parser = new LevelParser();
-		currentBoard = parser.buildBoard(""+level);
+		currentBoard = parser.buildBoard(""+getLevel());
 	}
 	
 	public void attachLogic(GameLogic logic){
@@ -58,7 +58,7 @@ public class GameState {
 	}
 
 	public void levelUp(){
-		level++;
+		setLevel(getLevel() + 1);
 		initMap();
 	}
 	
@@ -77,6 +77,14 @@ public class GameState {
 		else if(a.equals("DROP")){
 			logic.drop(p, item);
 		}
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 	
 
