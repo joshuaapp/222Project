@@ -18,8 +18,8 @@ public class Main {
 		GameState state = new GameState();
 		state.attachLogic(new GameLogic(state));
 		LevelParser parser = new LevelParser();
-		Board b = parser.buildBoard("level1.txt");
-		parser.parseItemsAndAddToBoard("level1Items.txt", b);
+		Board b = parser.buildBoard("level"+state.getLevel()+".txt");
+		parser.parseItemsAndAddToBoard("level"+state.getLevel()+"Items.txt", b);
 		state.attatchBoard(b);
 
 		try{
@@ -31,7 +31,7 @@ public class Main {
 		players.add(p1);	
 		players.add(p2);
 		ArrayList<StartTile> startTiles = b.getStartingTiles();
-		if(players.size() < startTiles.size()){
+		if(players.size() <= startTiles.size()){
 			for(int i=0;i<players.size();i++){
 				StartTile t = startTiles.get(i);
 				players.get(i).setPosition(t.getStartPosition());

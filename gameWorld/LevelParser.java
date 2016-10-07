@@ -162,7 +162,7 @@ public class LevelParser {
 		case "chest": 
 			return new Chest();
 		case "key":
-			return new Key();
+			return new Key("YELLOW");
 		case "door":
 			return new Door();
 		case "button":

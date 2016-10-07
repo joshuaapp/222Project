@@ -34,7 +34,7 @@ public class DungeonCanvas extends JPanel{
 	private Image brick;
 	private Image players;
 	private Image door;
-	private Image back;
+	public Image back;
 	
 	private int[] imageXPositions = {0, 212, 424, 824, 1036, 1248,
 			1648, 1860, 2072, 2472};
