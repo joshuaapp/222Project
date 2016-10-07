@@ -10,7 +10,7 @@ import tiles.GroundTile;
 
 public class GameState {
 	private Board currentBoard;
-	private int level = 2;
+	private int level = 1;
 	public ArrayList<Player> curPlayers;
 	public enum direction {NORTH, SOUTH, EAST, WEST};
 	public GameLogic logic;
