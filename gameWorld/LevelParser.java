@@ -111,7 +111,7 @@ public class LevelParser {
 		else if(c == 'E'){
 			//return new EndTile(xPos, yPos);
 
-			return new GroundTile("FLOOR"); //for now until door img is done
+			return new EndTile("END"); //for now until door img is done
 		}
 		//* represents a fountain ie decrative tile
 		else if(c == 'F'){
