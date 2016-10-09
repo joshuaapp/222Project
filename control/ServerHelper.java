@@ -83,6 +83,9 @@ public class ServerHelper implements Runnable{
 						}
 
 					}
+					else if(brokenRequest[0].equals("DISCONNECTING")){
+						//state.
+					}
 				}
 				//check for objects being sent
 

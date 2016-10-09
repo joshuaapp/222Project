@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -22,7 +24,7 @@ import items.Item;
 public class ApplicationWindow extends JFrame{
 	//private static BoardPanel boardPanel;
 	private MessagePanel messagePanel;
-	private InventoryPanel inventoryPanel; 
+	private InventoryPanel inventoryPanel;
 	private Console console;
 	private DungeonCanvas gameCanvas;
 
@@ -49,7 +51,13 @@ public class ApplicationWindow extends JFrame{
 		f.setSize(800, 900);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLayout(new BorderLayout());
-		//gamePanel.setPreferredSize(getPreferredSize());
+		f.addWindowListener(new WindowAdapter() {
+		    public void WindowClosing(WindowEvent e) {
+		        System.out.println("test");
+		        //f.dispose();
+		    }
+		});
+
 		messagePanel.setPreferredSize(getPreferredSize());
 		inventoryPanel.setPreferredSize(getPreferredSize());
 		f.add(messagePanel, BorderLayout.LINE_END);
@@ -111,7 +119,7 @@ public class ApplicationWindow extends JFrame{
 				client.tellServerAction("PICK", null);
 				Thread.sleep(100);
 				inventoryPanel.updateInventoryPanel();
-				
+
 			}
 			//Need an action here where when a button is pressed it calls client.tellServerAction("DROP", a string called itemName);
 			//for now pressing d will drop an 'item'
@@ -128,9 +136,9 @@ public class ApplicationWindow extends JFrame{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+
 			gameCanvas.repaint();
-			
+
 		}
 
 		@Override

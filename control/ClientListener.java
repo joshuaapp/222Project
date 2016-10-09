@@ -106,4 +106,13 @@ public class ClientListener implements Runnable,Serializable {
 
 	}
 
+	public void shutdown() throws IOException {
+		outputToServer.println("DISCONNECTING "+this.client.getName());
+		outputToServer.flush();
+		this.outputToServer.close();
+		this.inputFromServer.close();
+		this.objectOutputToServer.close();
+		this.objectInputFromServer.close();
+	}
+
 }

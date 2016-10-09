@@ -1,4 +1,5 @@
 package control;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
 import gameWorld.GameState;
@@ -119,6 +120,16 @@ public class Client implements Runnable, Serializable {
 
 	public void updatePlayerDetails(Player p) {
 		this.player = p;
+	}
+
+	public void shutdown() {
+		try {
+			this.listenerForServerInput.shutdown();
+			this.clientSocket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
