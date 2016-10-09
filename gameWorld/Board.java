@@ -79,12 +79,13 @@ public class Board {
 		for(int row=0;row<this.ROWS;row++){
 			for(int col=0;col<this.COLS;col++){
 				Tile t = gameBoard[row][col];
-				if(t.getPlayer()!=null){
+				
+				if(t.getPlayer()!=null && t.getPlayer().isMonster){
+					map.add("m");
+				}
+				else if(t.getPlayer()!=null){
 					map.add("p");
 				}
-//				if(t.getPlayer()!=null && t.getPlayer().isMonster){
-//					map.add("m");
-//				}
 				else if(t instanceof WallTile){
 					map.add("w");
 				}

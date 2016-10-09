@@ -100,7 +100,12 @@ public class LevelParser {
 		else if(c == 'R'){
 			return new GroundTile("BRICK");
 		}
-		
+
+		//F represents a raised ground tile (non-grassy)
+		else if(c == 'T'){
+			return new GroundTile("TREE");
+		}
+
 		//* represents a starting tile
 		else if(c == 'S'){
 			//return new StartTile(xPos, yPos);
@@ -111,7 +116,7 @@ public class LevelParser {
 		else if(c == 'E'){
 			//return new EndTile(xPos, yPos);
 
-			return new GroundTile("FLOOR"); //for now until door img is done
+			return new EndTile("END"); //for now until door img is done
 		}
 		//* represents a fountain ie decrative tile
 		else if(c == 'F'){
