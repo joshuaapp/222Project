@@ -66,7 +66,6 @@ public class ClientListener implements Runnable,Serializable {
 			try {
 				input = inputFromServer.readLine();
 				if(input != null){
-					System.out.println(input);
 					if(input.equals("GET_CLIENT")){
 						outputToServer.println("SENDING_CLIENT");
 						outputToServer.flush();
@@ -84,35 +83,15 @@ public class ClientListener implements Runnable,Serializable {
 							GameState state = (GameState) o;
 							this.client.setGameState(state);
 							if(this.lastRequest != null){
-								if(this.lastRequest.equals("MOVE")){
-									//this.client.addPlayer(state.getPlayerOfClient(this.client.getName()));
-									//state.getLogic().rotateOrMove(client.getPlayer(), client.getLastDirectionMoved());
-//									Board b = (Board) state.getGameBoard();
-//									//System.out.println(b);
-//									client.setGameState(state);
-//									client.getApplicationWindow().repaint();
+								if(this.lastRequest.equals("MOVE") || this.lastRequest.equals("ACTION")){
 									Player p = state.getPlayerOfClient(this.client.getName());
 									p.createRenderPerspective();
 									client.addPlayer(p);
 									client.getApplicationWindow().getGameCanvas().setPlayer(p);
 									p.getRP().updatePerspective();
-//									client.getPlayer().updateBoard(state.getGameBoard());
-//									client.getApplicationWindow().getGameCanvas().setPlayer(client.getPlayer());
-//									client.getApplicationWindow().getGameCanvas().repaint();
-//									client.getPlayer().getRenderPerspective().updatePerspective();
-//									this.client.updatePlayerDetails(p);
 
-									}
-								else if(this.lastRequest.equals("ACTION")){
-									state.logic.isThereAnItem(client.getPlayer());
 								}
-								//System.out.println(state.getGameBoard());
-								//System.out.println(p.getBoard());
 							}
-						}
-						else if(o instanceof Board){
-							Board b = (Board) o;
-							System.out.println(b);
 						}
 					}
 				}

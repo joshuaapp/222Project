@@ -89,7 +89,6 @@ public class Server implements Runnable{
 		return serverSocket;
 	}
 	public void processClientMovementRequest(String direction, String clientObjectAsString) {
-		System.out.println("Processing client movement request");
 		Player toMove = null;
 		for(Client c : clients){
 			if(c.getName().equals(clientObjectAsString)){
@@ -99,7 +98,6 @@ public class Server implements Runnable{
 		updateGameStatePlayerPositions(direction, toMove);
 	}
 	public void processClientActionRequest(String action, String item, String clientObjectAsString) {
-		System.out.println("Processing client action request");
 		Player toAct = null;
 		for(Client c : clients){
 			if(c.getName().equals(clientObjectAsString)){

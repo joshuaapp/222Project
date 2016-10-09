@@ -50,7 +50,6 @@ public class ServerHelper implements Runnable{
 			while(true){
 				clientRequest = this.inputFromClient.readLine();
 				if(clientRequest != null){
-					System.out.println("Request: "+clientRequest);
 					brokenRequest = clientRequest.split(" ");
 					if(brokenRequest[0].equals("UP") || brokenRequest[0].equals("DOWN") ||
 							brokenRequest[0].equals("LEFT") ||brokenRequest[0].equals("RIGHT")){
@@ -68,7 +67,6 @@ public class ServerHelper implements Runnable{
 							if(o instanceof Client){
 								Client client  = (Client) o;
 								server.addClientToConnectedClients(client);
-								 //System.out.println(server.getClients());
 							}
 						}
 						catch (IOException e){
@@ -127,17 +125,13 @@ public class ServerHelper implements Runnable{
 	public void sendGameState(String clientName) {
 		for(Client c : this.server.getClients()){
 			if(c.getName().equals(clientName)){
-				//System.out.println(c.getPlayer().getBoard());
-				//System.out.println(this.server.getCurrentGameState().getGameBoard());
 				outputToClient.println("SENDING_UPDATED_STATE");
 				outputToClient.flush();
 				try {
-					//objectOutputToClient.writeObject(this.server.getCurrentGameState().getGameBoard());
 					objectOutputToClient.reset();
 					objectOutputToClient.writeObject(this.server.getCurrentGameState());
 					objectOutputToClient.flush();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					System.out.println("Error writing board back to client: "+e);
 				}
 			}
