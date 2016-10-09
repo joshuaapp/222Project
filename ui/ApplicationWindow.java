@@ -29,8 +29,10 @@ public class ApplicationWindow extends JFrame{
 	private Client client;
 
 	public ApplicationWindow(String title, Client user) {
-		super(title);	
+		super(title);
+		this.client = user;
 		gameCanvas = new DungeonCanvas();
+		gameCanvas.setPlayer(client.getPlayer());
 		this.messagePanel = new MessagePanel();
 		this.inventoryPanel = new InventoryPanel(user, gameCanvas);
 		this.console = new Console();
@@ -143,17 +145,6 @@ public class ApplicationWindow extends JFrame{
 
 		}
 
-	}
-
-
-	/**Method to connect a client to a certain window so the window can send requests
-	 * from client to server.
-	 * @param client
-	 */
-	public void attatchClientToWindow(Client client) {
-		if(client != null){
-			this.client = client;
-		}
 	}
 
 }

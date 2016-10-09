@@ -1,12 +1,18 @@
 package items;
 
-public class Key implements InteractableItem{
-	
+import java.io.Serializable;
+
+public class Key implements InteractableItem, Serializable{
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 3776014565470932941L;
 	private String color;
 
 	public Key(String color){
 		this.color = color;
-	} 
+	}
 
 	@Override
 	public boolean isUsable() {
@@ -23,7 +29,7 @@ public class Key implements InteractableItem{
 		//return "key";
 		return "key_item.png";
 	}
-	
+
 	public String getColor(){
 		return color;
 	}
