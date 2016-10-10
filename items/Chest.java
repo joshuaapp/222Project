@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chest implements StorageItem, InteractableItem{
-
+	
 	private List<Item> contents;
 
 	public Chest(){
@@ -51,9 +51,13 @@ public class Chest implements StorageItem, InteractableItem{
 		else return null;
 	}
 
+	public String getImageName() {
+		return "chest_item.png";
+	}
+
 	@Override
 	public String getName() {
-		return "placeholder_item.png";
+		return "CHEST";
 	}
 
 }

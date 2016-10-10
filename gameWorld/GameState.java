@@ -28,6 +28,7 @@ public class GameState {
 		initMap();
 		addPlayers();
 		addMonsters();
+		levelPushToPlayers();
 	}
 	
 	/**
@@ -95,11 +96,11 @@ public class GameState {
 		this.logic = logic;
 	}
 	public void levelUp(){
-		setLevel(getLevel() + 1);
-		run();
-		System.out.println("CALLED");
-		System.out.println();
-		levelPushToPlayers();
+//		setLevel(getLevel() + 1);
+//		run();
+//		System.out.println("CALLED");
+//		System.out.println();
+//		levelPushToPlayers();
 	}
 	
 	public void levelPushToPlayers(){

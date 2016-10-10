@@ -29,6 +29,9 @@ public class DungeonCanvas extends JPanel{
 	private Image door;
 	public Image back;
 	private Image tree;
+	private Image key;
+	private Image chest;
+	private Image start;
 	
 	public int level = 1;
 	private final int squareWidth = 10;
@@ -37,30 +40,37 @@ public class DungeonCanvas extends JPanel{
 	private int[] screenXPositions = {0, 388, 100};
 	//All image sprites are pre loaded when the canvas launches to 
 	//speed it up
+
 	public DungeonCanvas(){
 		if(player != null){
 			level = player.level;
 		}
+
 		raisedTile = loadImage("placeholder_tile.png");
 		wall = loadImage("wall"+level+".png");
 		//item = loadImage("placeholder_item.png");
-		//All items display as keys because i cant figure out how this code works
-		item = loadImage("key_item.png");
 		empty = loadImage("empty.png");
 		brick = loadImage("raised_brick.png");
 		flat = loadImage("flat"+level+".png");
 		players = loadImage("placeholder_player.png");
-		monster = loadImage("monster.png");
+		monster = loadImage("monster"+level+".png");
 		door = loadImage("placeholder_door.png");
 		back = loadImage("back"+level+".png");
 		tree = loadImage("tree.png");
+		chest = loadImage("placeholder_item.png");
+		key = loadImage("key_item.png");
+		start = loadImage("start.png");
 	}
+	
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(600, 600);
 	}
 	@Override
 	public void paint(Graphics g){
+		if(player != null){
+			level = player.level;
+		}
 		level = player.level;
 		if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof StartTile)
@@ -105,7 +115,7 @@ public class DungeonCanvas extends JPanel{
 				}
 				//Finally draws any items on top of the player
 				if(itemImage != null){
-					g.drawImage(item, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
+					g.drawImage(itemImage, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
 				col++;
@@ -143,18 +153,24 @@ public class DungeonCanvas extends JPanel{
 		else if(tileImageName.equals("DOOR")){
 			return door;
 		}
+		else if(tileImageName.equals("START")){
+			return start;
+		}
 		else{
 			return flat;
 		}
 	}
-	private Image getItemImage(String tileImageName){
-		if(!tileImageName.equals("")){
-			return item;
+
+	private Image getItemImage(String itemImageName){
+		if(itemImageName.equals("KEY")){
+			return key;
 		}
-		else{
-			return null;
+		if(itemImageName.equals("CHEST")){
+			return chest;
 		}
+		return null;
 	}
+	
 	public void healthBar(Graphics g){
 		Color cur;
 		int health = player.hp;
