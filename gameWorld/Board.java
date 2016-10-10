@@ -98,22 +98,36 @@ public class Board {
 				
 				Tile t = getTile(row,col);
 				
+				//Monster
 				if(t.getPlayer()!=null && t.getPlayer().isMonster){
 					map.add("m");
 				}
+				//Player
 				else if(t.getPlayer()!=null){
-					map.add("p");
+					//{Player and Item
+					if(t.getItem()!=null){
+						map.add("o");
+					}
+					else{map.add("p");}
 				}
+				//Item
+				else if(t.getItem()!=null){
+					map.add("i");
+				}
+				//Wall
 				else if(t instanceof WallTile){
 					map.add("w");
 				}
+				//Door
 				else if(t instanceof DoorTile){
 					map.add("d");
 				}
+				//Anything else IN the map
 				else{
 					map.add("_");
 				}
 			}
+			//Anything else OUT of the map
 			else{
 				map.add("=");
 			}

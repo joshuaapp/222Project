@@ -246,6 +246,18 @@ public class DungeonCanvas extends JPanel{
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
 				
 			}
+			else if(s.equals("i")){
+				g.setColor(Color.MAGENTA);
+				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
+				
+			}
+			else if(s.equals("o")){
+				g.setColor(Color.GREEN);
+				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
+				g.setColor(Color.MAGENTA);
+				g.fillRect((xPos*squareWidth)+(squareWidth/5),(yPos*squareWidth)+(squareWidth/5),
+						squareWidth - ((squareWidth/5) * 2),squareWidth - ((squareWidth/5) * 2));
+			}
 			else if(s.equals("m")){
 				g.setColor(Color.RED);
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
@@ -278,6 +290,11 @@ public class DungeonCanvas extends JPanel{
 		g.drawRect(0, 0, lineLength*squareWidth, lineLength*squareWidth);
 	}
 	
+	private int squareWidth() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	private void drawFacingPlayer(Graphics g, int x, int y){
 		
 		//Size of the white rec for facing direction
