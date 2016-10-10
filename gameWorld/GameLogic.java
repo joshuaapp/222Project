@@ -115,10 +115,7 @@ public class GameLogic {
 			Random rand = new Random();
 			monsterTime = rand.nextInt(6);
 			moveMonsters();
-		}
-
-		
-			
+		}	
 	}
 
 
