@@ -73,6 +73,10 @@ public class Player {
 	public RenderPerspective getRenderPerspective() {
 		return this.rp;
 	}
+	
+	public ArrayList<Item> getInven(){
+		return inven;
+	}
 
 	
 }

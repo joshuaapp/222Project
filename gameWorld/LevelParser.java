@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import items.Button;
 import items.Chest;
-import items.Door;
 import items.Item;
 import items.Key;
 import tiles.DoorTile;
@@ -119,10 +118,15 @@ public class LevelParser {
 		else if(c == 'G'){
 			return new GroundTile("GRASS");
 		}
-		//D represents a door
-		else if(c == 'D'){
+		//D represents an UNLOCKED door
+		else if(c == 'd'){
 			//return new DoorTile(xPos, yPos);
 			return new DoorTile("DOOR"); //for now until door img is done
+		}
+		//D represents LOCKED a door
+		else if(c == 'D'){
+			//return new DoorTile(xPos, yPos);
+			return new DoorTile("DOOR", false); //for now until door img is done
 		}
 		//F represents a raised ground tile (non-grassy)
 		else if(c == 'R'){
@@ -144,7 +148,7 @@ public class LevelParser {
 		else if(c == 'E'){
 			//return new EndTile(xPos, yPos);
 
-			return new EndTile("END"); //for now until door img is done
+			return new EndTile("BRICK"); //for now until door img is done
 		}
 		//* represents a fountain ie decrative tile
 		else if(c == 'F'){
@@ -196,8 +200,6 @@ public class LevelParser {
 			return new Chest();
 		case "key":
 			return new Key("YELLOW");
-		case "door":
-			return new Door();
 		case "button":
 			return new Button();
 		default: return null;
