@@ -27,7 +27,7 @@ public class DungeonCanvas extends JPanel{
 	private Image players;
 	private Image monster;
 	private Image door;
-	public Image back;
+	private Image back;
 	private Image tree;
 	private Image key;
 	private Image chest;
@@ -38,6 +38,11 @@ public class DungeonCanvas extends JPanel{
 	private int[] imageXPositions = {0, 212, 424, 824, 1036, 1248,
 			1648, 1860, 2072, 2472};
 	private int[] screenXPositions = {0, 388, 100};
+	
+	private final int thinSpriteSection = 212;
+	private final int wideSpriteSection = 400;
+	private double thinSection;
+	private double wideSection;
 	//All image sprites are pre loaded when the canvas launches to 
 	//speed it up
 
@@ -69,6 +74,15 @@ public class DungeonCanvas extends JPanel{
 	public Dimension getPreferredSize() {
 		return new Dimension(600, 600);
 	}
+	
+	private void updateScreenPositions(){
+		thinSection = (int) (this.getWidth()*0.3533);
+		wideSection = (int) (this.getWidth()*(2.0/3.0));
+		
+		screenXPositions[1] = (int) (this.getWidth()-thinSection);
+		screenXPositions[2] = (int) (this.getWidth()*0.167);
+	}
+	
 	@Override
 	public void paint(Graphics g){
 		if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
@@ -78,7 +92,7 @@ public class DungeonCanvas extends JPanel{
 			g.fillRect(0,0,getWidth(),getHeight());
 		}
 		else{
-			back = back.getScaledInstance(600, 600, 0);
+			back = back.getScaledInstance(this.getWidth(), this.getHeight(), 0);
 			g.drawImage(back, 0, 0, null);
 		}
 		if(player != null){	
@@ -90,37 +104,47 @@ public class DungeonCanvas extends JPanel{
 			
 			rp.updatePerspective();
 			Queue<Tile> tiles = rp.getTilesInSight();
+			
+			updateScreenPositions();
 			int col = 0;
 			int count = 0;
 			int spriteSize = 212;
+			int scaleSize;
 			//While there is still a tile in the queue adjust the X position
 			//and remove the Tile to get the image. 
-			while(!tiles.isEmpty()){	
+			while(!tiles.isEmpty()){
+				
 				//The screen is split into 3 columns, the two on the left and right
 				//are 212 and the one in the center is 400. This is used when snipping
 				//the correct sized image off the sprite sheet.
+				
 				if(col != 2){
-					spriteSize = 212;
+					spriteSize = thinSpriteSection;
+					scaleSize = (int) thinSection;
 				}
-				else{spriteSize = 400;}
+				else{
+					spriteSize = wideSpriteSection;
+					scaleSize = (int) wideSection;
+					}
+				
 				Tile tile = tiles.remove();
 				Image tileImage = getTileImage(tile.getTileImage());
 				Image itemImage = getItemImage(tile.getItemImage());
 				//Draws the Tile first 
-				g.drawImage(tileImage, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
+				g.drawImage(tileImage, screenXPositions[col], 0,screenXPositions[col] + scaleSize, getHeight(), imageXPositions[count],0,
 						imageXPositions[count] + spriteSize, 600, null);
 				//If there is a player then draws them
 				if(tile.getPlayer() != null && !tile.getPlayer().isMonster){
-					g.drawImage(players, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
+					g.drawImage(players, screenXPositions[col], 0,screenXPositions[col] + scaleSize, getHeight(), imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
 				if(tile.getPlayer() != null && tile.getPlayer().isMonster){
-					g.drawImage(monster, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
+					g.drawImage(monster, screenXPositions[col], 0,screenXPositions[col] + scaleSize, getHeight(), imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
 				//Finally draws any items on top of the player
 				if(itemImage != null){
-					g.drawImage(itemImage, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
+					g.drawImage(itemImage, screenXPositions[col], 0,screenXPositions[col] + scaleSize, getHeight(), imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
 				col++;
