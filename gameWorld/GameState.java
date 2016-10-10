@@ -127,7 +127,7 @@ public class GameState implements Serializable{
 		System.out.println();
 		levelPushToPlayers();
 	}
-	
+
 	public void levelPushToPlayers(){
 		for(Player p: curPlayers){
 			p.level = level;
