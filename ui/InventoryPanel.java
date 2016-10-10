@@ -156,6 +156,7 @@ public class InventoryPanel extends JPanel {
 	public void updateInventoryPanel(){
 		if(gotInventoryBag){
 		text.setText("Select Inventory Item to drop");	
+		System.out.println("FountUpdate");
 		ArrayList<Item> inventory = client.getPlayer().inven;
 		for(JButton button: itemButtons){
 			button.setIcon(placeholderKey);
