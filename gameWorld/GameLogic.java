@@ -6,6 +6,7 @@ import java.util.Random;
 
 import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
+import items.Chest;
 import items.Item;
 import items.Key;
 import tiles.EndTile;
@@ -183,6 +184,7 @@ public class GameLogic {
 
 	public void pickUp(Player p, Item item){
 		p.inven.add(item);
+		
 	}
 
 	public void drop(Player player, String item){

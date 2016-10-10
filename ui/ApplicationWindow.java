@@ -21,9 +21,9 @@ import items.Item;
 
 public class ApplicationWindow extends JFrame{
 	//private static BoardPanel boardPanel;
-	private MessagePanel messagePanel;
+	//private MessagePanel messagePanel;
 	private InventoryPanel inventoryPanel; 
-	private Console console;
+	//private Console console;
 	private DungeonCanvas gameCanvas;
 
 	private Client client;
@@ -31,10 +31,10 @@ public class ApplicationWindow extends JFrame{
 	public ApplicationWindow(String title, Client user) {
 		super(title);	
 		gameCanvas = new DungeonCanvas();
-		this.messagePanel = new MessagePanel();
+		//this.messagePanel = new MessagePanel();
 		this.inventoryPanel = new InventoryPanel(user, gameCanvas);
-		this.console = new Console();
-		this.messagePanel.makeMessagePanel(console);
+		//this.console = new Console();
+		//this.messagePanel.makeMessagePanel(console);
 		this.pack(); // pack components tightly together
 		this.setResizable(false); // prevent us from being resizeable
 		this.setVisible(true); // make sure we are visible!
@@ -48,9 +48,9 @@ public class ApplicationWindow extends JFrame{
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLayout(new BorderLayout());
 		//gamePanel.setPreferredSize(getPreferredSize());
-		messagePanel.setPreferredSize(getPreferredSize());
+		//messagePanel.setPreferredSize(getPreferredSize());
 		inventoryPanel.setPreferredSize(getPreferredSize());
-		f.add(messagePanel, BorderLayout.LINE_END);
+		//f.add(messagePanel, BorderLayout.LINE_END);
 		f.add(inventoryPanel, BorderLayout.PAGE_END);
 		f.add(gameCanvas, BorderLayout.CENTER);
 		gameCanvas.addKeyListener(new GameKeyListener());
@@ -62,7 +62,7 @@ public class ApplicationWindow extends JFrame{
 
 		f.pack();
 		f.setVisible(true);
-		this.writeOut("Player messages go here :)");
+		//this.writeOut("Player messages go here :)");
 	}
 
 	public DungeonCanvas getGameCanvas() {
@@ -80,13 +80,13 @@ public class ApplicationWindow extends JFrame{
 		panel.add(textPane);
 		return panel;
 	}
-	/**
-	 * Put a message to the 'console' for the player to see
-	 * @param string
-	 */
-	public void writeOut(String string) {
-
-	}
+//	/**
+//	 * Put a message to the 'console' for the player to see
+//	 * @param string
+//	 */
+//	public void writeOut(String string) {
+//
+//	}
 
 	public class GameKeyListener implements KeyListener{
 
@@ -108,6 +108,7 @@ public class ApplicationWindow extends JFrame{
 			else if(code == KeyEvent.VK_SPACE) {
 				client.tellServerAction("PICK", null);
 				Thread.sleep(100);
+				inventoryPanel.foundChest();
 				inventoryPanel.updateInventoryPanel();
 				
 			}
