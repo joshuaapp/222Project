@@ -97,6 +97,9 @@ public class Board {
 			if(col >= 0 && col < COLS && row >= 0 && row < ROWS){
 				
 				Tile t = getTile(row,col);
+				if(t == null){
+					System.out.println("It's null jim -------------------");
+				}
 				
 				if(t.getPlayer()!=null && t.getPlayer().isMonster){
 					map.add("m");
