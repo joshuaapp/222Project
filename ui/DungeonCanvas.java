@@ -38,6 +38,8 @@ public class DungeonCanvas extends JPanel{
 	private Image door;
 	public Image back;
 	private Image tree;
+	
+	public int level = 1;
 
 	private int[] imageXPositions = {0, 212, 424, 824, 1036, 1248,
 			1648, 1860, 2072, 2472};
@@ -47,7 +49,9 @@ public class DungeonCanvas extends JPanel{
 	//speed it up
 
 	public DungeonCanvas(){
-		int level = 2;
+		if(player != null){
+			level = player.level;
+		}
 		raisedTile = loadImage("placeholder_tile.png");
 		wall = loadImage("wall"+level+".png");
 		//item = loadImage("placeholder_item.png");
@@ -70,6 +74,7 @@ public class DungeonCanvas extends JPanel{
 
 	@Override
 	public void paint(Graphics g){
+		level = player.level;
 		if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof StartTile)
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof DoorTile)){
@@ -218,24 +223,25 @@ public class DungeonCanvas extends JPanel{
 
 		switch(player.getDirectionFacing()){
 		case North:
-			lineLength = xzero+cols;
-			xPos = xzero;
-			yPos = yzero;
+			lineLength = cols;
+			xPos = 0;
+			yPos = 0;
 			break;
 		case East:
-			lineLength = yzero+cols;
-			xPos = xzero;
+			lineLength = cols;
+			xPos = 0;
 			yPos = lineLength;
 			break;
 		case South:
-			lineLength = xzero+cols;
+			lineLength = cols;
 			xPos = lineLength;
-			yPos = 30-yzero+cols;
+			//yPos = 30-yzero+cols;
+			yPos = lineLength;
 			break;
 		case West:
-			lineLength = xzero+cols;
+			lineLength = cols;
 			xPos = lineLength;
-			yPos = yzero;
+			yPos = 0;
 			break;
 		default:
 			lineLength = cols;
@@ -272,20 +278,20 @@ public class DungeonCanvas extends JPanel{
 			case North:
 				xPos++;
 				if(xPos == lineLength){
-					xPos = xzero;
+					xPos = 0;
 					yPos++;
 				}
 				break;
 			case East:
 				yPos--;
-				if(yPos == yzero){
+				if(yPos == 0){
 					yPos = lineLength;
 					xPos++;
 				}
 				break;
 			case South:
 				xPos--;
-				if(xPos == xzero){
+				if(xPos == 0){
 					xPos = lineLength;
 					yPos--;
 				}
@@ -293,7 +299,7 @@ public class DungeonCanvas extends JPanel{
 			case West:
 				yPos++;
 				if(yPos == lineLength){
-					yPos = yzero;
+					yPos = 0;
 					xPos--;
 				}
 				break;
