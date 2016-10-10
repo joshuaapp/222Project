@@ -41,6 +41,10 @@ public class DungeonCanvas extends JPanel{
 		if(player != null){
 			level = player.level;
 		}
+		loadImages();
+	}
+	
+	public void loadImages(){
 		raisedTile = loadImage("placeholder_tile.png");
 		wall = loadImage("wall"+level+".png");
 		//item = loadImage("placeholder_item.png");
@@ -55,13 +59,13 @@ public class DungeonCanvas extends JPanel{
 		back = loadImage("back"+level+".png");
 		tree = loadImage("tree.png");
 	}
+	
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(600, 600);
 	}
 	@Override
 	public void paint(Graphics g){
-		level = player.level;
 		if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof StartTile)
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof DoorTile)){
@@ -73,6 +77,12 @@ public class DungeonCanvas extends JPanel{
 			g.drawImage(back, 0, 0, null);
 		}
 		if(player != null){	
+			
+			if(player.getLevel() != level){
+				this.level = player.getLevel();
+				loadImages();
+			}
+			
 			rp.updatePerspective();
 			Queue<Tile> tiles = rp.getTilesInSight();
 			int col = 0;
@@ -204,6 +214,10 @@ public class DungeonCanvas extends JPanel{
 			else if(s.equals("_")){
 				g.setColor(Color.BLACK);
 				g.drawRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
+			}
+			else if(s.equals("d")){
+				g.setColor(Color.orange);
+				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
 			}
 			else if(s.equals("=")){
 				g.setColor(Color.DARK_GRAY);

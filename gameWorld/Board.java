@@ -1,6 +1,8 @@
 package gameWorld;
 import java.awt.Point;
 import java.util.ArrayList;
+
+import tiles.DoorTile;
 import tiles.GroundTile;
 import tiles.PlayerTile;
 import tiles.StartTile;
@@ -104,6 +106,9 @@ public class Board {
 				}
 				else if(t instanceof WallTile){
 					map.add("w");
+				}
+				else if(t instanceof DoorTile){
+					map.add("d");
 				}
 				else{
 					map.add("_");
