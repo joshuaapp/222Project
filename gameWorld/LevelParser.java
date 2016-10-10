@@ -103,7 +103,7 @@ public class LevelParser {
 
 		//F represents a raised ground tile (non-grassy)
 		else if(c == 'T'){
-			return new GroundTile("TREE");
+			return new WallTile("TREE");
 		}
 
 		//* represents a starting tile
