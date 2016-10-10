@@ -19,6 +19,7 @@ public class Client implements Runnable {
 	private Player player;
 	private int portNum = 8001;
 	private String host = "localhost";
+	public ApplicationWindow clientsWindow;
 	
 	public Client(Player player){
 		this.player = player;

@@ -2,10 +2,12 @@ package gameWorld;
 
 import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
+import items.Chest;
 import items.Item;
 import items.Key;
 import tiles.GroundTile;
 import tiles.Tile;
+import ui.InventoryPanel;
 
 public class GameLogic {
 	GameState game;
@@ -118,6 +120,7 @@ public class GameLogic {
 
 	public void pickUp(Player p, Item item){
 		p.inven.add(item);
+		
 	}
 	
 	public void drop(Player player, String item){
