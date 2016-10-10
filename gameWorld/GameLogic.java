@@ -1,5 +1,7 @@
 package gameWorld;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.Random;
 
 import gameWorld.GameState.direction;
@@ -7,9 +9,10 @@ import gameWorld.Player.Direction;
 import items.Chest;
 import items.Item;
 import items.Key;
+import tiles.EndTile;
 import tiles.GroundTile;
 import tiles.Tile;
-import ui.InventoryPanel;
+import ui.DungeonCanvas;
 
 public class GameLogic {
 	GameState game;
@@ -49,6 +52,7 @@ public class GameLogic {
 
 	public void lowerHP(Player player){
 		player.hp--;
+		player.getRenderPerspective().updatePerspective();
 		if(player.hp <= 0){
 			//player.isMonster = true;
 		}
@@ -134,7 +138,9 @@ public class GameLogic {
 		}
 		Position oldPos = new Position(x,y);
 		game.getGameBoard().updatePlayerPos(p, oldPos);
-
+		if(game.getGameBoard().getTile(p.getPosition().getY(), p.getPosition().getX()) instanceof EndTile){
+			game.levelUp();
+		}
 		if(!p.isMonster){
 			for(int i = y-1; i<=y+1; i++){
 				for(int j = x-1; j<=x+1; j++){
@@ -142,7 +148,7 @@ public class GameLogic {
 						Player monster = game.getGameBoard().getTile(i, j).getPlayer();
 						if(monster.isMonster){
 							lowerHP(p);
-							System.out.println("Player HP: "+p.hp);
+							//System.out.println("Player HP: "+p.hp);
 							return;
 						}
 					}catch(NullPointerException e){
@@ -183,38 +189,21 @@ public class GameLogic {
 
 	public void drop(Player player, String item){
 		//need to add code to get an item object based on the name of the object which is currently a string
-		Item dropit = new Key("YELLOW");
-		switch(item){
-		case "Key": dropit = new Key("YELLOW");
-		//case "empty": dropit = new empty();
-		}
+//		Item dropit = new Key("YELLOW");
+//		switch(item){
+//		case "Key": dropit = new Key("YELLOW");
+//		}
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
 		if(currentBoard.getTile(playerY, playerX).getItem() == null){
-			currentBoard.getTile(playerY, playerX).setItem(dropit);
 			for(Item i: player.inven){
-
 				if(i instanceof Key){
+					currentBoard.getTile(playerY, playerX).setItem(i);
 					player.inven.remove(i);
 					break;
 				}
-				Position playerPos = player.getPosition();
-				int playerX = playerPos.getX();
-				int playerY = playerPos.getY();
-				Board currentBoard = game.getGameBoard();
-				if(currentBoard.getTile(playerY, playerX).getItem() == null){
-					currentBoard.getTile(playerY, playerX).setItem(dropit);
-					for(Item i: player.inven){
-						
-						if(i instanceof Key){
-							player.inven.remove(i);
-							return;
-						}
-					}
-				}
-				
 			}
 		}
 

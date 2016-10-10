@@ -21,8 +21,6 @@ public class Main {
 		Server gameServer = new Server(state);
 		new Thread(gameServer).start();
 		
-		state.curPlayers.get(0).createRenderPerspective();
-		state.curPlayers.get(1).createRenderPerspective();
 		Client c = new Client(state.curPlayers.get(0));
 		Client c1 = new Client(state.curPlayers.get(1));
 		new Thread(c).start();

@@ -7,6 +7,7 @@ import java.util.Random;
 import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
 import items.Item;
+import main.Main;
 import tiles.GroundTile;
 import tiles.StartTile;
 
@@ -34,10 +35,14 @@ public class GameState {
 	 * Places players at starting locations
 	 */
 	public void addPlayers() {
+		
+		curPlayers.removeAll(curPlayers);
 		Player p1 = new Player(currentBoard, "Player1");
 		Player p2 = new Player(currentBoard, "Player2");
 		curPlayers.add(p1);	
 		curPlayers.add(p2);
+		levelPushToPlayers();
+		
 		
 		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
 		if(curPlayers.size() <= startTiles.size()){
@@ -47,12 +52,16 @@ public class GameState {
 				currentBoard.placePlayerOnBoard(curPlayers.get(i));
 			}
 		}
+		
+		curPlayers.get(0).createRenderPerspective();
+		curPlayers.get(1).createRenderPerspective();
 	}
 	
 	public void addMonsters(){
+		curMonsters.removeAll(curMonsters);
 		Player monster = new Player(currentBoard, "Monster");
-		Player monster1 = new Player(currentBoard, "Monster2");
-		Player monster2 = new Player(currentBoard, "Monster3");
+		Player monster1 = new Player(currentBoard, "Monster1");
+		Player monster2 = new Player(currentBoard, "Monster2");
 		monster.isMonster = true;
 		monster1.isMonster = true;
 		monster2.isMonster = true;
@@ -89,7 +98,16 @@ public class GameState {
 
 	public void levelUp(){
 		setLevel(getLevel() + 1);
-		initMap();
+		run();
+		System.out.println("CALLED");
+		System.out.println();
+		levelPushToPlayers();
+	}
+	
+	public void levelPushToPlayers(){
+		for(Player p: curPlayers){
+			p.level = level;
+		}
 	}
 	
 	public void updatePlayerPosition(Player p, String d){
