@@ -16,7 +16,7 @@ public class Player implements Serializable{
 	 *
 	 */
 	private static final long serialVersionUID = 7626039719764482671L;
-	public int hp = 3;
+	public int hp = 15;
 	private Position playerPosition;
 
 	Direction facing = Direction.North;
