@@ -1,6 +1,7 @@
 package items;
 
 public class Key implements InteractableItem{
+
 	
 	private int roomCode;
 	private String color;
@@ -9,6 +10,7 @@ public class Key implements InteractableItem{
 		this.roomCode = code;
 		this.color = color;
 	} 
+
 
 	@Override
 	public boolean isUsable() {
@@ -20,17 +22,16 @@ public class Key implements InteractableItem{
 		return true;
 	}
 
-	@Override
-	public String getName() {
-		//return "key";
+	public String getImageName() {
 		return "key_item.png";
 	}
 	
 	public int getCode(){
 		return this.roomCode;
 	}
-	public String getColor(){
-		return this.color;
-	}
 
+	@Override
+	public String getName() {
+		return "KEY";
+		}
 }

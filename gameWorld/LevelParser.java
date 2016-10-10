@@ -146,7 +146,6 @@ public class LevelParser {
 		else if(c == 'S'){
 			//return new StartTile(xPos, yPos);
 			return new StartTile("START", xPos, yPos); //for now until door img is done
-
 		}
 		//~ represents an end tile
 		else if(c == 'E'){
@@ -161,7 +160,6 @@ public class LevelParser {
 		//* represents a pillar ie decrative tile
 		else if(c == 'P'){
 			return new WallTile("WALL");
-
 		}
 		return null;
 	}
@@ -184,6 +182,7 @@ public class LevelParser {
 				Position p = new Position(Integer.parseInt(line[1]), Integer.parseInt(line[2]));
 				Tile tileToAddItemTo = board.getTile(p.getY(), p.getX()); //row, col
 				tileToAddItemTo.setItem(itemToAddToBoard);
+				
 				String s = br.readLine();
 				if(s != null){
 					line = s.split(" ");
@@ -200,11 +199,12 @@ public class LevelParser {
 
 	private Item parseItem(String itemName){
 		switch(itemName){
-		case "chest": 
+		case "CHEST": 
 			return new Chest();
-		case "key":
+
+		case "KEY":
 			return new Key(keyCounter++, colors[doorCounter-1]);
-		case "button":
+		case "BUTTON":
 			return new Button();
 		default: return null;
 		}

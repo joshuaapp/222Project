@@ -19,6 +19,7 @@ public class GameState {
 	public GameLogic logic;
 	
 	public GameState(){
+		attachLogic(new GameLogic(this));
 		curPlayers = new ArrayList<Player>();
 		curMonsters = new ArrayList<Player>();
 		run();
@@ -28,6 +29,7 @@ public class GameState {
 		initMap();
 		addPlayers();
 		addMonsters();
+		levelPushToPlayers();
 	}
 	
 	/**
@@ -39,9 +41,7 @@ public class GameState {
 		Player p1 = new Player(currentBoard, "Player1");
 		Player p2 = new Player(currentBoard, "Player2");
 		curPlayers.add(p1);	
-		curPlayers.add(p2);
-		levelPushToPlayers();
-		
+		curPlayers.add(p2);		
 		
 		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
 		if(curPlayers.size() <= startTiles.size()){
@@ -85,7 +85,7 @@ public class GameState {
 	}
 	
 	public void initMap(){
-		attachLogic(new GameLogic(this));
+
 		LevelParser parser = new LevelParser();
 		currentBoard = parser.buildBoard("level"+getLevel()+".txt");
 		parser.parseItemsAndAddToBoard("level"+getLevel()+"Items.txt", currentBoard);
@@ -95,16 +95,25 @@ public class GameState {
 		this.logic = logic;
 	}
 	public void levelUp(){
-//		setLevel(getLevel() + 1);
-//		run();
-//		System.out.println("CALLED");
-//		System.out.println();
-//		levelPushToPlayers();
+		setLevel(getLevel() + 1);
+		LevelParser parser = new LevelParser();
+		currentBoard = parser.buildBoard("level"+getLevel()+".txt");
+		parser.parseItemsAndAddToBoard("level"+getLevel()+"Items.txt", currentBoard);
+		levelPushToPlayers();
 	}
 	
 	public void levelPushToPlayers(){
 		for(Player p: curPlayers){
 			p.level = level;
+			p.setBoard(currentBoard);
+		}
+		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
+		if(curPlayers.size() <= startTiles.size()){
+			for(int i=0;i<curPlayers.size();i++){
+				StartTile t = startTiles.get(i);
+				curPlayers.get(i).setPosition(t.getStartPosition());
+				currentBoard.placePlayerOnBoard(curPlayers.get(i));
+			}
 		}
 	}
 	

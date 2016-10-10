@@ -122,10 +122,7 @@ public class GameLogic {
 			Random rand = new Random();
 			monsterTime = rand.nextInt(6);
 			moveMonsters();
-		}
-
-		
-			
+		}	
 	}
 
 
@@ -203,7 +200,7 @@ public class GameLogic {
 	}
 
 	public void pickUp(Player p, Item item){
-		if(p.gotBag == true){
+		if(p.gotBag == true && p.inven.size() < 3){
 			p.inven.add(item);
 		}
 		if(item instanceof Chest){
@@ -238,9 +235,10 @@ public class GameLogic {
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
-		if(currentBoard.getTile(playerY, playerX).getItem() != null){
+		if(currentBoard.getTile(playerY, playerX).getItem() != null&& player.inven.size() < 3){
 			pickUp(player, currentBoard.getTile(playerY, playerX).getItem());
-			if(player.gotBag){
+			if(player.gotBag ){
+				
 				currentBoard.getTile(playerY, playerX).setItem(null);
 			}
 		}

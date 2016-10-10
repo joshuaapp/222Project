@@ -186,17 +186,22 @@ public class InventoryPanel extends JPanel {
 				System.out.println(m.getName());
 				if(m instanceof Key){
 					Key key = (Key)m;
+
 					System.out.println("instance of key, code = "+key.getCode());
 
 					//switch(key.getColor()){
 					//case "YELLOW":
 						System.out.println("Change button "+bagCount);
+						
+						//itemButtons[bagCount].set;
+						itemButtons[bagCount].setText(key.getCode()+"");
 						itemButtons[bagCount].setIcon(activeKey);
-						if(bagCount < 3){bagCount++;}
+						if(bagCount < 2){bagCount++;}
 					//	break;
 				//	default:
 					//	System.out.println("YOU found DEFAULT");
 				//	}
+
 				}
 			}
 		}
