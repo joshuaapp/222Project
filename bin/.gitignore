@@ -1,11 +1,13 @@
+/_DS_Store
+/_classpath.xml
+/_gitignore
+/_project.xml
+/monster.png
 /control/
 /gameWorld/
 /items/
 /main/
-/pro_img.png
-/raised_brick.png
 /tiles/
-/tree.png
 /ui/
 /wall1.png
 /wall2.png
