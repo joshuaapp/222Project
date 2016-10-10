@@ -16,4 +16,9 @@ public class Button implements InteractableItem {
 		
 	}
 
+	@Override
+	public String getName() {
+		return "button";
+	}
+
 }

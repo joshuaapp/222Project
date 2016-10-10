@@ -1,36 +1,27 @@
 package tiles;
 
-public class StartTile implements Tile{
+import gameWorld.Position;
+import items.Item;
 
-	private int xPos;
-	private int yPos;
-	public StartTile(int xPos, int yPos) {
-		this.xPos = xPos;
-		this.yPos = yPos;
+public class StartTile extends Tile{
+
+	private Position pos;
+	
+	/*
+	 * Start tiles are different as they store their own position which is needed
+	 * on launch to set the players to the tile. 
+	 * 
+	 */
+	public StartTile(String imageName, int x, int y) {
+		super(imageName);
+		pos = new Position(x,y);
 	}
-
+	
+	public Position getStartPosition(){
+		return pos;
+	}
 	@Override
-	public void setTileImage(String i) {
-		// TODO Auto-generated method stub
-		
+	public String toString(){
+		return "@";
 	}
-
-	@Override
-	public void setItemImage(String i) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getItemImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getTileImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

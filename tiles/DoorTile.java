@@ -1,37 +1,25 @@
 package tiles;
 
-public class DoorTile implements Tile{
+import items.Item;
 
-	private int xPos;
-	private int yPos;
+public class DoorTile extends Tile{
 	
-	public DoorTile(int xPos, int yPos) {
-		this.xPos = xPos;
-		this.yPos = yPos;
+	public DoorTile(String imageName) {
+		super(imageName);
 	}
-
-	@Override
-	public void setTileImage(String i) {
-		// TODO Auto-generated method stub
-		
+	
+	public DoorTile(String imageName, boolean state) {
+		super(imageName);
+		super.setWalkable(state);
 	}
-
-	@Override
-	public void setItemImage(String i) {
-		// TODO Auto-generated method stub
-		
+	
+	public void unlock(){
+		super.setWalkable(true);
 	}
-
+	
 	@Override
-	public String getItemImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getTileImage() {
-		// TODO Auto-generated method stub
-		return null;
+	public String toString(){
+		return "|";
 	}
 
 }

@@ -1,37 +1,11 @@
 package tiles;
 
-public class EndTile implements Tile{
+import items.Item;
 
-	private int xPos;
-	private int yPos;
-	
-	public EndTile(int xPos, int yPos) {
-		this.xPos = xPos;
-		this.yPos = yPos;
+public class EndTile extends Tile{
+
+	public EndTile(String imageName) {
+		super(imageName);
+		// TODO Auto-generated constructor stub
 	}
-
-	@Override
-	public void setTileImage(String i) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setItemImage(String i) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getItemImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getTileImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

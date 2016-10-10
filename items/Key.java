@@ -11,7 +11,14 @@ public class Key implements InteractableItem{
 	public boolean isRetrieveable() {
 		return true;
 	}
-	
-	
+
+	public String getImageName() {
+		return "key_item.png";
+	}
+
+	@Override
+	public String getName() {
+		return "KEY";
+	}
 
 }

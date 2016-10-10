@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import gameWorld.Board;
 import gameWorld.Player;
 import tiles.Tile;
+import tiles.WallTile;
 import gameWorld.Player.Direction;
 import gameWorld.Position;
 
@@ -20,8 +21,7 @@ public class RenderPerspective {
 	
 	private Player player;
 	private Board board;
-	private Queue<String> tilesInSight = new LinkedList<String>();
-	private Queue<String> itemsInSight = new LinkedList<String>();
+	private Queue<Tile> tilesInSight = new LinkedList<Tile>();
 	
 	public RenderPerspective(Player p, Board b){
 		player = p;
@@ -35,7 +35,7 @@ public class RenderPerspective {
 	}
 	
 	private void fillTilesInSight(){
-		Direction facing = player.facing;
+		Direction facing = player.getDirectionFacing();
 		Position playerPos = player.getPosition();
 		int xPos = playerPos.getX();
 		int yPos = playerPos.getY();
@@ -95,33 +95,31 @@ public class RenderPerspective {
 	}
 	
 	 private void addTileImageToSight(int x, int y){
-		if(x >= 0 && x < board.ROWS){
-			if(y >= 0 && y < board.COLS){
-				Tile t = board.getTile(x, y);
-				if(t.getTileImage() != null){
-					tilesInSight.add(t.getTileImage());
-				}
-				else{
-					tilesInSight.add("empty.png");
-				}
-				if(t.getItemImage() != null){
-					itemsInSight.add(t.getItemImage());
-				}
-				else{
-					itemsInSight.add("empty.png");
-				}
-			}
-			else{tilesInSight.add("empty.png");itemsInSight.add("empty.png");}
-		}
-		else{tilesInSight.add("empty.png");itemsInSight.add("empty.png");}
+		 
+		 Tile t = null;
+		 
+		 //Checks to see if the tile is on the board
+		 if(x < board.COLS && x >= 0){
+			 if(y < board.ROWS && y >= 0){
+				 t = board.getTile(y, x);
+			 }
+		 }
+		 
+		 //If not then creates a transparent wall tile 
+		 if(t == null){
+			t = new WallTile("EMPTY");
+		 }
+		 
+		 //Finally adds the tile to the queue
+		 tilesInSight.add(t);
+		
 	}	
-
-	
-	public Queue<String> getTilesInSight(){
+	 
+	public Queue<Tile> getTilesInSight(){
 		return tilesInSight;
 	}
 	
-	public Queue<String> getItemsInSight(){
-		return itemsInSight;
+	public void setBoard(Board b){
+		board =b;
 	}
 }

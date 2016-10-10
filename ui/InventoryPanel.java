@@ -6,60 +6,192 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.border.EmptyBorder;
+
+import control.Client;
+import items.InteractableItem;
+import items.Item;
+import items.Key;
 
 public class InventoryPanel extends JPanel {
-	JTextField text = new JTextField();
+	//JTextField text = new JTextField();
 	JPanel buttonPanel = new JPanel();
-	 public InventoryPanel() {
-	        setBorder(BorderFactory.createLineBorder(Color.black));
-			text.setText("Select inventory item");
-			text.setBackground(Color.green);
-			this.setLayout(new BorderLayout());
-			text.setBorder(null);
-			text.setHorizontalAlignment(JTextField.CENTER);
-	       this.add(buttonPanel, BorderLayout.CENTER);
-	        this.add(text, BorderLayout.PAGE_END);
-	        int x = 0;
-	        while(x < 5){
-	        addButton();
-	        x++;
-	        }
-	    }
+	JButton[] itemButtons = new JButton[5];
+	boolean gotInventoryBag = false;
+	private Client client;
+	Icon placeholderKey;
+	DungeonCanvas gameCanvas;
+	private Icon activeKey;
+	public InventoryPanel(Client client, DungeonCanvas gameCanvas) {
+		this.client = client;
+		this.gameCanvas = gameCanvas;
+		setBorder(BorderFactory.createLineBorder(Color.black));
+		buttonPanel.setBorder(new EmptyBorder(4, 0, 0, 0));
+		//text.setText("Find the Chest to gain your Backpack");
+		//text.setBackground(Color.green);
+		buttonPanel.setBackground(Color.DARK_GRAY);
+		this.setLayout(new BorderLayout());
+		//text.setBorder(null);
+		//text.setHorizontalAlignment(JTextField.CENTER);
+		this.add(buttonPanel, BorderLayout.CENTER);
+		//this.add(text, BorderLayout.PAGE_END);
+		setupIcons();
+		//		int x = 0;
+		//		while(x < 5){
+		//			//addButton();
+		//			itemButtons[x] = addButton(x);
+		//			x++;
+		//		}
+		updateInventoryPanel();
+		//1 ring
+		//2 key
+		//3 key
+		//4 key
+		//5 key
+	}
 
-		public Dimension getPreferredSize() {
-		
-	        return new Dimension(800,150);
-	        
-	    }
-		
-		public void paintComponent(Graphics g) {
-		   
-	        super.paintComponent(g);
-	        this.setBackground(Color.green);
-	       
-	        
+	public void foundChest(){ 
+		if(client.getPlayer().gotBag == true){
+			if(gotInventoryBag == false){
+				this.gotInventoryBag = true;
+				int x = 0;
+				while(x < 5){
+					//addButton();
+					itemButtons[x] = addButton(x);
+					x++;
+				}
+				this.revalidate();
+			}
 		}
-		public void addButton(){
-			JButton button = new JButton();
-			button.setPreferredSize(new Dimension(125, 125));
-			 try {
-				    Image img = ImageIO.read(new File("pro_img.png"));
-				    img = img.getScaledInstance(100, 120, Image.SCALE_SMOOTH);
-				    button.setIcon(new ImageIcon(img));
-				  } catch (IOException ex) {
-					  System.out.println("Image Button issue");
-				  }
-			buttonPanel.add(button);
+	}
+
+	private void setupIcons() {
+		Image img;
+		try {
+			img = ImageIO.read(new File("placeholderkeybutton.png"));
+			img = img.getScaledInstance(115, 115, Image.SCALE_SMOOTH);
+			this.placeholderKey = new ImageIcon(img);
+			Image image;
+
+			image = ImageIO.read(new File("keybuttonicon.png"));
+			image = image.getScaledInstance(115, 115, Image.SCALE_SMOOTH);
+			this.activeKey = new ImageIcon(image);
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
+	}
+
+	public Dimension getPreferredSize() {
+
+		return new Dimension(600,150);
+
+	}
+
+	public void paintComponent(Graphics g) {
+
+		super.paintComponent(g);
+		this.setBackground(Color.green);
+
+
+	}
+	public JButton addButton(int i){
+		JButton button = new JButton();
+		button.setActionCommand(i+"");
+		button.setPreferredSize(new Dimension(113, 113));
+		button.setFocusable(false);
+		button.setIcon(placeholderKey);
+
+		button.addActionListener(new ButtonListener());
+		buttonPanel.add(button);
+
+		System.out.println("Made button "+i);
+		return button;
+	}
+	public class ButtonListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String command = e.getActionCommand();
+			System.out.println(command);
+			try {
+				switch(command){
+				case "0":
+					client.tellServerAction("DROP", "Key1");
+					System.out.println("Key1");
+
+					break;
+				case "1":
+					client.tellServerAction("DROP", "Key2");
+					System.out.println("Key2");
+
+					break;
+				case "2":
+					client.tellServerAction("DROP", "Key3");
+					System.out.println("Key3");
+
+					break;
+				case "3":
+					client.tellServerAction("DROP", "Key4");
+					System.out.println("Key4");
+
+					break;
+				case "4":
+					client.tellServerAction("DROP", "Key5");
+					System.out.println("Key5");
+
+					break;
+				default:
+				}
+
+				Thread.sleep(200);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			updateInventoryPanel();
+			gameCanvas.repaint();
+		}
+	}
+
+	public void updateInventoryPanel(){
+		if(gotInventoryBag){
+			System.out.println("Here");
+			//text.setText("Select Inventory Item to drop");	
+			ArrayList<Item> inventory = client.getPlayer().inven;
+			for(JButton button: itemButtons){
+				button.setIcon(placeholderKey);
+			}
+			int bagCount = 0;
+			for(Item m : inventory){
+				System.out.println(m.getName());
+				if(m instanceof Key){
+					System.out.println("instance of key");
+					Key key = (Key)m;
+					System.out.println("Change button "+bagCount);
+					itemButtons[bagCount].setIcon(activeKey);
+					if(bagCount < 4){bagCount++;}
+					System.out.println("YOU found DEFAULT");
+				}
+			}
+		}
+	}
 }
