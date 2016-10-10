@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.border.EmptyBorder;
 
 import control.Client;
 import items.InteractableItem;
@@ -29,10 +30,10 @@ import items.Item;
 import items.Key;
 
 public class InventoryPanel extends JPanel {
-	JTextField text = new JTextField();
+	//JTextField text = new JTextField();
 	JPanel buttonPanel = new JPanel();
 	JButton[] itemButtons = new JButton[5];
-	boolean gotInventoryBag = true;
+	boolean gotInventoryBag = false;
 	private Client client;
 	Icon placeholderKey;
 	DungeonCanvas gameCanvas;
@@ -41,21 +42,22 @@ public class InventoryPanel extends JPanel {
 		this.client = client;
 		this.gameCanvas = gameCanvas;
 		setBorder(BorderFactory.createLineBorder(Color.black));
-		text.setText("Find the Chest to gain your Backpack");
-		text.setBackground(Color.green);
+		buttonPanel.setBorder(new EmptyBorder(4, 0, 0, 0));
+		//text.setText("Find the Chest to gain your Backpack");
+		//text.setBackground(Color.green);
+		buttonPanel.setBackground(Color.DARK_GRAY);
 		this.setLayout(new BorderLayout());
-		text.setBorder(null);
-		text.setHorizontalAlignment(JTextField.CENTER);
+		//text.setBorder(null);
+		//text.setHorizontalAlignment(JTextField.CENTER);
 		this.add(buttonPanel, BorderLayout.CENTER);
-		this.add(text, BorderLayout.PAGE_END);
+		//this.add(text, BorderLayout.PAGE_END);
 		setupIcons();
-		
-		int x = 0;
-		while(x < 5){
-			//addButton();
-			itemButtons[x] = addButton(x);
-			x++;
-		}
+		//		int x = 0;
+		//		while(x < 5){
+		//			//addButton();
+		//			itemButtons[x] = addButton(x);
+		//			x++;
+		//		}
 		updateInventoryPanel();
 		//1 ring
 		//2 key
@@ -64,16 +66,31 @@ public class InventoryPanel extends JPanel {
 		//5 key
 	}
 
+	public void foundChest(){ 
+		if(client.getPlayer().gotBag == true){
+			if(gotInventoryBag == false){
+				this.gotInventoryBag = true;
+				int x = 0;
+				while(x < 5){
+					//addButton();
+					itemButtons[x] = addButton(x);
+					x++;
+				}
+				this.revalidate();
+			}
+		}
+	}
+
 	private void setupIcons() {
 		Image img;
 		try {
 			img = ImageIO.read(new File("placeholderkeybutton.png"));
-			img = img.getScaledInstance(125, 125, Image.SCALE_SMOOTH);
+			img = img.getScaledInstance(115, 115, Image.SCALE_SMOOTH);
 			this.placeholderKey = new ImageIcon(img);
 			Image image;
 
 			image = ImageIO.read(new File("keybuttonicon.png"));
-			image = image.getScaledInstance(125, 125, Image.SCALE_SMOOTH);
+			image = image.getScaledInstance(115, 115, Image.SCALE_SMOOTH);
 			this.activeKey = new ImageIcon(image);
 
 		} catch (IOException e) {
@@ -85,7 +102,7 @@ public class InventoryPanel extends JPanel {
 
 	public Dimension getPreferredSize() {
 
-		return new Dimension(800,150);
+		return new Dimension(600,150);
 
 	}
 
@@ -99,12 +116,14 @@ public class InventoryPanel extends JPanel {
 	public JButton addButton(int i){
 		JButton button = new JButton();
 		button.setActionCommand(i+"");
-		button.setPreferredSize(new Dimension(125, 125));
+		button.setPreferredSize(new Dimension(113, 113));
 		button.setFocusable(false);
 		button.setIcon(placeholderKey);
 
 		button.addActionListener(new ButtonListener());
 		buttonPanel.add(button);
+
+		System.out.println("Made button "+i);
 		return button;
 	}
 	public class ButtonListener implements ActionListener{
@@ -114,35 +133,35 @@ public class InventoryPanel extends JPanel {
 			String command = e.getActionCommand();
 			System.out.println(command);
 			try {
-			switch(command){
-			case "0":
-				client.tellServerAction("DROP", "Key1");
-				System.out.println("Key1");
-				
-				break;
-			case "1":
-				client.tellServerAction("DROP", "Key2");
-				System.out.println("Key2");
-				
-				break;
-			case "2":
-				client.tellServerAction("DROP", "Key3");
-				System.out.println("Key3");
-				
-				break;
-			case "3":
-				client.tellServerAction("DROP", "Key4");
-				System.out.println("Key4");
-				
-				break;
-			case "4":
-				client.tellServerAction("DROP", "Key5");
-				System.out.println("Key5");
-				
-				break;
-			default:
-			}
-			
+				switch(command){
+				case "0":
+					client.tellServerAction("DROP", "Key1");
+					System.out.println("Key1");
+
+					break;
+				case "1":
+					client.tellServerAction("DROP", "Key2");
+					System.out.println("Key2");
+
+					break;
+				case "2":
+					client.tellServerAction("DROP", "Key3");
+					System.out.println("Key3");
+
+					break;
+				case "3":
+					client.tellServerAction("DROP", "Key4");
+					System.out.println("Key4");
+
+					break;
+				case "4":
+					client.tellServerAction("DROP", "Key5");
+					System.out.println("Key5");
+
+					break;
+				default:
+				}
+
 				Thread.sleep(200);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
@@ -155,29 +174,29 @@ public class InventoryPanel extends JPanel {
 
 	public void updateInventoryPanel(){
 		if(gotInventoryBag){
-		text.setText("Select Inventory Item to drop");	
-		System.out.println("FountUpdate");
-		ArrayList<Item> inventory = client.getPlayer().inven;
-		for(JButton button: itemButtons){
-			button.setIcon(placeholderKey);
-		}
-		int bagCount = 0;
-		for(Item m : inventory){
-			System.out.println(m.getName());
-			if(m instanceof Key){
-				System.out.println("instance of key");
-				Key key = (Key)m;
-				switch(key.getColor()){
-				case "YELLOW":
-					System.out.println("Change button");
-					itemButtons[bagCount].setIcon(activeKey);
-					if(bagCount < 4){bagCount++;}
-					break;
-				default:
-					System.out.println("YOU found DEFAULT");
+			System.out.println("Here");
+			//text.setText("Select Inventory Item to drop");	
+			ArrayList<Item> inventory = client.getPlayer().inven;
+			for(JButton button: itemButtons){
+				button.setIcon(placeholderKey);
+			}
+			int bagCount = 0;
+			for(Item m : inventory){
+				System.out.println(m.getName());
+				if(m instanceof Key){
+					System.out.println("instance of key");
+					Key key = (Key)m;
+					switch(key.getColor()){
+					case "YELLOW":
+						System.out.println("Change button "+bagCount);
+						itemButtons[bagCount].setIcon(activeKey);
+						if(bagCount < 4){bagCount++;}
+						break;
+					default:
+						System.out.println("YOU found DEFAULT");
+					}
 				}
 			}
-		}
 		}
 	}
 }

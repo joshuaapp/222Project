@@ -19,6 +19,7 @@ public class Client implements Runnable {
 	private Player player;
 	private int portNum = 8001;
 	private String host = "localhost";
+	public ApplicationWindow clientsWindow;
 	
 	public Client(Player player){
 		this.player = player;
@@ -54,7 +55,7 @@ public class Client implements Runnable {
  * 
  */
 	public synchronized void run() {
-		ApplicationWindow clientsWindow = new ApplicationWindow("Team14's awesome game yeeeh", this);
+		clientsWindow = new ApplicationWindow("Team14's awesome game yeeeh", this);
 		clientsWindow.attatchClientToWindow(this);
 		clientsWindow.createAndShowGUI();
 		clientsWindow.getGameCanvas().setPlayer(player);

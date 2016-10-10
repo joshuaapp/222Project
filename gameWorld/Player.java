@@ -18,6 +18,7 @@ public class Player {
 	private RenderPerspective rp;
 	public int level =1; 
 	private Board board;
+	public boolean gotBag = false;
 	String name;
 	public ArrayList<Item> inven = new ArrayList<Item>();
 	public boolean isMonster = false;
