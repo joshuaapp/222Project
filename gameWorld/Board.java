@@ -1,23 +1,23 @@
 package gameWorld;
-
 import java.awt.Point;
 import java.util.ArrayList;
-
 import tiles.GroundTile;
 import tiles.PlayerTile;
 import tiles.StartTile;
 import tiles.Tile;
 import tiles.WallTile;
-
 public class Board {
-
 	private Tile[][] templateBoard;
 	private Tile[][] gameBoard;
-	public final int ROWS = 20;
-	public final int COLS = 30;
+	public int ROWS;
+	public int COLS;
 	
+	//Board is reated in the parser and handed a 2D Tile array
 	public Board(Tile[][] newBoard) {
-		//board = new Tile[board.length][board[0].length];
+		
+		ROWS = newBoard.length;
+		COLS = newBoard[0].length;
+		
 		templateBoard = new Tile[ROWS][COLS];
 		for(int row=0;row<templateBoard.length; row++){
 			for(int col=0;col<newBoard[0].length; col++){
@@ -30,7 +30,6 @@ public class Board {
 		}
 	}
 	
-
 	public Tile[][] getBoard(){
 		return gameBoard;
 	}
@@ -73,12 +72,29 @@ public class Board {
 		return toReturn;
 	}
 	
-	public ArrayList<String> getMiniMap(){
+	public ArrayList<String> getMiniMap(Player player){
+		
+		//'map' contains a list of the tiles around the player.
 		ArrayList<String> map = new ArrayList<String>();
 		
-		for(int row=0;row<this.ROWS;row++){
-			for(int col=0;col<this.COLS;col++){
-				Tile t = gameBoard[row][col];
+		//The top left position is set. MapSize is for on either side of the player
+		//ie, 5 means 5 squares on either side of the player.
+		Position pos = player.getPosition();
+		int mapSize = 5;
+		int col = pos.getX() - mapSize;
+		int row = pos.getY() - mapSize;
+		
+		//numSquaresInMap counts the square on either side + the player, squared.
+		int count = 0;
+		int numSquaresInMap = ((mapSize*2) + 1) * ((mapSize*2) + 1);
+		
+		//Continues until is has drawn every square
+		while(count < numSquaresInMap){
+			
+			//Checks withen bounds. If not the a throw away string is set
+			if(col >= 0 && col < COLS && row >= 0 && row < ROWS){
+				
+				Tile t = getTile(row,col);
 				
 				if(t.getPlayer()!=null && t.getPlayer().isMonster){
 					map.add("m");
@@ -93,7 +109,21 @@ public class Board {
 					map.add("_");
 				}
 			}
+			else{
+				map.add("=");
+			}
+			
+			//Counts up. If the col is at the end of the line then resets
+			//it back to the left and moves the row down.
+			count++;
+			col++;
+			if(col == pos.getX() + mapSize+1){
+				col = pos.getX() - mapSize;
+				row++;
+				
+			}
 		}
+		
 		return map;
 	}
 	
@@ -114,7 +144,6 @@ public class Board {
 		}
 		return toReturn;
 	}
-
 	public void updatePlayerPos(Player player, Position oldPos) {
 		
 		//
