@@ -2,6 +2,7 @@ package gameWorld;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.Random;
 
 import gameWorld.GameState.direction;
@@ -9,6 +10,7 @@ import gameWorld.Player.Direction;
 import items.Chest;
 import items.Item;
 import items.Key;
+import tiles.DoorTile;
 import tiles.EndTile;
 import tiles.GroundTile;
 import tiles.Tile;
@@ -66,47 +68,57 @@ public class GameLogic {
 		if(!player.isMonster){
 			monsterTime--;
 		}
+		
+		Tile newTile = null;
 		switch(facing){
 		case North: 
 			if(playerY-1 >= 0){
-				if(currentBoard.getTile(playerY-1, playerX).isWalkable()  
-						&& currentBoard.getTile(playerY-1, playerX).getPlayer() == null){
-					actuallyMove(player, facing);
-				}
+				newTile = currentBoard.getTile(playerY-1, playerX);
 			}
 			break;
 		case South:
 			if(playerY+1 < currentBoard.ROWS){
-				if(currentBoard.getTile(playerY+1, playerX).isWalkable() 
-						&& currentBoard.getTile(playerY+1, playerX).getPlayer() == null){
-					actuallyMove(player, facing);
-				}
+				newTile = currentBoard.getTile(playerY+1, playerX);
 			}
 			break;
 		case East:
-			if(playerX+1 < currentBoard.COLS){
-				if(currentBoard.getTile(playerY, playerX+1).isWalkable() 
-						&& currentBoard.getTile(playerY, playerX+1).getPlayer() == null){
-					actuallyMove(player, facing);
-				}
+			if(playerX+1 < currentBoard.COLS){				
+				newTile = currentBoard.getTile(playerY, playerX+1);
 			}
 			break;
 
 		case West:
 			if(playerX-1 >= 0){
-				if(currentBoard.getTile(playerY, playerX-1).isWalkable()
-						&& currentBoard.getTile(playerY, playerX-1).getPlayer() == null){
-					actuallyMove(player, facing);
-				}
+				newTile = currentBoard.getTile(playerY, playerX-1);
 			}
 			break;
 		default:;
 		}
+		
+		if(newTile != null){
+			if(newTile.isWalkable() && newTile.getPlayer() == null){
+				actuallyMove(player, facing);
+			}
+			else if(newTile instanceof DoorTile){
+				ArrayList<Item> inven = player.getInven();
+				for(int i = 0; i <inven.size(); i++){
+					if(inven.get(i) instanceof Key){
+						inven.remove(i);
+						((DoorTile) newTile).unlock();
+						actuallyMove(player, facing);
+					}
+				}
+			}
+		}
+		
 		if(monsterTime == 0){
 			Random rand = new Random();
 			monsterTime = rand.nextInt(6);
 			moveMonsters();
 		}
+
+		
+			
 	}
 
 
