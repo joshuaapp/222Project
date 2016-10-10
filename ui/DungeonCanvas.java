@@ -32,6 +32,7 @@ public class DungeonCanvas extends JPanel{
 	private Image key;
 	private Image chest;
 	private Image start;
+	private Image words;
 	
 	public int level = 1;
 	private final int squareWidth = 10;
@@ -63,6 +64,7 @@ public class DungeonCanvas extends JPanel{
 		chest = loadImage("placeholder_item.png");
 		key = loadImage("key_item.png");
 		start = loadImage("start.png");
+		words = loadImage("words.png");
 	}
 	
 	@Override
@@ -148,6 +150,9 @@ public class DungeonCanvas extends JPanel{
 		}
 		else if(tileImageName.equals("RAISED")){
 			return raisedTile;
+		}
+		else if(tileImageName.equals("WORDS")){
+			return words;
 		}
 		else if(tileImageName.equals("EMPTY")){
 			return empty;

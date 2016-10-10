@@ -153,6 +153,9 @@ public class LevelParser {
 		else if(c == 'F'){
 			return new WallTile("WALL");
 		}
+		else if(c == '?'){
+			return new GroundTile("WORDS");
+		}
 		//* represents a pillar ie decrative tile
 		else if(c == 'P'){
 			return new WallTile("WALL");
