@@ -29,6 +29,7 @@ public class GameState {
 		initMap();
 		addPlayers();
 		addMonsters();
+		levelPushToPlayers();
 	}
 	
 	/**
@@ -99,11 +100,7 @@ public class GameState {
 		LevelParser parser = new LevelParser();
 		currentBoard = parser.buildBoard("level"+getLevel()+".txt");
 		parser.parseItemsAndAddToBoard("level"+getLevel()+"Items.txt", currentBoard);
-		
-		System.out.println("CALLED");
-		System.out.println();
 		levelPushToPlayers();
-		
 	}
 	
 	public void levelPushToPlayers(){
