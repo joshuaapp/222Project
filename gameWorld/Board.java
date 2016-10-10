@@ -1,16 +1,12 @@
 package gameWorld;
-
 import java.awt.Point;
 import java.util.ArrayList;
-
 import tiles.GroundTile;
 import tiles.PlayerTile;
 import tiles.StartTile;
 import tiles.Tile;
 import tiles.WallTile;
-
 public class Board {
-
 	private Tile[][] templateBoard;
 	private Tile[][] gameBoard;
 	public int ROWS;
@@ -34,7 +30,6 @@ public class Board {
 		}
 	}
 	
-
 	public Tile[][] getBoard(){
 		return gameBoard;
 	}
@@ -149,7 +144,6 @@ public class Board {
 		}
 		return toReturn;
 	}
-
 	public void updatePlayerPos(Player player, Position oldPos) {
 		
 		//
