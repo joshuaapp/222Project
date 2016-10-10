@@ -40,6 +40,10 @@ public abstract class Tile implements Serializable{
 		else return "";
 	}
 
+	public void setItemImage(String image){
+		this.image = image;
+	}
+
 	public Item getItem(){
 		if(item !=null){
 			return this.item;

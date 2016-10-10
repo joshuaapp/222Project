@@ -105,12 +105,19 @@ public class GameLogic implements Serializable {
 				actuallyMove(player, facing);
 			}
 			else if(newTile instanceof DoorTile){
+				DoorTile doorTile = (DoorTile)newTile;
+				System.out.println("Door code = "+doorTile.getDoorCode());
 				ArrayList<Item> inven = player.getInven();
 				for(int i = 0; i <inven.size(); i++){
 					if(inven.get(i) instanceof Key){
-						inven.remove(i);
-						((DoorTile) newTile).unlock();
-						actuallyMove(player, facing);
+						Key key = (Key)inven.get(i);
+						if(key.getCode() == doorTile.getDoorCode()){
+
+							inven.remove(i);
+
+							((DoorTile) newTile).unlock();
+							actuallyMove(player, facing);
+						}
 					}
 				}
 			}
@@ -199,7 +206,7 @@ public class GameLogic implements Serializable {
 	}
 
 	public void pickUp(Player p, Item item){
-		if(p.gotBag == true){
+		if(p.gotBag == true && p.inven.size() < 3){
 			p.inven.add(item);
 		}
 		if(item instanceof Chest){
@@ -234,9 +241,15 @@ public class GameLogic implements Serializable {
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
-		if(currentBoard.getTile(playerY, playerX).getItem() != null){
+		if(currentBoard.getTile(playerY, playerX).getItem() != null&& player.inven.size() < 3){
 			pickUp(player, currentBoard.getTile(playerY, playerX).getItem());
 			if(player.gotBag){
+				if(currentBoard.getTile(playerY, playerX).getItem() instanceof Chest){
+					Chest ch = (Chest)currentBoard.getTile(playerY, playerX).getItem();
+					ch.open();
+					currentBoard.getTile(playerY, playerX).setItemImage("chest_open.png");
+					return;
+				}
 				currentBoard.getTile(playerY, playerX).setItem(null);
 			}
 		}

@@ -12,7 +12,8 @@ public class Chest implements StorageItem, InteractableItem, Serializable{
 	 */
 	private static final long serialVersionUID = -6084076119986289636L;
 	private List<Item> contents;
-
+	private boolean isOpen = false;
+	
 	public Chest(){
 		contents = new ArrayList<Item>();
 	}
@@ -57,13 +58,20 @@ public class Chest implements StorageItem, InteractableItem, Serializable{
 		else return null;
 	}
 
-	public String getImageName() {
-		return "chest_item.png";
-	}
-
 	@Override
 	public String getName() {
+		if(isOpen){
+			return "CHEST_OPEN";
+		}
 		return "CHEST";
+	}
+	
+	public boolean isOpen(){
+		return isOpen;
+	}
+	
+	public void open(){
+		isOpen = true;
 	}
 
 }
