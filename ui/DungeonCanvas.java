@@ -46,9 +46,6 @@ public class DungeonCanvas extends JPanel{
 	//speed it up
 
 	public DungeonCanvas(){
-		if(player != null){
-			level = player.level;
-		}
 		loadImages();
 	}
 	
