@@ -118,4 +118,8 @@ public class RenderPerspective {
 	public Queue<Tile> getTilesInSight(){
 		return tilesInSight;
 	}
+	
+	public void setBoard(Board b){
+		board =b;
+	}
 }

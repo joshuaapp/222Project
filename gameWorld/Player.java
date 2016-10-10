@@ -77,6 +77,17 @@ public class Player {
 	public ArrayList<Item> getInven(){
 		return inven;
 	}
+	
+	public int getLevel(){
+		return level;
+	}
+	
+	public void setBoard(Board b){
+		rp.setBoard(b);
+		board = b;
+	}
+	
+	
 
 	
 }
