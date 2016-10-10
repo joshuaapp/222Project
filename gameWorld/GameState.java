@@ -121,10 +121,17 @@ public class GameState implements Serializable{
 	}
 
 	public void levelUp(){
-//		setLevel(getLevel() + 1);
-//		run();
-//		System.out.println("CALLED");
-//		System.out.println();
+		setLevel(getLevel() + 1);
+		run();
+		System.out.println("CALLED");
+		System.out.println();
+		levelPushToPlayers();
+	}
+	
+	public void levelPushToPlayers(){
+		for(Player p: curPlayers){
+			p.level = level;
+		}
 	}
 
 	public void updatePlayerPosition(Player p, String d){
