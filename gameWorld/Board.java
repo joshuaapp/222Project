@@ -1,21 +1,24 @@
 package gameWorld;
 
-import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import tiles.GroundTile;
-import tiles.PlayerTile;
 import tiles.StartTile;
 import tiles.Tile;
 import tiles.WallTile;
 
-public class Board {
+public class Board implements Serializable{
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -5079077426270245569L;
 	private Tile[][] templateBoard;
 	private Tile[][] gameBoard;
 	public final int ROWS = 20;
 	public final int COLS = 30;
-	
+
 	public Board(Tile[][] newBoard) {
 		//board = new Tile[board.length][board[0].length];
 		templateBoard = new Tile[ROWS][COLS];
@@ -29,16 +32,16 @@ public class Board {
 		    gameBoard[i] = templateBoard[i].clone();
 		}
 	}
-	
+
 
 	public Tile[][] getBoard(){
 		return gameBoard;
 	}
-	
+
 	public Tile getTile(int row, int col){
 		return gameBoard[row][col]; //row col
 	}
-	
+
 	public void placePlayerOnBoard(Player p){
 		Position playerPos = p.getPosition();
 		int row = playerPos.getY();
@@ -47,7 +50,7 @@ public class Board {
 			gameBoard[row][col].setPlayer(p);
 		}
 	}
-	
+
 	public ArrayList<StartTile> getStartingTiles(){
 		ArrayList<StartTile> toReturn = new ArrayList<>();
 		for(int row=0;row<this.ROWS;row++){
@@ -56,11 +59,11 @@ public class Board {
 					toReturn.add((StartTile) templateBoard[row][col]);
 				}
 			}
-			
+
 		}
 		return toReturn;
 	}
-	
+
 	public ArrayList<Position> getMonsterStartingTiles(){
 		ArrayList<Position> toReturn = new ArrayList<>();
 		for(int row=0;row<this.ROWS;row++){
@@ -72,10 +75,10 @@ public class Board {
 		}
 		return toReturn;
 	}
-	
+
 	public ArrayList<String> getMiniMap(){
 		ArrayList<String> map = new ArrayList<String>();
-		
+
 		for(int row=0;row<this.ROWS;row++){
 			for(int col=0;col<this.COLS;col++){
 				Tile t = gameBoard[row][col];
@@ -96,8 +99,8 @@ public class Board {
 		}
 		return map;
 	}
-	
-	
+
+
 	@Override
 	public String toString(){
 		String toReturn = "";
@@ -116,14 +119,14 @@ public class Board {
 	}
 
 	public void updatePlayerPos(Player player, Position oldPos) {
-		
+
 		//
 		gameBoard[oldPos.getY()][oldPos.getX()].setPlayer(null);
 		//gameBoard[oldPos.getY()][oldPos.getX()] = templateBoard[oldPos.getY()][oldPos.getX()];
-		
+
 		Position newPos = player.getPosition();
 		gameBoard[newPos.getY()][newPos.getX()].setPlayer(player);
 		gameBoard[newPos.getY()][newPos.getX()] = templateBoard[newPos.getY()][newPos.getX()];
-		
+
 	}
 }

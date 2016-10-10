@@ -1,7 +1,6 @@
 package gameWorld;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.Random;
 
 import gameWorld.GameState.direction;
@@ -13,7 +12,11 @@ import tiles.GroundTile;
 import tiles.Tile;
 import ui.DungeonCanvas;
 
-public class GameLogic {
+public class GameLogic implements Serializable{
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 5285703342967448744L;
 	GameState game;
 	int monsterTime = 10;
 	public GameLogic(GameState game){
@@ -33,16 +36,16 @@ public class GameLogic {
 	public void rotateOrMove(Player p, String movement){
 
 		switch(movement){
-		case "UP": 
+		case "UP":
 			legalPlayerMove(p, p.getDirectionFacing());
 			break;
-		case "DOWN": 
+		case "DOWN":
 			legalPlayerMove(p, getRightDirection(getRightDirection(p.getDirectionFacing())));
 			break;
-		case "LEFT": 
+		case "LEFT":
 			p.setDirectionFacing(getRightDirection(getRightDirection(getRightDirection(p.getDirectionFacing()))));
 			break;
-		case "RIGHT": 
+		case "RIGHT":
 			p.setDirectionFacing(getRightDirection(p.getDirectionFacing()));
 			break;
 		}
@@ -66,9 +69,9 @@ public class GameLogic {
 			monsterTime--;
 		}
 		switch(facing){
-		case North: 
+		case North:
 			if(playerY-1 >= 0){
-				if(currentBoard.getTile(playerY-1, playerX).isWalkable()  
+				if(currentBoard.getTile(playerY-1, playerX).isWalkable()
 						&& currentBoard.getTile(playerY-1, playerX).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
@@ -76,7 +79,7 @@ public class GameLogic {
 			break;
 		case South:
 			if(playerY+1 < currentBoard.ROWS){
-				if(currentBoard.getTile(playerY+1, playerX).isWalkable() 
+				if(currentBoard.getTile(playerY+1, playerX).isWalkable()
 						&& currentBoard.getTile(playerY+1, playerX).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
@@ -84,7 +87,7 @@ public class GameLogic {
 			break;
 		case East:
 			if(playerX+1 < currentBoard.COLS){
-				if(currentBoard.getTile(playerY, playerX+1).isWalkable() 
+				if(currentBoard.getTile(playerY, playerX+1).isWalkable()
 						&& currentBoard.getTile(playerY, playerX+1).getPlayer() == null){
 					actuallyMove(player, facing);
 				}
@@ -169,13 +172,13 @@ public class GameLogic {
 	//method to return what the player is attempting to interact with
 	public Tile interactWith(Player p, direction facing){
 		switch(facing){
-		case NORTH: 
+		case NORTH:
 			return game.getGameBoard().getBoard()[p.Xcoord][p.Ycoord-1];
-		case SOUTH: 
+		case SOUTH:
 			return game.getGameBoard().getBoard()[p.Xcoord][p.Ycoord+1];
-		case EAST: 
+		case EAST:
 			return game.getGameBoard().getBoard()[p.Xcoord][p.Xcoord+1];
-		case WEST: 
+		case WEST:
 			return game.getGameBoard().getBoard()[p.Xcoord][p.Xcoord-1];
 		default: return null;
 		}
