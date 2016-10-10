@@ -9,6 +9,7 @@ import control.Client;
 import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
 import items.Item;
+import main.Main;
 import tiles.GroundTile;
 import tiles.StartTile;
 import tiles.Tile;
@@ -81,9 +82,10 @@ public class GameState implements Serializable{
 	}
 
 	public void addMonsters(){
+		curMonsters.removeAll(curMonsters);
 		Player monster = new Player(currentBoard, "Monster");
-		Player monster1 = new Player(currentBoard, "Monster2");
-		Player monster2 = new Player(currentBoard, "Monster3");
+		Player monster1 = new Player(currentBoard, "Monster1");
+		Player monster2 = new Player(currentBoard, "Monster2");
 		monster.isMonster = true;
 		monster1.isMonster = true;
 		monster2.isMonster = true;
@@ -119,8 +121,10 @@ public class GameState implements Serializable{
 	}
 
 	public void levelUp(){
-		setLevel(getLevel() + 1);
-		initMap();
+//		setLevel(getLevel() + 1);
+//		run();
+//		System.out.println("CALLED");
+//		System.out.println();
 	}
 
 	public void updatePlayerPosition(Player p, String d){

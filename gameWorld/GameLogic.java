@@ -7,8 +7,10 @@ import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
 import items.Item;
 import items.Key;
+import tiles.EndTile;
 import tiles.GroundTile;
 import tiles.Tile;
+import ui.DungeonCanvas;
 
 public class GameLogic implements Serializable{
 	/**
@@ -137,7 +139,9 @@ public class GameLogic implements Serializable{
 		}
 		Position oldPos = new Position(x,y);
 		game.getGameBoard().updatePlayerPos(p, oldPos);
-
+		if(game.getGameBoard().getTile(p.getPosition().getY(), p.getPosition().getX()) instanceof EndTile){
+			game.levelUp();
+		}
 		if(!p.isMonster){
 			for(int i = y-1; i<=y+1; i++){
 				for(int j = x-1; j<=x+1; j++){
