@@ -97,11 +97,11 @@ public class GameState {
 	}
 
 	public void levelUp(){
-		setLevel(getLevel() + 1);
-		run();
-		System.out.println("CALLED");
-		System.out.println();
-		levelPushToPlayers();
+//		setLevel(getLevel() + 1);
+//		run();
+//		System.out.println("CALLED");
+//		System.out.println();
+//		levelPushToPlayers();
 	}
 	
 	public void levelPushToPlayers(){
