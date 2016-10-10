@@ -34,6 +34,10 @@ public abstract class Tile {
 		else return "";
 	}
 	
+	public void setItemImage(String image){
+		this.image = image;
+	}
+	
 	public Item getItem(){
 		if(item !=null){
 			return this.item;
