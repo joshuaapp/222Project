@@ -104,6 +104,7 @@ public class GameLogic {
 				for(int i = 0; i <inven.size(); i++){
 					if(inven.get(i) instanceof Key){
 						inven.remove(i);
+						
 						((DoorTile) newTile).unlock();
 						actuallyMove(player, facing);
 					}
