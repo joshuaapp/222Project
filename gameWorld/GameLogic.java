@@ -244,6 +244,7 @@ public class GameLogic {
 					currentBoard.getTile(playerY, playerX).setItemImage("chest_open.png");
 					return;
 				}
+				currentBoard.getTile(playerY, playerX).setItem(null);
 			}
 		}
 	}

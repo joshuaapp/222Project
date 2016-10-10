@@ -106,6 +106,7 @@ public class GameState {
 		for(Player p: curPlayers){
 			p.level = level;
 			p.setBoard(currentBoard);
+			p.inven = new ArrayList<Item>();
 		}
 		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
 		if(curPlayers.size() <= startTiles.size()){
