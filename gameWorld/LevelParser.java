@@ -24,9 +24,6 @@ public class LevelParser {
 	//specific tiles which are then stored in a 2D array. This is then used
 	//to create the board.
 
-	//to begin with we will have a fixed width and height so we don't have to parse the file for it. 
-	private final int COLS = 30;
-	private final int ROWS = 20;
 	/**
 	 * Reads the text file given and parses each character to a tile and places it 
 	 * into the board. Once finished, returns the board.
@@ -36,11 +33,15 @@ public class LevelParser {
 	 */
 	public Board buildBoard(String boardFile){	
 		try {
+			//Gets the bounds of the 2D array
+			Tile[][] board = getSizedArray(boardFile);
+			
 			//Makes a reader
 			BufferedReader br = new BufferedReader(new FileReader(boardFile));
+			
 			//Splits line into characters
 			char[] line = br.readLine().toCharArray();		
-			Tile[][] board = new Tile[ROWS][COLS];
+			
 			//int y is used to store the info for which line is in use
 			// this is mainly used for assigning the tile to board
 			int row = 0;
@@ -67,6 +68,33 @@ public class LevelParser {
 		}
 
 
+	}
+	
+	private Tile[][] getSizedArray(String boardFile) throws IOException{
+		
+		//Makes a reader
+		BufferedReader br = new BufferedReader(new FileReader(boardFile));
+		//Splits line into characters
+		char[] line = br.readLine().toCharArray();		
+		
+		
+		int col = line.length;
+		int row = 1;
+		
+		//Iterates all the way down the file to get the rows
+		while(line != null){
+			
+			String s = br.readLine();
+			if(s != null){
+				row++;
+				line = s.toCharArray();
+			}
+			else{line = null;}
+
+		}
+		
+		//Returns the correct sized 2D Array
+		return new Tile[row][col];
 	}
 
 	/**
@@ -103,7 +131,7 @@ public class LevelParser {
 
 		//F represents a raised ground tile (non-grassy)
 		else if(c == 'T'){
-			return new GroundTile("TREE");
+			return new WallTile("TREE");
 		}
 
 		//* represents a starting tile
