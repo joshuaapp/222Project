@@ -180,6 +180,7 @@ public class InventoryPanel extends JPanel {
 			ArrayList<Item> inventory = client.getPlayer().inven;
 			for(JButton button: itemButtons){
 				button.setIcon(placeholderKey);
+				button.setText("");
 			}
 			int bagCount = 0;
 			for(Item m : inventory){
@@ -194,7 +195,9 @@ public class InventoryPanel extends JPanel {
 						System.out.println("Change button "+bagCount);
 						
 						//itemButtons[bagCount].set;
-						itemButtons[bagCount].setText(key.getCode()+"");
+						itemButtons[bagCount].setText(key.getCode()+1+"");
+						itemButtons[bagCount].setHorizontalTextPosition(JButton.CENTER);
+						itemButtons[bagCount].setVerticalTextPosition(JButton.CENTER);
 						itemButtons[bagCount].setIcon(activeKey);
 						if(bagCount < 2){bagCount++;}
 					//	break;
