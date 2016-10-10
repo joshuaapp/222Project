@@ -19,7 +19,7 @@ public class Client implements Runnable, Serializable {
 	private Player player;
 	private int portNum = 8001;
 	private String name;
-	private String serverIp = "sen-sen.ecs.vuw.ac.nz";
+	private String serverIp = "brava.ecs.vuw.ac.nz";
 	private transient ApplicationWindow clientsWindow;
 	private String lastDirectionMoved;
 	private GameState state;
@@ -60,7 +60,7 @@ public class Client implements Runnable, Serializable {
 		new Thread(listenerForServerInput).start();
 		//listenerForServerInput.tellServerAction("REQUEST_STATE");
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(1500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,11 +68,9 @@ public class Client implements Runnable, Serializable {
 		//place player on board.
 		this.player = state.getPlayerOfClient(this.name);
 		this.player.createRenderPerspective();
-		clientsWindow = new ApplicationWindow("Team14's awesome game yeeeh", this);
+		clientsWindow = new ApplicationWindow("Clean up on Isle 14", this);
 		clientsWindow.createAndShowGUI();
 		clientsWindow.getGameCanvas().setPlayer(player);
-
-
 	}
 	public Player getPlayer() {
 		return this.player;

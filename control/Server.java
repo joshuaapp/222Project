@@ -47,7 +47,7 @@ public class Server implements Runnable{
 				}
 	}
 
-	public synchronized void run(){
+	public void run(){
 		while (true) {
 			try {
 				Socket client = serverSocket.accept();
@@ -72,7 +72,7 @@ public class Server implements Runnable{
 	 * it will reiceve a string form the player indicating which button it has pressed
 	 */
 
-	public void updateGameStatePlayerPositions(String s, Player p){
+	public  void updateGameStatePlayerPositions(String s, Player p){
 		currentGameState.updatePlayerPosition(p, s);
 	}
 
@@ -86,7 +86,7 @@ public class Server implements Runnable{
 	public ServerSocket getServerSocket() {
 		return serverSocket;
 	}
-	public void processClientMovementRequest(String direction, String clientObjectAsString) {
+	public  void processClientMovementRequest(String direction, String clientObjectAsString) {
 		Player toMove = null;
 		for(Client c : clients){
 			if(c.getName().equals(clientObjectAsString)){
@@ -95,7 +95,7 @@ public class Server implements Runnable{
 		}
 		updateGameStatePlayerPositions(direction, toMove);
 	}
-	public void processClientActionRequest(String action, String item, String clientObjectAsString) {
+	public  void processClientActionRequest(String action, String item, String clientObjectAsString) {
 		Player toAct = null;
 		for(Client c : clients){
 			if(c.getName().equals(clientObjectAsString)){
@@ -105,7 +105,7 @@ public class Server implements Runnable{
 		updateGameStatePlayerAction(action, toAct, item);
 	}
 
-	public void updateGameStatePlayerAction(String s, Player p, String item){
+	public  void updateGameStatePlayerAction(String s, Player p, String item){
 		currentGameState.updatePlayerAct(p, s, item);
 	}
 

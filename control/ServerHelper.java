@@ -1,13 +1,11 @@
 package control;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import gameWorld.Player;
 import gameWorld.Player.Direction;
@@ -42,7 +40,7 @@ public class ServerHelper implements Runnable{
 	}
 
 	@Override
-	public synchronized void run() {
+	public void run() {
 		String clientRequest = null;
 		String[] brokenRequest = new String[3];
 		//get client to add to list of servers clients
@@ -56,6 +54,8 @@ public class ServerHelper implements Runnable{
 					if(brokenRequest[0].equals("UP") || brokenRequest[0].equals("DOWN") ||
 							brokenRequest[0].equals("LEFT") ||brokenRequest[0].equals("RIGHT")){
 						this.server.processClientMovementRequest(brokenRequest[0], brokenRequest[1]);
+						System.out.println("Server processed movement request");
+
 						//send updates back to client
 						sendGameState(brokenRequest[1]);
 
@@ -70,6 +70,7 @@ public class ServerHelper implements Runnable{
 								Client client  = (Client) o;
 								server.addClientToConnectedClients(client);
 							}
+
 						}
 						catch (IOException e){
 							System.out.println("IOException reading object: "+e);
@@ -96,6 +97,7 @@ public class ServerHelper implements Runnable{
 				//check for objects being sent
 
 			}
+			objectOutputToClient.reset();
 		}
 		catch(IOException e){
 			System.out.println(e);
@@ -131,13 +133,18 @@ public class ServerHelper implements Runnable{
 	 * Will need to send updated board and rederperspective to client with name clientName+
 	 * @param clientName
 	 */
-	public void sendGameState(String clientName) {
+	public synchronized void sendGameState(String clientName) {
+//		ReadWriteLock lock = new ReentrantReadWriteLock();
+//		Lock writeLock = lock.writeLock();
+//		writeLock.lock();
 		for(Client c : this.server.getClients()){
 			if(c.getName().equals(clientName)){
 				outputToClient.println("SENDING_UPDATED_STATE");
 				outputToClient.flush();
 				try {
 					objectOutputToClient.reset();
+					objectOutputToClient.flush();
+					System.out.println("sending game state: "+this.server.getCurrentGameState());
 					objectOutputToClient.writeObject(this.server.getCurrentGameState());
 					objectOutputToClient.flush();
 				} catch (IOException e) {
@@ -145,6 +152,7 @@ public class ServerHelper implements Runnable{
 				}
 			}
 		}
+//		writeLock.unlock();
 	}
 
 }

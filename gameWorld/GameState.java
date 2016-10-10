@@ -20,7 +20,7 @@ public class GameState implements Serializable{
 	 */
 	private static final long serialVersionUID = 8625004722083450882L;
 	private Board currentBoard;
-	private int level = 2;
+	private int level = 1;
 	public Player[] curPlayers;
 	public ArrayList<Player> curMonsters;
 	public ArrayList<Client> clients;
@@ -121,11 +121,11 @@ public class GameState implements Serializable{
 	}
 
 	public void levelUp(){
-		setLevel(getLevel() + 1);
+		/*setLevel(getLevel() + 1);
 		run();
 		System.out.println("CALLED");
 		System.out.println();
-		levelPushToPlayers();
+		levelPushToPlayers();*/
 	}
 
 	public void levelPushToPlayers(){
