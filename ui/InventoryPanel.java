@@ -31,8 +31,9 @@ import items.Key;
 
 public class InventoryPanel extends JPanel {
 	//JTextField text = new JTextField();
+	int buttonSize = 115;
 	JPanel buttonPanel = new JPanel();
-	JButton[] itemButtons = new JButton[5];
+	JButton[] itemButtons = new JButton[3];
 	boolean gotInventoryBag = false;
 	private Client client;
 	Icon placeholderKey;
@@ -42,7 +43,7 @@ public class InventoryPanel extends JPanel {
 		this.client = client;
 		this.gameCanvas = gameCanvas;
 		setBorder(BorderFactory.createLineBorder(Color.black));
-		buttonPanel.setBorder(new EmptyBorder(4, 0, 0, 0));
+		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		//text.setText("Find the Chest to gain your Backpack");
 		//text.setBackground(Color.green);
 		buttonPanel.setBackground(Color.DARK_GRAY);
@@ -71,7 +72,7 @@ public class InventoryPanel extends JPanel {
 			if(gotInventoryBag == false){
 				this.gotInventoryBag = true;
 				int x = 0;
-				while(x < 5){
+				while(x < 3){
 					//addButton();
 					itemButtons[x] = addButton(x);
 					x++;
@@ -85,12 +86,12 @@ public class InventoryPanel extends JPanel {
 		Image img;
 		try {
 			img = ImageIO.read(new File("placeholderkeybutton.png"));
-			img = img.getScaledInstance(115, 115, Image.SCALE_SMOOTH);
+			img = img.getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
 			this.placeholderKey = new ImageIcon(img);
 			Image image;
 
 			image = ImageIO.read(new File("keybuttonicon.png"));
-			image = image.getScaledInstance(115, 115, Image.SCALE_SMOOTH);
+			image = image.getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
 			this.activeKey = new ImageIcon(image);
 
 		} catch (IOException e) {
@@ -116,7 +117,7 @@ public class InventoryPanel extends JPanel {
 	public JButton addButton(int i){
 		JButton button = new JButton();
 		button.setActionCommand(i+"");
-		button.setPreferredSize(new Dimension(113, 113));
+		button.setPreferredSize(new Dimension(buttonSize, buttonSize));
 		button.setFocusable(false);
 		button.setIcon(placeholderKey);
 
@@ -184,17 +185,18 @@ public class InventoryPanel extends JPanel {
 			for(Item m : inventory){
 				System.out.println(m.getName());
 				if(m instanceof Key){
-					System.out.println("instance of key");
 					Key key = (Key)m;
-					switch(key.getColor()){
-					case "YELLOW":
+					System.out.println("instance of key, code = "+key.getCode());
+
+					//switch(key.getColor()){
+					//case "YELLOW":
 						System.out.println("Change button "+bagCount);
 						itemButtons[bagCount].setIcon(activeKey);
-						if(bagCount < 4){bagCount++;}
-						break;
-					default:
-						System.out.println("YOU found DEFAULT");
-					}
+						if(bagCount < 3){bagCount++;}
+					//	break;
+				//	default:
+					//	System.out.println("YOU found DEFAULT");
+				//	}
 				}
 			}
 		}

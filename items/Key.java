@@ -2,9 +2,11 @@ package items;
 
 public class Key implements InteractableItem{
 	
+	private int roomCode;
 	private String color;
 
-	public Key(String color){
+	public Key(int code, String color){
+		this.roomCode = code;
 		this.color = color;
 	} 
 
@@ -24,8 +26,11 @@ public class Key implements InteractableItem{
 		return "key_item.png";
 	}
 	
+	public int getCode(){
+		return this.roomCode;
+	}
 	public String getColor(){
-		return color;
+		return this.color;
 	}
 
 }

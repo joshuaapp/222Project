@@ -100,13 +100,19 @@ public class GameLogic {
 				actuallyMove(player, facing);
 			}
 			else if(newTile instanceof DoorTile){
+				DoorTile doorTile = (DoorTile)newTile;
+				System.out.println("Door code = "+doorTile.getDoorCode());
 				ArrayList<Item> inven = player.getInven();
 				for(int i = 0; i <inven.size(); i++){
 					if(inven.get(i) instanceof Key){
+						Key key = (Key)inven.get(i);
+						if(key.getCode() == doorTile.getDoorCode()){
+						
 						inven.remove(i);
 						
 						((DoorTile) newTile).unlock();
 						actuallyMove(player, facing);
+						}
 					}
 				}
 			}

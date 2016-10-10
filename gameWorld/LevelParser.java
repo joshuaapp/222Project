@@ -16,8 +16,10 @@ import tiles.StartTile;
 import tiles.Tile;
 import tiles.WallTile;
 public class LevelParser {
-
+	int doorCounter = 0;
+	String[] colors = {"YELLOW", "BLUE", "RED"};
 	/*Strings of imagenames to refer to*/
+	private int keyCounter = 0;
 
 	//The board is stored as a grid of characters which are used to create  
 	//specific tiles which are then stored in a 2D array. This is then used
@@ -126,7 +128,9 @@ public class LevelParser {
 		//D represents LOCKED a door
 		else if(c == 'D'){
 			//return new DoorTile(xPos, yPos);
-			return new DoorTile("DOOR", false); //for now until door img is done
+			
+			return new DoorTile("DOOR", doorCounter++); //for now until door img is done
+			
 		}
 		//F represents a raised ground tile (non-grassy)
 		else if(c == 'R'){
@@ -199,7 +203,7 @@ public class LevelParser {
 		case "chest": 
 			return new Chest();
 		case "key":
-			return new Key("YELLOW");
+			return new Key(keyCounter++, colors[doorCounter-1]);
 		case "button":
 			return new Button();
 		default: return null;
