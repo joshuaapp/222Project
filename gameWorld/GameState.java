@@ -1,20 +1,19 @@
 package gameWorld;
-
-
 import java.util.ArrayList;
 import java.util.Random;
 
+import control.Client;
 import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
 import items.Item;
 import main.Main;
 import tiles.GroundTile;
 import tiles.StartTile;
-
 public class GameState {
 	private Board currentBoard;
 	private int level = 1;
 	public ArrayList<Player> curPlayers;
+	public ArrayList<Client> curUsers = new ArrayList<Client>();
 	public ArrayList<Player> curMonsters;
 	public enum direction {NORTH, SOUTH, EAST, WEST};
 	public GameLogic logic;
@@ -95,7 +94,6 @@ public class GameState {
 	public void attachLogic(GameLogic logic){
 		this.logic = logic;
 	}
-
 	public void levelUp(){
 		setLevel(getLevel() + 1);
 		run();
@@ -113,11 +111,9 @@ public class GameState {
 	public void updatePlayerPosition(Player p, String d){
 		logic.rotateOrMove(p, d);
 	}
-
 	public void attatchBoard(Board b){
 		this.currentBoard = b;
 	}
-
 	public void updatePlayerAct(Player p, String a, String item) {
 		if(a.equals("PICK")){
 			logic.isThereAnItem(p);
@@ -126,12 +122,14 @@ public class GameState {
 			logic.drop(p, item);
 		}
 	}
-
 	public int getLevel() {
 		return level;
 	}
-
 	public void setLevel(int level) {
 		this.level = level;
+	}
+	
+	public void setClient(Client c){
+		curUsers.add(c);
 	}
 }
