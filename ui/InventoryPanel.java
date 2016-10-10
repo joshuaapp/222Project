@@ -186,15 +186,10 @@ public class InventoryPanel extends JPanel {
 				if(m instanceof Key){
 					System.out.println("instance of key");
 					Key key = (Key)m;
-					switch(key.getColor()){
-					case "YELLOW":
-						System.out.println("Change button "+bagCount);
-						itemButtons[bagCount].setIcon(activeKey);
-						if(bagCount < 4){bagCount++;}
-						break;
-					default:
-						System.out.println("YOU found DEFAULT");
-					}
+					System.out.println("Change button "+bagCount);
+					itemButtons[bagCount].setIcon(activeKey);
+					if(bagCount < 4){bagCount++;}
+					System.out.println("YOU found DEFAULT");
 				}
 			}
 		}

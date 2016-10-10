@@ -2,10 +2,10 @@ package items;
 
 public class Key implements InteractableItem{
 	
-	private String color;
+	private String name;
 
-	public Key(String color){
-		this.color = color;
+	public Key(String name){
+		this.name = name;
 	} 
 
 	@Override
@@ -18,14 +18,13 @@ public class Key implements InteractableItem{
 		return true;
 	}
 
-	@Override
-	public String getName() {
+	public String getImageName() {
 		//return "key";
 		return "key_item.png";
 	}
 	
-	public String getColor(){
-		return color;
+	public String getName(){
+		return name;
 	}
 
 }

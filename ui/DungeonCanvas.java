@@ -38,6 +38,9 @@ public class DungeonCanvas extends JPanel{
 	private Image door;
 	public Image back;
 	private Image tree;
+	private Image key;
+	private Image chest;
+	private Image start;
 	
 	public int level = 1;
 
@@ -61,10 +64,13 @@ public class DungeonCanvas extends JPanel{
 		brick = loadImage("raised_brick.png");
 		flat = loadImage("flat"+level+".png");
 		players = loadImage("placeholder_player.png");
-		monster = loadImage("monster.png");
+		monster = loadImage("monster"+level+".png");
 		door = loadImage("placeholder_door.png");
 		back = loadImage("back"+level+".png");
 		tree = loadImage("tree.png");
+		chest = loadImage("placeholder_item.png");
+		key = loadImage("key_item.png");
+		start = loadImage("start.png");
 	}
 
 	@Override
@@ -172,14 +178,20 @@ public class DungeonCanvas extends JPanel{
 		else if(tileImageName.equals("DOOR")){
 			return door;
 		}
+		else if(tileImageName.equals("START")){
+			return start;
+		}
 		else{
 			return flat;
 		}
 	}
 
-	private Image getItemImage(String tileImageName){
-		if(!tileImageName.equals("")){
-			return item;
+	private Image getItemImage(String itemImageName){
+		if(itemImageName.equals("KEY")){
+			return key;
+		}
+		if(itemImageName.equals("CHEST")){
+			return chest;
 		}
 		else{
 			return null;

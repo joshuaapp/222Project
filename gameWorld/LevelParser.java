@@ -148,6 +148,7 @@ public class LevelParser {
 				Position p = new Position(Integer.parseInt(line[1]), Integer.parseInt(line[2]));
 				Tile tileToAddItemTo = board.getTile(p.getY(), p.getX()); //row, col
 				tileToAddItemTo.setItem(itemToAddToBoard);
+				
 				String s = br.readLine();
 				if(s != null){
 					line = s.split(" ");
@@ -165,9 +166,9 @@ public class LevelParser {
 	private Item parseItem(String itemName){
 		switch(itemName){
 		case "chest": 
-			return new Chest();
+			return new Chest(itemName);
 		case "key":
-			return new Key("YELLOW");
+			return new Key(itemName);
 		case "door":
 			return new Door();
 		case "button":

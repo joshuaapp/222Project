@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chest implements StorageItem, InteractableItem{
-
+	
 	private List<Item> contents;
+	private String name;
 
-	public Chest(){
+	public Chest(String name){
+		this.setName(name);
 		contents = new ArrayList<Item>();
 	}
 
@@ -51,9 +53,18 @@ public class Chest implements StorageItem, InteractableItem{
 		else return null;
 	}
 
+	public String getImageName() {
+		return "chest_item.png";
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public String getName() {
-		return "placeholder_item.png";
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
