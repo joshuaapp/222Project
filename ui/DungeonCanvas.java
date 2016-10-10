@@ -21,7 +21,6 @@ public class DungeonCanvas extends JPanel{
 	private Image flat;
 	private Image raisedTile;
 	private Image wall;
-	private Image item;
 	private Image empty;
 	private Image brick;
 	private Image players;
@@ -49,16 +48,11 @@ public class DungeonCanvas extends JPanel{
 	//speed it up
 
 	public DungeonCanvas(){
-		if(player != null){
-			level = player.level;
-		}
 		loadImages();
 	}
 	
 	public void loadImages(){
-		raisedTile = loadImage("placeholder_tile.png");
 		wall = loadImage("wall"+level+".png");
-		//item = loadImage("placeholder_item.png");
 		empty = loadImage("empty.png");
 		brick = loadImage("raised_brick.png");
 		flat = loadImage("flat"+level+".png");
