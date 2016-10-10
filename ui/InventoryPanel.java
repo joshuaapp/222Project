@@ -30,7 +30,7 @@ import items.Item;
 import items.Key;
 
 public class InventoryPanel extends JPanel {
-	JTextField text = new JTextField();
+	//JTextField text = new JTextField();
 	JPanel buttonPanel = new JPanel();
 	JButton[] itemButtons = new JButton[5];
 	boolean gotInventoryBag = false;
@@ -43,21 +43,21 @@ public class InventoryPanel extends JPanel {
 		this.gameCanvas = gameCanvas;
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		buttonPanel.setBorder(new EmptyBorder(4, 0, 0, 0));
-		text.setText("Find the Chest to gain your Backpack");
+		//text.setText("Find the Chest to gain your Backpack");
 		//text.setBackground(Color.green);
 		buttonPanel.setBackground(Color.DARK_GRAY);
 		this.setLayout(new BorderLayout());
-		text.setBorder(null);
-		text.setHorizontalAlignment(JTextField.CENTER);
+		//text.setBorder(null);
+		//text.setHorizontalAlignment(JTextField.CENTER);
 		this.add(buttonPanel, BorderLayout.CENTER);
-		this.add(text, BorderLayout.PAGE_END);
+		//this.add(text, BorderLayout.PAGE_END);
 		setupIcons();
-//		int x = 0;
-//		while(x < 5){
-//			//addButton();
-//			itemButtons[x] = addButton(x);
-//			x++;
-//		}
+		//		int x = 0;
+		//		while(x < 5){
+		//			//addButton();
+		//			itemButtons[x] = addButton(x);
+		//			x++;
+		//		}
 		updateInventoryPanel();
 		//1 ring
 		//2 key
@@ -65,18 +65,22 @@ public class InventoryPanel extends JPanel {
 		//4 key
 		//5 key
 	}
-public void foundChest(){ 
-	if(gotInventoryBag == false){
-	this.gotInventoryBag = true;
-	int x = 0;
-	while(x < 5){
-		//addButton();
-		itemButtons[x] = addButton(x);
-		x++;
+
+	public void foundChest(){ 
+		if(client.getPlayer().gotBag == true){
+			if(gotInventoryBag == false){
+				this.gotInventoryBag = true;
+				int x = 0;
+				while(x < 5){
+					//addButton();
+					itemButtons[x] = addButton(x);
+					x++;
+				}
+				this.revalidate();
+			}
+		}
 	}
-	this.revalidate();
-	}
-}
+
 	private void setupIcons() {
 		Image img;
 		try {
@@ -118,7 +122,7 @@ public void foundChest(){
 
 		button.addActionListener(new ButtonListener());
 		buttonPanel.add(button);
-		
+
 		System.out.println("Made button "+i);
 		return button;
 	}
@@ -129,35 +133,35 @@ public void foundChest(){
 			String command = e.getActionCommand();
 			System.out.println(command);
 			try {
-			switch(command){
-			case "0":
-				client.tellServerAction("DROP", "Key1");
-				System.out.println("Key1");
-				
-				break;
-			case "1":
-				client.tellServerAction("DROP", "Key2");
-				System.out.println("Key2");
-				
-				break;
-			case "2":
-				client.tellServerAction("DROP", "Key3");
-				System.out.println("Key3");
-				
-				break;
-			case "3":
-				client.tellServerAction("DROP", "Key4");
-				System.out.println("Key4");
-				
-				break;
-			case "4":
-				client.tellServerAction("DROP", "Key5");
-				System.out.println("Key5");
-				
-				break;
-			default:
-			}
-			
+				switch(command){
+				case "0":
+					client.tellServerAction("DROP", "Key1");
+					System.out.println("Key1");
+
+					break;
+				case "1":
+					client.tellServerAction("DROP", "Key2");
+					System.out.println("Key2");
+
+					break;
+				case "2":
+					client.tellServerAction("DROP", "Key3");
+					System.out.println("Key3");
+
+					break;
+				case "3":
+					client.tellServerAction("DROP", "Key4");
+					System.out.println("Key4");
+
+					break;
+				case "4":
+					client.tellServerAction("DROP", "Key5");
+					System.out.println("Key5");
+
+					break;
+				default:
+				}
+
 				Thread.sleep(200);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
@@ -171,28 +175,28 @@ public void foundChest(){
 	public void updateInventoryPanel(){
 		if(gotInventoryBag){
 			System.out.println("Here");
-		text.setText("Select Inventory Item to drop");	
-		ArrayList<Item> inventory = client.getPlayer().inven;
-		for(JButton button: itemButtons){
-			button.setIcon(placeholderKey);
-		}
-		int bagCount = 0;
-		for(Item m : inventory){
-			System.out.println(m.getName());
-			if(m instanceof Key){
-				System.out.println("instance of key");
-				Key key = (Key)m;
-				switch(key.getColor()){
-				case "YELLOW":
-					System.out.println("Change button "+bagCount);
-					itemButtons[bagCount].setIcon(activeKey);
-					if(bagCount < 4){bagCount++;}
-					break;
-				default:
-					System.out.println("YOU found DEFAULT");
+			//text.setText("Select Inventory Item to drop");	
+			ArrayList<Item> inventory = client.getPlayer().inven;
+			for(JButton button: itemButtons){
+				button.setIcon(placeholderKey);
+			}
+			int bagCount = 0;
+			for(Item m : inventory){
+				System.out.println(m.getName());
+				if(m instanceof Key){
+					System.out.println("instance of key");
+					Key key = (Key)m;
+					switch(key.getColor()){
+					case "YELLOW":
+						System.out.println("Change button "+bagCount);
+						itemButtons[bagCount].setIcon(activeKey);
+						if(bagCount < 4){bagCount++;}
+						break;
+					default:
+						System.out.println("YOU found DEFAULT");
+					}
 				}
 			}
-		}
 		}
 	}
 }

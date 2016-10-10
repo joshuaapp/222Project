@@ -114,11 +114,12 @@ public class GameLogic {
 		for(Player m: game.curMonsters){
 			Random rand = new Random();
 			int rand2 = rand.nextInt(4);
+			System.out.println(rand2);
 			switch(rand2){
-			case 1: m.setDirectionFacing(Direction.North); break;
-			case 2: m.setDirectionFacing(Direction.South); break;
-			case 3: m.setDirectionFacing(Direction.East); break;
-			case 4: m.setDirectionFacing(Direction.West); break;
+			case 0: m.setDirectionFacing(Direction.North); break;
+			case 1: m.setDirectionFacing(Direction.South); break;
+			case 2: m.setDirectionFacing(Direction.East); break;
+			case 3: m.setDirectionFacing(Direction.West); break;
 			}
 			legalPlayerMove(m, m.facing);
 		}
@@ -183,16 +184,20 @@ public class GameLogic {
 	}
 
 	public void pickUp(Player p, Item item){
-		p.inven.add(item);
-		
+		if(p.gotBag == true){
+			p.inven.add(item);
+		}
+		if(item instanceof Chest){
+			p.gotBag = true;
+		}
 	}
 
 	public void drop(Player player, String item){
 		//need to add code to get an item object based on the name of the object which is currently a string
-//		Item dropit = new Key("YELLOW");
-//		switch(item){
-//		case "Key": dropit = new Key("YELLOW");
-//		}
+		//		Item dropit = new Key("YELLOW");
+		//		switch(item){
+		//		case "Key": dropit = new Key("YELLOW");
+		//		}
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
@@ -216,7 +221,9 @@ public class GameLogic {
 		Board currentBoard = game.getGameBoard();
 		if(currentBoard.getTile(playerY, playerX).getItem() != null){
 			pickUp(player, currentBoard.getTile(playerY, playerX).getItem());
-			currentBoard.getTile(playerY, playerX).setItem(null);
+			if(player.gotBag){
+				currentBoard.getTile(playerY, playerX).setItem(null);
+			}
 		}
 	}
 }
