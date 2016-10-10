@@ -1,10 +1,16 @@
 package gameWorld;
 
-public class Position {
+import java.io.Serializable;
 
+public class Position implements Serializable{
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -7653952168074488604L;
 	private int x;
 	private int y;
-	
+
 	public Position(int x, int y){
 		this.x = x;
 		this.y = y;
@@ -25,5 +31,5 @@ public class Position {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
 }

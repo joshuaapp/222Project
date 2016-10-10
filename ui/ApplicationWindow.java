@@ -6,7 +6,9 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -22,14 +24,14 @@ import items.Item;
 public class ApplicationWindow extends JFrame{
 	//private static BoardPanel boardPanel;
 	//private MessagePanel messagePanel;
-	private InventoryPanel inventoryPanel; 
+	private InventoryPanel inventoryPanel;
 	//private Console console;
 	private DungeonCanvas gameCanvas;
 
 	private Client client;
 
 	public ApplicationWindow(String title, Client user) {
-		super(title);	
+		super(title);
 		gameCanvas = new DungeonCanvas();
 		//this.messagePanel = new MessagePanel();
 		this.inventoryPanel = new InventoryPanel(user, gameCanvas);
@@ -39,6 +41,7 @@ public class ApplicationWindow extends JFrame{
 		this.setResizable(false); // prevent us from being resizeable
 		this.setVisible(true); // make sure we are visible!
 		gameCanvas.setFocusable(true);
+		this.client = user;
 	}
 
 	public void createAndShowGUI() {
@@ -95,6 +98,7 @@ public class ApplicationWindow extends JFrame{
 			try{
 			int code = e.getKeyCode();
 			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
+				System.out.println("telling "+client+" to move");
 				client.tellServerImMoving("UP");
 			} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN) {
 				client.tellServerImMoving("DOWN");
@@ -110,7 +114,7 @@ public class ApplicationWindow extends JFrame{
 				Thread.sleep(100);
 				inventoryPanel.foundChest();
 				inventoryPanel.updateInventoryPanel();
-				
+
 			}
 			//Need an action here where when a button is pressed it calls client.tellServerAction("DROP", a string called itemName);
 			//for now pressing d will drop an 'item'
@@ -126,10 +130,13 @@ public class ApplicationWindow extends JFrame{
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			
+
 			gameCanvas.repaint();
-			
+
 		}
 
 		@Override

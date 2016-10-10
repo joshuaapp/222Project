@@ -52,21 +52,12 @@ public class InventoryPanel extends JPanel {
 		this.add(buttonPanel, BorderLayout.CENTER);
 		//this.add(text, BorderLayout.PAGE_END);
 		setupIcons();
-		//		int x = 0;
-		//		while(x < 5){
-		//			//addButton();
-		//			itemButtons[x] = addButton(x);
-		//			x++;
-		//		}
+
 		updateInventoryPanel();
-		//1 ring
-		//2 key
-		//3 key
-		//4 key
-		//5 key
+
 	}
 
-	public void foundChest(){ 
+	public void foundChest(){
 		if(client.getPlayer().gotBag == true){
 			if(gotInventoryBag == false){
 				this.gotInventoryBag = true;
@@ -166,6 +157,9 @@ public class InventoryPanel extends JPanel {
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			updateInventoryPanel();
 			gameCanvas.repaint();
@@ -175,7 +169,7 @@ public class InventoryPanel extends JPanel {
 	public void updateInventoryPanel(){
 		if(gotInventoryBag){
 			System.out.println("Here");
-			//text.setText("Select Inventory Item to drop");	
+			//text.setText("Select Inventory Item to drop");
 			ArrayList<Item> inventory = client.getPlayer().inven;
 			for(JButton button: itemButtons){
 				button.setIcon(placeholderKey);
