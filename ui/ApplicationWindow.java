@@ -119,6 +119,8 @@ public class ApplicationWindow extends JFrame{
 				Thread.sleep(100);
 				inventoryPanel.updateInventoryPanel();
 			}
+			Thread.sleep(100);
+			inventoryPanel.updateInventoryPanel();
 			gameCanvas.repaint();
 			}
 			catch(NullPointerException ee){

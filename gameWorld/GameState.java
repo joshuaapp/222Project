@@ -96,7 +96,6 @@ public class GameState {
 	}
 	public void levelUp(){
 		setLevel(getLevel() + 1);
-
 		LevelParser parser = new LevelParser();
 		currentBoard = parser.buildBoard("level"+getLevel()+".txt");
 		parser.parseItemsAndAddToBoard("level"+getLevel()+"Items.txt", currentBoard);
