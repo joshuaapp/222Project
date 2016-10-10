@@ -13,7 +13,7 @@ import tiles.StartTile;
 
 public class GameState {
 	private Board currentBoard;
-	private int level = 1;
+	private int level = 1; //HEY THIS IS NEW CODE
 	public ArrayList<Player> curPlayers;
 	public ArrayList<Player> curMonsters;
 	public enum direction {NORTH, SOUTH, EAST, WEST};
