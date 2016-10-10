@@ -16,8 +16,6 @@ public class ServerHelper implements Runnable{
 	private Socket clientSocket;
 	private Server server;
 	private Client client;
-	private BufferedReader inputFromClient;
-	private PrintWriter outputToClient;
 	private ObjectOutputStream objectOutputToClient;
 	private ObjectInputStream objectInputFromClient;
 	private boolean running;
@@ -26,8 +24,6 @@ public class ServerHelper implements Runnable{
 		this.server = server;
 		this.clientSocket = clientSocket;
 		try{
-			this.inputFromClient = new BufferedReader(new InputStreamReader(this.clientSocket.getInputStream()));
-			this.outputToClient = new PrintWriter(this.clientSocket.getOutputStream());
 			this.objectOutputToClient = new ObjectOutputStream(this.clientSocket.getOutputStream());
 			this.objectOutputToClient.flush();
 			this.objectInputFromClient = new ObjectInputStream(this.clientSocket.getInputStream());
@@ -44,11 +40,18 @@ public class ServerHelper implements Runnable{
 		String clientRequest = null;
 		String[] brokenRequest = new String[3];
 		//get client to add to list of servers clients
-		this.outputToClient.println("GET_CLIENT");
-		this.outputToClient.flush();
 		try{
+			System.out.println("SERVER requesting to get client");
+			this.objectOutputToClient.writeObject("GET_CLIENT");
+			this.objectOutputToClient.flush();
 			while(running){
-				clientRequest = this.inputFromClient.readLine();
+				System.out.println("SERVER trying to read an object");
+				Object clientOutput = this.objectInputFromClient.readObject();
+				if(clientOutput instanceof String){
+					System.out.println("SERVER read a string object: "+clientOutput);
+					clientRequest = (String) clientOutput;
+					brokenRequest = clientRequest.split(" ");
+				}
 				if(clientRequest != null){
 					brokenRequest = clientRequest.split(" ");
 					if(brokenRequest[0].equals("UP") || brokenRequest[0].equals("DOWN") ||
@@ -99,29 +102,29 @@ public class ServerHelper implements Runnable{
 			}
 			objectOutputToClient.reset();
 		}
-		catch(IOException e){
+		catch(IOException | ClassNotFoundException e){
 			System.out.println(e);
 		}
 	}
 
 	public void processClientMovementRequest(String direction, String clientObjectAsString) {
-//		Player toMove = null;
-//		for(Client c : clients){
-//			if(c.getName().equals(clientObjectAsString)){
-//				toMove = c.getPlayer();
-//			}
-//		}
-//		updateGameStatePlayerPositions(direction, toMove);
+		//		Player toMove = null;
+		//		for(Client c : clients){
+		//			if(c.getName().equals(clientObjectAsString)){
+		//				toMove = c.getPlayer();
+		//			}
+		//		}
+		//		updateGameStatePlayerPositions(direction, toMove);
 	}
 
 	public void processClientActionRequest(String action, String clientObjectAsString) {
-//		Player toAct = null;
-//		for(Client c : clients){
-//			if(c.toString().equals(clientObjectAsString)){
-//				toAct = c.getPlayer();
-//			}
-//		}
-//		updateGameStatePlayerAction(action, toAct);
+		//		Player toAct = null;
+		//		for(Client c : clients){
+		//			if(c.toString().equals(clientObjectAsString)){
+		//				toAct = c.getPlayer();
+		//			}
+		//		}
+		//		updateGameStatePlayerAction(action, toAct);
 	}
 
 
@@ -134,17 +137,16 @@ public class ServerHelper implements Runnable{
 	 * @param clientName
 	 */
 	public synchronized void sendGameState(String clientName) {
-//		ReadWriteLock lock = new ReentrantReadWriteLock();
-//		Lock writeLock = lock.writeLock();
-//		writeLock.lock();
+		//		ReadWriteLock lock = new ReentrantReadWriteLock();
+		//		Lock writeLock = lock.writeLock();
+		//		writeLock.lock();
 		for(Client c : this.server.getClients()){
 			if(c.getName().equals(clientName)){
-				outputToClient.println("SENDING_UPDATED_STATE");
-				outputToClient.flush();
 				try {
-					objectOutputToClient.reset();
-					objectOutputToClient.flush();
-					System.out.println("sending game state: "+this.server.getCurrentGameState());
+					//reset
+					this.objectOutputToClient.reset();
+					this.objectOutputToClient.writeObject("SENDING_UPDATED_STATE");
+					this.objectOutputToClient.flush();
 					objectOutputToClient.writeObject(this.server.getCurrentGameState());
 					objectOutputToClient.flush();
 				} catch (IOException e) {
@@ -152,7 +154,7 @@ public class ServerHelper implements Runnable{
 				}
 			}
 		}
-//		writeLock.unlock();
+		//		writeLock.unlock();
 	}
 
 }

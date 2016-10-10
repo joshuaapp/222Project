@@ -19,7 +19,7 @@ public class Client implements Runnable, Serializable {
 	private Player player;
 	private int portNum = 8001;
 	private String name;
-	private String serverIp = "brava.ecs.vuw.ac.nz";
+	private String serverIp = "la-boca-loca.ecs.vuw.ac.nz";
 	private transient ApplicationWindow clientsWindow;
 	private String lastDirectionMoved;
 	private GameState state;
@@ -45,9 +45,6 @@ public class Client implements Runnable, Serializable {
 		this.player = p;
 	}
 
-	public String getLastDirectionMoved(){
-		return this.lastDirectionMoved;
-	}
 
 	/**Here we want to wait for input from the board and carry out movement based on the key entered.
 	 * The client simply hands down the responsibility to the Server which talks to the GameLogic and updates
@@ -84,15 +81,19 @@ public class Client implements Runnable, Serializable {
 	 * (validity is calculated by the server and executes action if valid. otherwise it does nothing
 	 */
 
+	public String getLastDirectionMoved(){
+		return this.lastDirectionMoved;
+	}
+
 	public Socket getSocket() {
 		return this.clientSocket;
 	}
 
-	public void tellServerImMoving(String direction) {
+	public void tellServerImMoving(String direction) throws IOException {
 		this.listenerForServerInput.tellServerImMoving(direction);
 	}
 
-	public void tellServerAction(String action, String item) {
+	public void tellServerAction(String action, String item) throws IOException {
 		this.listenerForServerInput.tellServerAction(action, item);
 	}
 

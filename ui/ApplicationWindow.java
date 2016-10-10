@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -135,6 +136,9 @@ public class ApplicationWindow extends JFrame{
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 
 			gameCanvas.repaint();
@@ -152,7 +156,7 @@ public class ApplicationWindow extends JFrame{
 			// TODO Auto-generated method stub
 
 		}
-		
+
 
 	}
 

@@ -49,7 +49,7 @@ public class InventoryPanel extends JPanel {
 		this.add(buttonPanel, BorderLayout.CENTER);
 		this.add(text, BorderLayout.PAGE_END);
 		setupIcons();
-		
+
 		int x = 0;
 		while(x < 5){
 			//addButton();
@@ -118,33 +118,36 @@ public class InventoryPanel extends JPanel {
 			case "0":
 				client.tellServerAction("DROP", "Key1");
 				System.out.println("Key1");
-				
+
 				break;
 			case "1":
 				client.tellServerAction("DROP", "Key2");
 				System.out.println("Key2");
-				
+
 				break;
 			case "2":
 				client.tellServerAction("DROP", "Key3");
 				System.out.println("Key3");
-				
+
 				break;
 			case "3":
 				client.tellServerAction("DROP", "Key4");
 				System.out.println("Key4");
-				
+
 				break;
 			case "4":
 				client.tellServerAction("DROP", "Key5");
 				System.out.println("Key5");
-				
+
 				break;
 			default:
 			}
-			
+
 				Thread.sleep(200);
 			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -155,7 +158,7 @@ public class InventoryPanel extends JPanel {
 
 	public void updateInventoryPanel(){
 		if(gotInventoryBag){
-		text.setText("Select Inventory Item to drop");	
+		text.setText("Select Inventory Item to drop");
 		ArrayList<Item> inventory = client.getPlayer().inven;
 		for(JButton button: itemButtons){
 			button.setIcon(placeholderKey);
