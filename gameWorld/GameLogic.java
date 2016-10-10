@@ -51,6 +51,7 @@ public class GameLogic {
 
 	public void lowerHP(Player player){
 		player.hp--;
+		player.getRenderPerspective().updatePerspective();
 		if(player.hp <= 0){
 			//player.isMonster = true;
 		}
@@ -146,7 +147,7 @@ public class GameLogic {
 						Player monster = game.getGameBoard().getTile(i, j).getPlayer();
 						if(monster.isMonster){
 							lowerHP(p);
-							System.out.println("Player HP: "+p.hp);
+							//System.out.println("Player HP: "+p.hp);
 							return;
 						}
 					}catch(NullPointerException e){

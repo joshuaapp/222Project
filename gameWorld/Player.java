@@ -16,6 +16,7 @@ public class Player {
 
 	Direction facing = Direction.North;
 	private RenderPerspective rp;
+	public int level =1; 
 	private Board board;
 	String name;
 	public ArrayList<Item> inven = new ArrayList<Item>();

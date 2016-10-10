@@ -13,7 +13,7 @@ import tiles.StartTile;
 
 public class GameState {
 	private Board currentBoard;
-	private int level = 2;
+	private int level = 1;
 	public ArrayList<Player> curPlayers;
 	public ArrayList<Player> curMonsters;
 	public enum direction {NORTH, SOUTH, EAST, WEST};
@@ -41,6 +41,7 @@ public class GameState {
 		Player p2 = new Player(currentBoard, "Player2");
 		curPlayers.add(p1);	
 		curPlayers.add(p2);
+		levelPushToPlayers();
 		
 		
 		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
@@ -96,10 +97,17 @@ public class GameState {
 	}
 
 	public void levelUp(){
-//		setLevel(getLevel() + 1);
-//		run();
-//		System.out.println("CALLED");
-//		System.out.println();
+		setLevel(getLevel() + 1);
+		run();
+		System.out.println("CALLED");
+		System.out.println();
+		levelPushToPlayers();
+	}
+	
+	public void levelPushToPlayers(){
+		for(Player p: curPlayers){
+			p.level = level;
+		}
 	}
 	
 	public void updatePlayerPosition(Player p, String d){
