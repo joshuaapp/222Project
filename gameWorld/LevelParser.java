@@ -142,7 +142,6 @@ public class LevelParser {
 		else if(c == 'S'){
 			//return new StartTile(xPos, yPos);
 			return new StartTile("START", xPos, yPos); //for now until door img is done
-
 		}
 		//~ represents an end tile
 		else if(c == 'E'){
@@ -157,7 +156,6 @@ public class LevelParser {
 		//* represents a pillar ie decrative tile
 		else if(c == 'P'){
 			return new WallTile("WALL");
-
 		}
 		return null;
 	}
@@ -197,11 +195,11 @@ public class LevelParser {
 
 	private Item parseItem(String itemName){
 		switch(itemName){
-		case "chest": 
-			return new Chest("Chest");
-		case "key":
-			return new Key("Key");
-		case "button":
+		case "CHEST": 
+			return new Chest();
+		case "KEY":
+			return new Key();
+		case "BUTTON":
 			return new Button();
 		default: return null;
 		}

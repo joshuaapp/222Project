@@ -1,4 +1,4 @@
-chest 15 10
-chest 10 3
-key 5 15
-key 19 3
+CHEST 15 10
+CHEST 10 3
+KEY 5 15
+KEY 19 3

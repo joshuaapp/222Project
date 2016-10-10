@@ -48,7 +48,7 @@ public class DungeonCanvas extends JPanel{
 
 		raisedTile = loadImage("placeholder_tile.png");
 		wall = loadImage("wall"+level+".png");
-		item = loadImage("placeholder_item.png");
+		//item = loadImage("placeholder_item.png");
 		empty = loadImage("empty.png");
 		brick = loadImage("raised_brick.png");
 		flat = loadImage("flat"+level+".png");
@@ -60,8 +60,8 @@ public class DungeonCanvas extends JPanel{
 		chest = loadImage("placeholder_item.png");
 		key = loadImage("key_item.png");
 		start = loadImage("start.png");
-
 	}
+	
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(600, 600);
@@ -115,7 +115,7 @@ public class DungeonCanvas extends JPanel{
 				}
 				//Finally draws any items on top of the player
 				if(itemImage != null){
-					g.drawImage(item, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
+					g.drawImage(itemImage, screenXPositions[col], 0,screenXPositions[col] + spriteSize, 600, imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
 				col++;
@@ -162,17 +162,11 @@ public class DungeonCanvas extends JPanel{
 	}
 
 	private Image getItemImage(String itemImageName){
-		if(itemImageName == null){
-			return null;
-		}
 		if(itemImageName.equals("KEY")){
 			return key;
 		}
 		if(itemImageName.equals("CHEST")){
 			return chest;
-		}
-		if(!itemImageName.equals("")){
-			return item;
 		}
 		return null;
 	}
