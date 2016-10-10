@@ -1,7 +1,6 @@
 package main;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.SwingUtilities;
 import control.Client;
 import control.Server;
@@ -16,7 +15,6 @@ public class Main {
 	public static void main(String[] args) {
 		ArrayList<Player> players = new ArrayList<>();
 		GameState state = new GameState();
-
 		try{
 		Server gameServer = new Server(state);
 		new Thread(gameServer).start();

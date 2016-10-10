@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import items.Button;
 import items.Chest;
-import items.Door;
 import items.Item;
 import items.Key;
 import tiles.DoorTile;
@@ -24,9 +23,6 @@ public class LevelParser {
 	//specific tiles which are then stored in a 2D array. This is then used
 	//to create the board.
 
-	//to begin with we will have a fixed width and height so we don't have to parse the file for it. 
-	private final int COLS = 30;
-	private final int ROWS = 20;
 	/**
 	 * Reads the text file given and parses each character to a tile and places it 
 	 * into the board. Once finished, returns the board.
@@ -36,11 +32,15 @@ public class LevelParser {
 	 */
 	public Board buildBoard(String boardFile){	
 		try {
+			//Gets the bounds of the 2D array
+			Tile[][] board = getSizedArray(boardFile);
+			
 			//Makes a reader
 			BufferedReader br = new BufferedReader(new FileReader(boardFile));
+			
 			//Splits line into characters
 			char[] line = br.readLine().toCharArray();		
-			Tile[][] board = new Tile[ROWS][COLS];
+			
 			//int y is used to store the info for which line is in use
 			// this is mainly used for assigning the tile to board
 			int row = 0;
@@ -68,6 +68,33 @@ public class LevelParser {
 
 
 	}
+	
+	private Tile[][] getSizedArray(String boardFile) throws IOException{
+		
+		//Makes a reader
+		BufferedReader br = new BufferedReader(new FileReader(boardFile));
+		//Splits line into characters
+		char[] line = br.readLine().toCharArray();		
+		
+		
+		int col = line.length;
+		int row = 1;
+		
+		//Iterates all the way down the file to get the rows
+		while(line != null){
+			
+			String s = br.readLine();
+			if(s != null){
+				row++;
+				line = s.toCharArray();
+			}
+			else{line = null;}
+
+		}
+		
+		//Returns the correct sized 2D Array
+		return new Tile[row][col];
+	}
 
 	/**
 	 * Parses the tile from the character given
@@ -91,10 +118,15 @@ public class LevelParser {
 		else if(c == 'G'){
 			return new GroundTile("GRASS");
 		}
-		//D represents a door
-		else if(c == 'D'){
+		//D represents an UNLOCKED door
+		else if(c == 'd'){
 			//return new DoorTile(xPos, yPos);
 			return new DoorTile("DOOR"); //for now until door img is done
+		}
+		//D represents LOCKED a door
+		else if(c == 'D'){
+			//return new DoorTile(xPos, yPos);
+			return new DoorTile("DOOR", false); //for now until door img is done
 		}
 		//F represents a raised ground tile (non-grassy)
 		else if(c == 'R'){
@@ -116,7 +148,7 @@ public class LevelParser {
 		else if(c == 'E'){
 			//return new EndTile(xPos, yPos);
 
-			return new EndTile("END"); //for now until door img is done
+			return new EndTile("BRICK"); //for now until door img is done
 		}
 		//* represents a fountain ie decrative tile
 		else if(c == 'F'){
@@ -166,11 +198,9 @@ public class LevelParser {
 	private Item parseItem(String itemName){
 		switch(itemName){
 		case "chest": 
-			return new Chest(itemName);
+			return new Chest("Chest");
 		case "key":
-			return new Key(itemName);
-		case "door":
-			return new Door();
+			return new Key("Key");
 		case "button":
 			return new Button();
 		default: return null;
