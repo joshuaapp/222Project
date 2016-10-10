@@ -55,7 +55,7 @@ public class Client implements Runnable {
  * 
  */
 	public synchronized void run() {
-		ApplicationWindow clientsWindow = new ApplicationWindow("Team14's awesome game yeeeh", this);
+		clientsWindow = new ApplicationWindow("Team14's awesome game yeeeh", this);
 		clientsWindow.attatchClientToWindow(this);
 		clientsWindow.createAndShowGUI();
 		clientsWindow.getGameCanvas().setPlayer(player);
