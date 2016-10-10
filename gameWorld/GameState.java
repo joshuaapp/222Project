@@ -96,7 +96,6 @@ public class GameState {
 	}
 	public void levelUp(){
 		setLevel(getLevel() + 1);
-
 		LevelParser parser = new LevelParser();
 		currentBoard = parser.buildBoard("level"+getLevel()+".txt");
 		parser.parseItemsAndAddToBoard("level"+getLevel()+"Items.txt", currentBoard);
@@ -107,6 +106,7 @@ public class GameState {
 		for(Player p: curPlayers){
 			p.level = level;
 			p.setBoard(currentBoard);
+			p.inven = new ArrayList<Item>();
 		}
 		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
 		if(curPlayers.size() <= startTiles.size()){
