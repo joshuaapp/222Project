@@ -42,7 +42,7 @@ public class DungeonCanvas extends JPanel{
 	private Image chest;
 	private Image start;
 	
-	public int level = 1;
+	public int level = 2;
 
 	private int[] imageXPositions = {0, 212, 424, 824, 1036, 1248,
 			1648, 1860, 2072, 2472};
@@ -52,14 +52,9 @@ public class DungeonCanvas extends JPanel{
 	//speed it up
 
 	public DungeonCanvas(){
-		if(player != null){
-			level = player.level;
-		}
 		raisedTile = loadImage("placeholder_tile.png");
 		wall = loadImage("wall"+level+".png");
-		//item = loadImage("placeholder_item.png");
-		//All items display as keys because i cant figure out how this code works
-		item = loadImage("key_item.png");
+		item = loadImage("placeholder_item.png");
 		empty = loadImage("empty.png");
 		brick = loadImage("raised_brick.png");
 		flat = loadImage("flat"+level+".png");
@@ -80,6 +75,9 @@ public class DungeonCanvas extends JPanel{
 
 	@Override
 	public void paint(Graphics g){
+		if(player != null){
+			level = player.level;
+		}
 		level = player.level;
 		if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof StartTile)
@@ -193,9 +191,10 @@ public class DungeonCanvas extends JPanel{
 		if(itemImageName.equals("CHEST")){
 			return chest;
 		}
-		else{
-			return null;
+		if(!itemImageName.equals("")){
+			return item;
 		}
+		return null;
 	}
 
 	public void healthBar(Graphics g){

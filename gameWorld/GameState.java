@@ -29,6 +29,7 @@ public class GameState {
 		initMap();
 		addPlayers();
 		addMonsters();
+		levelPushToPlayers();
 	}
 	
 	/**
