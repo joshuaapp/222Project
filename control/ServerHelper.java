@@ -22,6 +22,7 @@ public class ServerHelper implements Runnable{
 	private PrintWriter outputToClient;
 	private ObjectOutputStream objectOutputToClient;
 	private ObjectInputStream objectInputFromClient;
+	private boolean running;
 
 	public ServerHelper(Server server, Socket clientSocket){
 		this.server = server;
@@ -37,6 +38,7 @@ public class ServerHelper implements Runnable{
 		catch(IOException e){
 			System.out.println(e);
 		}
+		this.running = true;
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public class ServerHelper implements Runnable{
 		this.outputToClient.println("GET_CLIENT");
 		this.outputToClient.flush();
 		try{
-			while(true){
+			while(running){
 				clientRequest = this.inputFromClient.readLine();
 				if(clientRequest != null){
 					brokenRequest = clientRequest.split(" ");
@@ -84,7 +86,11 @@ public class ServerHelper implements Runnable{
 
 					}
 					else if(brokenRequest[0].equals("DISCONNECTING")){
-						//state.
+						Client toRemove = this.server.getClientFromName(brokenRequest[1]);
+						System.out.println("Removing "+toRemove+" from connected clients");
+						this.server.getCurrentGameState().removePlayer(toRemove);
+						this.server.getClients().remove(toRemove);
+						this.running = false;
 					}
 				}
 				//check for objects being sent

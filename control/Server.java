@@ -29,7 +29,7 @@ public class Server implements Runnable{
 	private final int maxClientsCount = 3;
 	private final int portNum = 8001;
 	//all the threads (clients) that are connected
-	private List<Client> clients;
+	private ArrayList<Client> clients;
 
 	public Server(GameState gameState) throws IOException{
 		this.currentGameState = gameState;
@@ -50,9 +50,7 @@ public class Server implements Runnable{
 	public synchronized void run(){
 		while (true) {
 			try {
-				System.out.println("Waiting for client to connect...");
 				Socket client = serverSocket.accept();
-				System.out.println("Client has connected!");
 				ServerHelper helper = new ServerHelper(this, client);
 				new Thread(helper).start();
 
@@ -82,7 +80,7 @@ public class Server implements Runnable{
 		this.currentGameState.addClient(c);
 		clients.add(c);
 	}
-	public List<Client> getClients() {
+	public ArrayList<Client> getClients() {
 		return clients;
 	}
 	public ServerSocket getServerSocket() {
@@ -113,6 +111,16 @@ public class Server implements Runnable{
 
 	public GameState getCurrentGameState() {
 		return this.currentGameState;
+	}
+
+	public Client getClientFromName(String clientName) {
+		for(Client c : this.clients){
+			if(c.getName().equals(clientName)){
+				return c;
+			}
+		}
+		return null;
+
 	}
 
 

@@ -26,6 +26,7 @@ public class ClientListener implements Runnable,Serializable {
 	private transient ObjectOutputStream objectOutputToServer;
 	private transient ObjectInputStream objectInputFromServer;
 	private transient String lastRequest;
+	private transient boolean running;
 
 
 	public ClientListener(Client client, Socket clientSocket){
@@ -43,6 +44,7 @@ public class ClientListener implements Runnable,Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		this.running = true;
 	}
 
 	public synchronized void tellServerImMoving(String movement){
@@ -60,7 +62,7 @@ public class ClientListener implements Runnable,Serializable {
 
 	@Override
 	public void run() {
-		while(true){
+		while(running){
 			//wait for and respond to any input
 			String input;
 			try {
@@ -107,12 +109,10 @@ public class ClientListener implements Runnable,Serializable {
 	}
 
 	public void shutdown() throws IOException {
+		this.running = false;
 		outputToServer.println("DISCONNECTING "+this.client.getName());
 		outputToServer.flush();
-		this.outputToServer.close();
-		this.inputFromServer.close();
-		this.objectOutputToServer.close();
-		this.objectInputFromServer.close();
+		this.clientSocket.close();
 	}
 
 }

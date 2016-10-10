@@ -19,7 +19,7 @@ public class Client implements Runnable, Serializable {
 	private Player player;
 	private int portNum = 8001;
 	private String name;
-	private String serverIp = "rhythm.ecs.vuw.ac.nz";
+	private String serverIp = "sen-sen.ecs.vuw.ac.nz";
 	private transient ApplicationWindow clientsWindow;
 	private String lastDirectionMoved;
 	private GameState state;

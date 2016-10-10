@@ -11,6 +11,7 @@ import gameWorld.Player.Direction;
 import items.Item;
 import tiles.GroundTile;
 import tiles.StartTile;
+import tiles.Tile;
 
 public class GameState implements Serializable{
 	/**
@@ -19,7 +20,7 @@ public class GameState implements Serializable{
 	private static final long serialVersionUID = 8625004722083450882L;
 	private Board currentBoard;
 	private int level = 2;
-	public ArrayList<Player> curPlayers;
+	public Player[] curPlayers;
 	public ArrayList<Player> curMonsters;
 	public ArrayList<Client> clients;
 	public enum direction {NORTH, SOUTH, EAST, WEST};
@@ -27,7 +28,7 @@ public class GameState implements Serializable{
 	private int numPlayers = 0;
 
 	public GameState(){
-		curPlayers = new ArrayList<Player>();
+		curPlayers = new Player[5];
 		curMonsters = new ArrayList<Player>();
 		clients = new ArrayList<Client>();
 		run();
@@ -44,12 +45,39 @@ public class GameState implements Serializable{
 	public void addPlayer(Client c) {
 		numPlayers++;
 		Player p1 = new Player(currentBoard, "Player"+numPlayers);
-		curPlayers.add(p1);
-		StartTile t = currentBoard.getStartingTiles().get(curPlayers.indexOf(p1));
+		int pos = findAvailableSpaceInCurrentPlayers();
+		curPlayers[pos] = p1;
+		StartTile t = currentBoard.getStartingTiles().get(pos);
 		p1.setPosition(t.getStartPosition());
 		currentBoard.placePlayerOnBoard(p1);
-		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
 		c.addPlayer(p1);
+	}
+
+	public void removePlayer(Client c){
+		Player toRemove = c.getPlayer();
+		Position playerPos = toRemove.getPosition();
+		int index = -1;
+		Tile t = this.currentBoard.getTile(playerPos.getY(), playerPos.getX());
+		t.setPlayer(null);
+		for(int i=0; i<curPlayers.length; i++){
+			if(curPlayers[i] != null){
+				if(curPlayers[i].equals(toRemove)){
+					index = i;
+					break;
+				}
+			}
+		}
+		curPlayers[index] = null;
+		numPlayers--;
+	}
+
+	public int findAvailableSpaceInCurrentPlayers(){
+		for(int i=0;i<curPlayers.length; i++){
+			if(curPlayers[i] == null){
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	public void addMonsters(){
