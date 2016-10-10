@@ -33,6 +33,7 @@ public class DungeonCanvas extends JPanel{
 	private Image chest;
 	private Image start;
 	private Image words;
+	private Image chestopen;
 	
 	public int level = 1;
 	private final int squareWidth = 10;
@@ -66,7 +67,8 @@ public class DungeonCanvas extends JPanel{
 		door = loadImage("placeholder_door.png");
 		back = loadImage("back"+level+".png");
 		tree = loadImage("tree.png");
-		chest = loadImage("placeholder_item.png");
+		chest = loadImage("chest.png");
+		chestopen = loadImage("chest_open.png");
 		key = loadImage("key_item.png");
 		start = loadImage("start.png");
 		words = loadImage("words.png");
@@ -201,6 +203,9 @@ public class DungeonCanvas extends JPanel{
 		}
 		if(itemImageName.equals("CHEST")){
 			return chest;
+		}
+		if(itemImageName.equals("CHEST_OPEN")){
+			return chestopen;
 		}
 		return null;
 	}

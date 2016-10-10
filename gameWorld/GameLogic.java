@@ -231,6 +231,12 @@ public class GameLogic {
 		if(currentBoard.getTile(playerY, playerX).getItem() != null){
 			pickUp(player, currentBoard.getTile(playerY, playerX).getItem());
 			if(player.gotBag){
+				if(currentBoard.getTile(playerY, playerX).getItem() instanceof Chest){
+					Chest ch = (Chest)currentBoard.getTile(playerY, playerX).getItem();
+							ch.open();
+							currentBoard.getTile(playerY, playerX).setItemImage("chest_open.png");
+							return;
+				}
 				currentBoard.getTile(playerY, playerX).setItem(null);
 			}
 		}
