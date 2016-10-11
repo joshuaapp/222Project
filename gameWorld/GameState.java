@@ -162,6 +162,7 @@ public class GameState implements Serializable{
 		this.currentBoard = b;
 	}
 	public void updatePlayerAct(Player p, String a, String item) {
+		System.out.println("Attempting to update player action");
 		if(a.equals("PICK")){
 			logic.isThereAnItem(p);
 		}
