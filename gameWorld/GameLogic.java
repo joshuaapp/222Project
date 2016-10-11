@@ -211,6 +211,7 @@ public class GameLogic implements Serializable {
 		}
 		if(item instanceof Chest){
 			p.gotBag = true;
+			System.out.println("In pickup");
 		}
 	}
 

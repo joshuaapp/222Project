@@ -2,9 +2,7 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,19 +11,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
 import control.Client;
-import items.InteractableItem;
 import items.Item;
 import items.Key;
 
@@ -43,13 +37,14 @@ public class InventoryPanel extends JPanel {
 		this.client = client;
 		this.gameCanvas = gameCanvas;
 		setBorder(BorderFactory.createLineBorder(Color.black));
-		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		//buttonPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		//text.setText("Find the Chest to gain your Backpack");
 		//text.setBackground(Color.green);
 		buttonPanel.setBackground(Color.DARK_GRAY);
 		this.setLayout(new BorderLayout());
 		//text.setBorder(null);
 		//text.setHorizontalAlignment(JTextField.CENTER);
+		this.add(new JLabel("Le Label"));
 		this.add(buttonPanel, BorderLayout.CENTER);
 		//this.add(text, BorderLayout.PAGE_END);
 		setupIcons();
@@ -59,6 +54,7 @@ public class InventoryPanel extends JPanel {
 	}
 
 	public void foundChest(){
+		System.out.println("In found chest");
 		if(client.getPlayer().gotBag == true){
 			if(gotInventoryBag == false){
 				this.gotInventoryBag = true;
@@ -94,7 +90,7 @@ public class InventoryPanel extends JPanel {
 
 	public Dimension getPreferredSize() {
 
-		return new Dimension(600,150);
+		return new Dimension(600,125);
 
 	}
 

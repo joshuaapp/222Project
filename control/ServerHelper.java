@@ -52,8 +52,9 @@ public class ServerHelper implements Runnable{
 						sendGameState(brokenRequest[1]);
 					}
 					else if(brokenRequest[0].equals("PICK") || brokenRequest[0].equals("DROP")){
+						System.out.println("Processing pickup or drop request");
 						this.server.processClientActionRequest(brokenRequest[0], brokenRequest[1], brokenRequest[2]);
-						sendGameState(brokenRequest[1]);
+						sendGameState(brokenRequest[2]);
 					}
 					else if(brokenRequest[0].equals("SENDING_CLIENT")){
 						try{

@@ -101,11 +101,10 @@ public class Server implements Runnable{
 				toAct = c.getPlayer();
 			}
 		}
-		updateGameStatePlayerAction(action, toAct, item);
+		System.out.println("updating player with action");
+		currentGameState.updatePlayerAct(toAct, action, item);
 	}
-	public  void updateGameStatePlayerAction(String s, Player p, String item){
-		currentGameState.updatePlayerAct(p, s, item);
-	}
+	
 	public GameState getCurrentGameState() {
 		return this.currentGameState;
 	}

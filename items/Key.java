@@ -13,9 +13,8 @@ public class Key implements InteractableItem, Serializable{
 	private int roomCode;
 	private String color;
 
-	public Key(int code, String color){
+	public Key(int code){
 		this.roomCode = code;
-		this.color = color;
 	} 
 
 
