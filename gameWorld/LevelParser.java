@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import items.Button;
 import items.Chest;
 import items.Item;
 import items.Key;
@@ -190,8 +189,6 @@ public class LevelParser {
 
 		case "KEY":
 			return new Key(keyCounter++);
-		case "BUTTON":
-			return new Button();
 		default: return null;
 		}
 	}
