@@ -218,12 +218,6 @@ public class GameLogic implements Serializable {
 	}
 
 	public void drop(Player player, String item){
-		//need to add code to get an item object based on the name of the object which is currently a string
-		//		Item dropit = new Key("YELLOW");
-		//		switch(item){
-		//		case "Key": dropit = new Key("YELLOW");
-		//		}
-		
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
