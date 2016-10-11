@@ -130,13 +130,7 @@ public class RenderPerspective implements Serializable{
 		return tilesInSight;
 	}
 	
-	/**
-	 * Gets the tile at the specified location and returns it
-	 * 
-	 * @param int
-	 * @param int
-	 * @return Tile
-	 */
+	
 
 	public void setBoard(Board b){
 		board =b;

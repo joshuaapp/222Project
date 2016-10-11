@@ -64,9 +64,14 @@ public class DungeonCanvas extends JPanel{
 		}
 		loadImages();
 	}
-
-
+	/**
+	 * Loads all images for the current level
+	 */
 	public void loadImages(){
+		//In order to speed up the game images are only loaded on 
+		//launch and level change. Levels change the images so need
+		//to be reloaded when switched.
+		
 		wall = loadImage("wall"+level+".png");
 		empty = loadImage("empty.png");
 		brick = loadImage("raised_brick.png");
@@ -96,6 +101,10 @@ public class DungeonCanvas extends JPanel{
 	}
 
 	private void updateScreenPositions(){
+		//The screen is split along the x axis into two thin sections on either
+		//side. In the middle is a wider section. Here the section dimensions are
+		//found and the position to be drawn to screen is found. NEEDED FOR SCALING.
+		
 		thinSection = (int) (this.getWidth()*0.3533);
 		wideSection = (int) (this.getWidth()*(2.0/3.0));
 
@@ -103,33 +112,27 @@ public class DungeonCanvas extends JPanel{
 		screenXPositions[2] = (int) (this.getWidth()*0.167);
 	}
 
+	
+	
 	@Override
 	public void paint(Graphics g){
-		if(player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof EndTile){
-			stars = stars.getScaledInstance(this.getWidth(), this.getHeight(), 0);
-			g.drawImage(stars, 0, 0, null);
-		}
-		else if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
-				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof StartTile)
-				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof DoorTile)){
-			fog = fog.getScaledInstance(this.getWidth(), this.getHeight(), 0);
-			g.drawImage(fog, 0, 0, null);
-		}
-		else{
-			back = back.getScaledInstance(this.getWidth(), this.getHeight(), 0);
-			g.drawImage(back, 0, 0, null);
-		}
+		
+		drawBackground(g);
 
 		if(player != null){	
-
+			
+			//Ensures that the canvas is using the updated images incase the user
+			//has changed levels
 			if(player.getLevel() != level){
 				this.level = player.getLevel();
 				loadImages();
 			}
-
+			
+			//Gets the most recent perspective
 			rp.updatePerspective();
 			Queue<Tile> tiles = rp.getTilesInSight();
 
+			//Ensures that if the screen has been adjusted the perspectives are right
 			updateScreenPositions();
 
 			int col = 0;
@@ -153,9 +156,11 @@ public class DungeonCanvas extends JPanel{
 					scaleSize = (int) wideSection;
 				}
 
+				//Pop the top tile off and get the Tile and Item images
 				Tile tile = tiles.remove();
 				Image tileImage = getTileImage(tile.getTileImage());
 				Image itemImage = getItemImage(tile.getItemImage());
+				
 				//Draws the Tile first 
 				g.drawImage(tileImage, screenXPositions[col], 0,screenXPositions[col] + scaleSize, getHeight(), imageXPositions[count],0,
 						imageXPositions[count] + spriteSize, 600, null);
@@ -173,8 +178,11 @@ public class DungeonCanvas extends JPanel{
 					g.drawImage(itemImage, screenXPositions[col], 0,screenXPositions[col] + scaleSize, getHeight(), imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
+				//Move RIGHT and count up to 9
 				col++;
 				count++;
+				
+				//If already drawn all three then go back left
 				if(col == 3){
 					col = 0;
 				}
@@ -182,17 +190,35 @@ public class DungeonCanvas extends JPanel{
 					count = 0;
 				}
 			}
-			if(player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof EndTile){
-				Color c = new Color(123, 142, 155, 127);
-				g.setColor(c);
-				g.drawRect(0, 0, this.getWidth(), this.getHeight());
-			}
 			drawMap(g);
 			healthBar(g);
 		}
 	}	
+	
+	private void drawBackground(Graphics g){
+		
+		//Checks the tile the player is on and draws the background accordingly 
+		Tile currentTile = player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX());
+		
+		if(currentTile instanceof EndTile){
+			stars = stars.getScaledInstance(this.getWidth(), this.getHeight(), 0);
+			g.drawImage(stars, 0, 0, null);
+		}
+		else if(currentTile.getTileImage().equals("BRICK")
+				|| currentTile instanceof StartTile
+				|| currentTile instanceof DoorTile){
+			fog = fog.getScaledInstance(this.getWidth(), this.getHeight(), 0);
+			g.drawImage(fog, 0, 0, null);
+		}
+		else{
+			back = back.getScaledInstance(this.getWidth(), this.getHeight(), 0);
+			g.drawImage(back, 0, 0, null);
+		}
+	}
 
 	private Image getTileImage(String tileImageName){
+		//Images are pre loaded and stored in fields so when a new tile
+		//is used the appropriate image is returned
 		if(tileImageName.equals("GRASS")){
 			return flat;
 		}
@@ -232,6 +258,8 @@ public class DungeonCanvas extends JPanel{
 	}
 
 	private Image getItemImage(String itemImageName){
+		//Images are pre loaded and stored in fields so when a new image
+		//is used the appropriate image is returned
 		if(itemImageName.equals("KEY")){
 			return key;
 		}
@@ -250,7 +278,9 @@ public class DungeonCanvas extends JPanel{
 		return null;
 	}
 
-	public void healthBar(Graphics g){
+	private void healthBar(Graphics g){
+		//Draws the health bar at the top of the screen
+		
 		Color cur;
 		int health = player.hp;
 		int bar = 0;
@@ -258,6 +288,9 @@ public class DungeonCanvas extends JPanel{
 		int yPos = 5;
 		int squareWidth = 25;
 		int squareHeight = 15;
+		
+		//Works it's way up to the current users health bar, changing the colour
+		//depending on number
 		while(bar < health){
 			int R = 255 - (15*health);
 			int G = (10*bar) + 50;
@@ -281,22 +314,25 @@ public class DungeonCanvas extends JPanel{
 
 		//Size the miniMap draws as
 		for(String s : map){
-			//Everything other than a wall will be blank so find the wall and 
-			//Use fillRect as opposed to drawRect
+			//Every character represents a different thing.
+			//Wall
 			if(s.equals("w")){
 				g.setColor(Color.BLUE);
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
 			}
+			//Player
 			else if(s.equals("p")){
 				g.setColor(Color.GREEN);
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
 
 			}
+			//Item
 			else if(s.equals("i")){
 				g.setColor(Color.MAGENTA);
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
 
 			}
+			//Player standing on an item
 			else if(s.equals("o")){
 				g.setColor(Color.GREEN);
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
@@ -304,18 +340,22 @@ public class DungeonCanvas extends JPanel{
 				g.fillRect((xPos*squareWidth)+(squareWidth/5),(yPos*squareWidth)+(squareWidth/5),
 						squareWidth - ((squareWidth/5) * 2),squareWidth - ((squareWidth/5) * 2));
 			}
+			//Monster
 			else if(s.equals("m")){
 				g.setColor(Color.RED);
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
 			}
+			//Anything else, used for grid lines
 			else if(s.equals("_")){
 				g.setColor(Color.BLACK);
 				g.drawRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
 			}
+			//Door
 			else if(s.equals("d")){
 				g.setColor(Color.orange);
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
 			}
+			//Anything outside the map
 			else if(s.equals("=")){
 				g.setColor(Color.DARK_GRAY);
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
@@ -342,6 +382,7 @@ public class DungeonCanvas extends JPanel{
 		int recSize = squareWidth/3;
 		g.setColor(Color.white);
 
+		//Adjust the placement of the white rec depending on where the player is facing
 		switch(player.getDirectionFacing()){
 		case North:
 			g.fillRect(x, y, squareWidth, recSize);
@@ -357,10 +398,22 @@ public class DungeonCanvas extends JPanel{
 			break;
 		}
 	}
+	
 	public void setPlayer(Player p){
 		player= p;
 		rp = p.getRP();
 	}
+	
+	public Player getPlayer() {
+		return this.player;
+	}
+	
+	/**
+	 * Loads an image from a file and returns it
+	 * 
+	 * @param String
+	 * @return Image
+	 */
 	public static Image loadImage(String filename) {
 		// using the URL means the image loads when stored
 		// in a jar or expanded into individual files.
@@ -373,7 +426,5 @@ public class DungeonCanvas extends JPanel{
 			throw new RuntimeException("Unable to load image: " + filename);
 		}
 	}
-	public Player getPlayer() {
-		return this.player;
-	}
+
 }
