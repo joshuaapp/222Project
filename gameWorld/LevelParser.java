@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import items.Chest;
+import items.Crystal;
 import items.Item;
 import items.Key;
 import tiles.DoorTile;
@@ -186,9 +187,10 @@ public class LevelParser {
 		switch(itemName){
 		case "CHEST": 
 			return new Chest();
-
 		case "KEY":
 			return new Key(keyCounter++);
+		case "CRYSTAL":
+			return new Crystal();
 		default: return null;
 		}
 	}
