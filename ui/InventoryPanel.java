@@ -20,38 +20,32 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import control.Client;
+import items.Crystal;
 import items.Item;
 import items.Key;
 
 public class InventoryPanel extends JPanel {
-	//JTextField text = new JTextField();
+	DungeonCanvas gameCanvas;
 	int buttonSize = 100;
 	JPanel buttonPanel = new JPanel();
 	JButton[] itemButtons = new JButton[5];
 	boolean gotInventoryBag = false;
 	private Client client;
-	Icon placeholderKey;
-	DungeonCanvas gameCanvas;
+	private Icon placeholderKey;
 	private Icon activeKey;
+	private Icon activeCrystal;
+	private Icon placeholderCrystal;
+	
 	public InventoryPanel(Client client, DungeonCanvas gameCanvas) {
 		this.client = client;
 		this.gameCanvas = gameCanvas;
 		setBorder(BorderFactory.createLineBorder(Color.black));
 		buttonPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		//text.setText("Find the Chest to gain your Backpack");
-		//text.setBackground(Color.green);
-		
 		buttonPanel.setBackground(Color.DARK_GRAY);
 		this.setLayout(new BorderLayout());
-		//text.setBorder(null);
-		//text.setHorizontalAlignment(JTextField.CENTER);
-		//this.add(new JLabel("Le Label"), BorderLayout.PAGE_END);
 		this.add(buttonPanel, BorderLayout.CENTER);
-		//this.add(text, BorderLayout.PAGE_END);
 		setupIcons();
-
 		updateInventoryPanel();
-
 	}
 
 	public void foundChest(){
@@ -60,9 +54,7 @@ public class InventoryPanel extends JPanel {
 				this.gotInventoryBag = true;
 				int x = 0;
 				while(x < 5){
-					//addButton();
 					itemButtons[x] = addButton(x);
-					System.out.println("made button "+x);
 					x++;
 				}
 				this.revalidate();
@@ -81,9 +73,16 @@ public class InventoryPanel extends JPanel {
 			image = ImageIO.read(new File("keybuttonicon.png"));
 			image = image.getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
 			this.activeKey = new ImageIcon(image);
+			
+			image = ImageIO.read(new File("activeCrystal.png"));
+			image = image.getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
+			this.activeCrystal = new ImageIcon(image);
+			
+			image = ImageIO.read(new File("placeholderCrystal.png"));
+			image = image.getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
+			this.placeholderCrystal = new ImageIcon(image);
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -163,24 +162,30 @@ public class InventoryPanel extends JPanel {
 		if(gotInventoryBag){
 			System.out.println("Here");
 			ArrayList<Item> inventory = client.getPlayer().inven;
-			for(JButton button: itemButtons){
-				button.setIcon(placeholderKey);
-				button.setText("");
+			for (int i = 0; i < itemButtons.length; i++) {
+				JButton button = itemButtons[i];
+				if(i == 4){
+					button.setIcon(placeholderCrystal);
+				}
+				else{
+					button.setIcon(placeholderKey);
+					button.setText("");
+				}
 			}
 			int bagCount = 0;
 			for(Item m : inventory){
 				JButton button = itemButtons[bagCount];
-//				if(m instanceof Chrystal){
-//					Chrystal c = (Chrystal)m;
-//					button.setIcon(activeChrstal);
-//				}
+				if(m instanceof Crystal){
+					//Crystal c = (Crystal)m;
+					itemButtons[4].setIcon(activeCrystal);
+				}
 				if(m instanceof Key){
 					Key key = (Key)m;
 						button.setText(key.getCode()+1+"");
 						button.setHorizontalTextPosition(JButton.CENTER);
 						button.setVerticalTextPosition(JButton.CENTER);
 						button.setIcon(activeKey);
-						if(bagCount < 4){bagCount++;}
+						if(bagCount < 3){bagCount++;}
 					//	break;
 				//	default:
 				//	}

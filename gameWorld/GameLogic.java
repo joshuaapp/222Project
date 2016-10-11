@@ -164,9 +164,6 @@ public class GameLogic implements Serializable {
 		}
 		Position oldPos = new Position(x,y);
 		game.getGameBoard().updatePlayerPos(p, oldPos);
-		if(game.getGameBoard().getTile(p.getPosition().getY(), p.getPosition().getX()) instanceof EndTile){
-			game.levelUp();
-		}
 		if(!p.isMonster){
 			for(int i = y-1; i<=y+1; i++){
 				for(int j = x-1; j<=x+1; j++){
@@ -214,8 +211,8 @@ public class GameLogic implements Serializable {
 		}
 		if(item instanceof Chest){
 			p.gotBag = true;
-			System.out.println("In pickup");
 		}
+		
 	}
 
 	public void drop(Player player, String item){
@@ -228,15 +225,23 @@ public class GameLogic implements Serializable {
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
-		if(currentBoard.getTile(playerY, playerX).getItem() == null){
+		Tile currentTile = currentBoard.getTile(playerY, playerX);
+		if(currentTile.getItem() == null && !(currentTile instanceof EndTile)){
 			for(Item i: player.inven){
 				if(i instanceof Key){
 					currentBoard.getTile(playerY, playerX).setItem(i);
 					player.inven.remove(i);
 					break;
 				}
+				
 			}
 		}
+		else if(currentTile instanceof EndTile){
+			if(item.equals("CRYSTAL")){
+				game.levelUp();
+			}
+		}
+		
 
 	}
 
