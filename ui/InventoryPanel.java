@@ -23,7 +23,13 @@ import control.Client;
 import items.Crystal;
 import items.Item;
 import items.Key;
-
+/**
+ * Inventory Panel contains a JPanel for the JButtons, 
+ * stores the icons for the buttons and methods to
+ * update the panel for the players' viewing.
+ * @author anna
+ *
+ */
 public class InventoryPanel extends JPanel {
 	DungeonCanvas gameCanvas;
 	int buttonSize = 100;
@@ -35,7 +41,7 @@ public class InventoryPanel extends JPanel {
 	private Icon activeKey;
 	private Icon activeCrystal;
 	private Icon placeholderCrystal;
-	
+
 	public InventoryPanel(Client client, DungeonCanvas gameCanvas) {
 		this.client = client;
 		this.gameCanvas = gameCanvas;
@@ -44,12 +50,18 @@ public class InventoryPanel extends JPanel {
 		buttonPanel.setBackground(Color.DARK_GRAY);
 		this.setLayout(new BorderLayout());
 		this.add(buttonPanel, BorderLayout.CENTER);
-		setupIcons();
+		this.activeCrystal = setupIcons("activeCrystal.png");		//Button Icons
+		this.placeholderCrystal = setupIcons("placeholderCrystal.png");
+		this.activeKey = setupIcons("keybuttonicon.png");
+		this.placeholderKey = setupIcons("placeholderkeybutton.png");
 		updateInventoryPanel();
 	}
-/**
- * 
- */
+	/**
+	 * FoundChest is called when the player opens the chest object on the map, if the 
+	 * player has stored the bag from the chest then all buttons are created in 
+	 * their inactive state.
+	 * 
+	 */
 	public void foundChest(){
 		if(client.getPlayer().gotBag == true){
 			if(gotInventoryBag == false){
@@ -63,59 +75,59 @@ public class InventoryPanel extends JPanel {
 			}
 		}
 	}
-
-	private void setupIcons() {
+	
+	/**
+	 * Takes an image fileName and creates a scaled Icon version of it.
+	 * @param inputImage - image file to be converted
+	 * @return Icon
+	 */
+	private Icon setupIcons(String inputImage) {
 		Image img;
 		try {
-			img = ImageIO.read(new File("placeholderkeybutton.png"));
+			img = ImageIO.read(new File(inputImage));
 			img = img.getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
-			this.placeholderKey = new ImageIcon(img);
-			Image image;
-
-			image = ImageIO.read(new File("keybuttonicon.png"));
-			image = image.getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
-			this.activeKey = new ImageIcon(image);
-			
-			image = ImageIO.read(new File("activeCrystal.png"));
-			image = image.getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
-			this.activeCrystal = new ImageIcon(image);
-			
-			image = ImageIO.read(new File("placeholderCrystal.png"));
-			image = image.getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
-			this.placeholderCrystal = new ImageIcon(image);
+			return new ImageIcon(img);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		return null;
 	}
 
 	public Dimension getPreferredSize() {
-
 		return new Dimension(600,125);
-
 	}
 
 	public void paintComponent(Graphics g) {
-
 		super.paintComponent(g);
 		this.setBackground(Color.green);
-
-
 	}
+	
+	/**
+	 * addButton creates a new JButton instance with the action command set to 
+	 * be equal to input i
+	 * @param i - set to JButton's action command
+	 * @return - JButton
+	 */
 	public JButton addButton(int i){
 		JButton button = new JButton();
 		button.setActionCommand(i+"");
 		button.setPreferredSize(new Dimension(buttonSize, buttonSize));
 		button.setFocusable(false);
 		button.setIcon(placeholderKey);
-
 		button.addActionListener(new ButtonListener());
 		buttonPanel.add(button);
 		return button;
 	}
+	
+	/**
+	 * ButtonListener is tuned into the buttons on the button panel (contained inside
+	 * the Inventory Panel). Mainly passes through to the server a "Drop" action
+	 * @author anna
+	 *
+	 */
 	public class ButtonListener implements ActionListener{
-
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
@@ -145,46 +157,49 @@ public class InventoryPanel extends JPanel {
 
 					break;
 				default:
+					break;
 				}
-
 				Thread.sleep(200);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			updateInventoryPanel();
-			gameCanvas.repaint();
+			updateInventoryPanel();									//refresh the inventory panel
+			gameCanvas.repaint();									
 		}
 	}
-
+/**
+ * Depending on if player is in possession of the bag (found in the chest), 
+ * then the inventory panel is revealed to the player. As items are collected,
+ * used or discarded, they are displayed as either active or inactive
+ */
 	public void updateInventoryPanel(){
 		if(gotInventoryBag){
 			ArrayList<Item> inventory = client.getPlayer().inven;
 			for (int i = 0; i < itemButtons.length; i++) {
 				JButton button = itemButtons[i];
-				if(i == 4){
-					button.setIcon(placeholderCrystal);
+				if(i == 4){											//Unique case of crystal
+					button.setIcon(placeholderCrystal);				//Set to be inactive crystal image
 				}
-				else{
+				else{												//Setting text to nothing and image to inactive for the keys
 					button.setIcon(placeholderKey);
 					button.setText("");
 				}
 			}
-			int bagCount = 0;
+			int bagCount = 0;										//Bag count keeps count of where the next key needs to be added from the array
 			for(Item m : inventory){
 				JButton button = itemButtons[bagCount];
-				if(m instanceof Crystal){
-					//Crystal c = (Crystal)m;
+				if(m instanceof Crystal){							//If the item found is a crystal it must be placed in a specific place in the inventory panel
 					itemButtons[4].setIcon(activeCrystal);
 				}
-				if(m instanceof Key){
+				if(m instanceof Key){								//The keys can be added in the order they were collected in
 					Key key = (Key)m;
-						button.setText(key.getCode()+1+"");
-						button.setHorizontalTextPosition(JButton.CENTER);
-						button.setVerticalTextPosition(JButton.CENTER);
-						button.setIcon(activeKey);
-						if(bagCount < 3){bagCount++;}
+					button.setText(key.getCode()+1+"");				//Set the text of the button to equal the code of the key
+					button.setHorizontalTextPosition(JButton.CENTER);
+					button.setVerticalTextPosition(JButton.CENTER);
+					button.setIcon(activeKey);
+					if(bagCount < 3){bagCount++;}
 				}
 			}
 		}

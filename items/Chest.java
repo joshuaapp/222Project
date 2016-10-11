@@ -7,9 +7,6 @@ import java.util.List;
 
 public class Chest implements StorageItem, InteractableItem, Serializable{
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = -6084076119986289636L;
 	private List<Item> contents;
 	private boolean isOpen = false;
