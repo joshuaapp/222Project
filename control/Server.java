@@ -88,9 +88,11 @@ public class Server implements Runnable{
 				toMove = c.getPlayer();
 			}
 		}
-		currentGameState.updatePlayerPosition(toMove, direction);
+		if(toMove != null){
+			currentGameState.updatePlayerPosition(toMove, direction);
+		}
 	}
-	
+
 	/**This method takes an action request from the client and asks the gameState to update depending on the action.
 	 * 
 	 * @param action 
@@ -106,7 +108,7 @@ public class Server implements Runnable{
 		}
 		currentGameState.updatePlayerAct(toAct, action, item);
 	}
-	
+
 	/**Returns the current game state of server
 	 * 
 	 * @return
@@ -114,7 +116,7 @@ public class Server implements Runnable{
 	public GameState getCurrentGameState() {
 		return this.currentGameState;
 	}
-	
+
 	/**Gets the name of a client from the list of clients connected to the server
 	 * 
 	 * @param clientName

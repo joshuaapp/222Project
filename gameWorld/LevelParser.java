@@ -2,8 +2,8 @@ package gameWorld;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import items.Button;
 import items.Chest;
+import items.Crystal;
 import items.Item;
 import items.Key;
 import tiles.DoorTile;
@@ -138,7 +138,7 @@ public class LevelParser {
 		//~ represents an end tile
 		else if(c == 'E'){
 			//return new EndTile(xPos, yPos);
-			return new EndTile("BRICK"); //for now until door img is done
+			return new EndTile("END"); //for now until door img is done
 		}
 		//~ represents an pillar tile
 		else if(c == 'P'){
@@ -186,11 +186,10 @@ public class LevelParser {
 		switch(itemName){
 		case "CHEST": 
 			return new Chest();
-
 		case "KEY":
 			return new Key(keyCounter++);
-		case "BUTTON":
-			return new Button();
+		case "CRYSTAL":
+			return new Crystal();
 		default: return null;
 		}
 	}

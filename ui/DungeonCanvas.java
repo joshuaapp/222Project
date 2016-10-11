@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import gameWorld.Player;
 import tiles.DoorTile;
+import tiles.EndTile;
 import tiles.StartTile;
 import tiles.Tile;
 public class DungeonCanvas extends JPanel{
@@ -38,6 +40,12 @@ public class DungeonCanvas extends JPanel{
 	private Image chestopen;
 	private Image fog;
 	private Image pillar;
+	private Image crystal;
+	private Image stars;
+	private Image blacktile;
+	private Image end;
+	private Image crystalglow;
+
 
 	public int level = 1;
 	private final int squareWidth = 10;
@@ -78,6 +86,11 @@ public class DungeonCanvas extends JPanel{
 		words = loadImage("words.png");
 		fog = loadImage("backfog.png");
 		pillar = loadImage("pillar.png");
+		crystal = loadImage("crystal.png");
+		stars = loadImage("stars.png");
+		blacktile = loadImage("blacktiles.png");
+		end = loadImage("endtile.png");
+		crystalglow = loadImage("crystal_glow.png");
 	}
 
 	@Override
@@ -95,8 +108,11 @@ public class DungeonCanvas extends JPanel{
 
 	@Override
 	public void paint(Graphics g){
-
-		if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
+		if(player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof EndTile){
+			stars = stars.getScaledInstance(this.getWidth(), this.getHeight(), 0);
+			g.drawImage(stars, 0, 0, null);
+		}
+		else if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof StartTile)
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof DoorTile)){
 			fog = fog.getScaledInstance(this.getWidth(), this.getHeight(), 0);
@@ -168,7 +184,12 @@ public class DungeonCanvas extends JPanel{
 				if(count == 9){
 					count = 0;
 				}
-			}	
+			}
+			if(player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof EndTile){
+				Color c = new Color(123, 142, 155, 127);
+				g.setColor(c);
+				g.drawRect(0, 0, this.getWidth(), this.getHeight());
+			}
 			drawMap(g);
 			healthBar(g);
 			drawMessage(g);
@@ -185,13 +206,13 @@ public class DungeonCanvas extends JPanel{
 		for(String s : this.canvasText){
 			int stringWidth = g.getFontMetrics().stringWidth(s);
 			if(textXPos+stringWidth < cutoff){
-			
+
 				g.setColor(myColour);
 				g.fillRect(textXPos, textYPos-15, stringWidth+5, 15);
 				g.setColor(Color.white);
 				g.drawString(s, textXPos, textYPos);
 				textXPos += stringWidth + 5;
-				
+
 			}
 			else{
 				textXPos = 140;
@@ -241,6 +262,9 @@ public class DungeonCanvas extends JPanel{
 		else if(tileImageName.equals("PILLAR")){
 			return pillar;
 		}
+		else if(tileImageName.equals("END")){
+			return end;
+		}
 		else{
 			return flat;
 		}
@@ -252,6 +276,12 @@ public class DungeonCanvas extends JPanel{
 		}
 		if(itemImageName.equals("CHEST")){
 			return chest;
+		}
+		if(itemImageName.equals("CRYSTAL")){
+			return crystal;
+		}
+		if(itemImageName.equals("CRYSTAL_GLOW")){
+			return crystalglow;
 		}
 		if(itemImageName.equals("CHEST_OPEN")){
 			return chestopen;

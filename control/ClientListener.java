@@ -101,7 +101,6 @@ public class ClientListener implements Runnable,Serializable {
 										client.addPlayer(p);
 										client.getApplicationWindow().getGameCanvas().setPlayer(p);
 										p.getRP().updatePerspective();
-										client.getApplicationWindow().updateAll();
 									}
 								}
 							}

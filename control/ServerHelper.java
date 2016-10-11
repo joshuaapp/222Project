@@ -1,7 +1,6 @@
 package control;
 import java.io.*;
 import java.net.Socket;
-import gameWorld.Player;
 
 public class ServerHelper implements Runnable{
 	private Socket clientSocket;

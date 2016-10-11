@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import gameWorld.GameState.direction;
 import items.Chest;
+import items.Crystal;
 import items.Item;
 import items.Key;
 import tiles.DoorTile;
@@ -56,11 +57,14 @@ public class GameLogic implements Serializable {
 		player.getRenderPerspective().updatePerspective();
 		if(player.getHp() <= 0){
 			for(Player p: game.curPlayers){
-				p.setHp(15);
+				if(p!=null){
+					p.setHp(15);
+				}
 			}
-			game.resetLevel();
 		}
+		game.resetLevel();;
 	}
+
 
 	public void legalPlayerMove(Player player, direction facing){
 		Position playerPos = player.getPosition();
@@ -155,9 +159,6 @@ public class GameLogic implements Serializable {
 		}
 		Position oldPos = new Position(x,y);
 		game.getGameBoard().updatePlayerPos(p, oldPos);
-		if(game.getGameBoard().getTile(p.getPosition().getY(), p.getPosition().getX()) instanceof EndTile){
-			game.levelUp();
-		}
 		if(!p.isMonster()){
 			for(int i = y-1; i<=y+1; i++){
 				for(int j = x-1; j<=x+1; j++){
@@ -166,14 +167,13 @@ public class GameLogic implements Serializable {
 						if(player.isMonster()){
 							lowerHP(p);
 							return;
-
 						}
 					}
-
 				}
 			}
 		}
 	}
+
 
 	//This rotates the users view to right 90 degrees
 	public direction getRightDirection(direction dir){
@@ -199,33 +199,49 @@ public class GameLogic implements Serializable {
 	}
 
 	public void pickUp(Player p, Item item){
-		if(p.isGotBag() == true && p.getInven().size() < 3){
+		if(item.equals("CRYSTAL")){
+			((Crystal) item).removeFromEnd();
+		}
+		if(p.isGotBag() == true && p.getInven().size() < 5){
 			p.getInven().add(item);
 		}
 		if(item instanceof Chest){
 			p.setGotBag(true);
 		}
+
+
 	}
 
 	public void drop(Player player, String item){
-		//need to add code to get an item object based on the name of the object which is currently a string
-		//		Item dropit = new Key("YELLOW");
-		//		switch(item){
-		//		case "Key": dropit = new Key("YELLOW");
-		//		}
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
-		if(currentBoard.getTile(playerY, playerX).getItem() == null){
+		Tile currentTile = currentBoard.getTile(playerY, playerX);
+		if(currentTile.getItem() == null && !(currentTile instanceof EndTile)){
 			for(Item i: player.getInven()){
-				if(i instanceof Key){
-					currentBoard.getTile(playerY, playerX).setItem(i);
+				if(i.getName().equals(item)){
+					currentTile.setItem(i);
 					player.getInven().remove(i);
 					break;
 				}
+			}		
+		}
+
+		else if(currentTile instanceof EndTile){
+			for(Item i: player.getInven()){
+				if(item.equals("CRYSTAL")){
+					((Crystal) i).placeOnEnd();
+					currentTile.setItem(i);
+					player.getInven().remove(i);
+					game.levelUp();
+					break;
+				}
+
 			}
 		}
+
+
 
 	}
 
@@ -234,7 +250,7 @@ public class GameLogic implements Serializable {
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
-		if(currentBoard.getTile(playerY, playerX).getItem() != null&& player.getInven().size() < 3){
+		if(currentBoard.getTile(playerY, playerX).getItem() != null&& player.getInven().size() < 5){
 			pickUp(player, currentBoard.getTile(playerY, playerX).getItem());
 			if(player.isGotBag()){
 				if(currentBoard.getTile(playerY, playerX).getItem() instanceof Chest){
