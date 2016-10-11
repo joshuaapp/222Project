@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import items.Button;
 import items.Chest;
 import items.Item;
@@ -17,14 +16,13 @@ import tiles.Tile;
 import tiles.WallTile;
 public class LevelParser {
 	int doorCounter = 0;
-	String[] colors = {"YELLOW", "BLUE", "RED"};
 	/*Strings of imagenames to refer to*/
 	private int keyCounter = 0;
+
 
 	//The board is stored as a grid of characters which are used to create  
 	//specific tiles which are then stored in a 2D array. This is then used
 	//to create the board.
-
 	/**
 	 * Reads the text file given and parses each character to a tile and places it 
 	 * into the board. Once finished, returns the board.
@@ -59,16 +57,12 @@ public class LevelParser {
 					line = s.toCharArray();
 				}
 				else{line = null;}
-
 			}
 			br.close();
 			return new Board(board);
-
 		} catch (IOException e) {
 			throw new RuntimeException("file reading failed."+e);
 		}
-
-
 	}
 	
 	private Tile[][] getSizedArray(String boardFile) throws IOException{
@@ -91,13 +85,11 @@ public class LevelParser {
 				line = s.toCharArray();
 			}
 			else{line = null;}
-
 		}
 		
 		//Returns the correct sized 2D Array
 		return new Tile[row][col];
 	}
-
 	/**
 	 * Parses the tile from the character given
 	 * 
@@ -107,7 +99,6 @@ public class LevelParser {
 	 * @return Tile
 	 */
 	private Tile parseTile(Character c, int xPos, int yPos){
-
 		//W represents a wall
 		if(c == 'W'){
 			return new WallTile("WALL");
@@ -136,12 +127,10 @@ public class LevelParser {
 		else if(c == 'R'){
 			return new GroundTile("BRICK");
 		}
-
 		//F represents a raised ground tile (non-grassy)
 		else if(c == 'T'){
 			return new WallTile("TREE");
 		}
-
 		//* represents a starting tile
 		else if(c == 'S'){
 			//return new StartTile(xPos, yPos);
@@ -150,20 +139,24 @@ public class LevelParser {
 		//~ represents an end tile
 		else if(c == 'E'){
 			//return new EndTile(xPos, yPos);
-
 			return new EndTile("BRICK"); //for now until door img is done
 		}
+
+
 		//* represents a fountain ie decrative tile
 		else if(c == 'F'){
 			return new WallTile("WALL");
+		}
+		else if(c == '?'){
+			return new GroundTile("WORDS");
 		}
 		//* represents a pillar ie decrative tile
 		else if(c == 'P'){
 			return new WallTile("WALL");
 		}
+
 		return null;
 	}
-
 	/**Parse file containing information about items in a level.
 	 * format: type_position, e.g: 
 	 * 
@@ -190,20 +183,17 @@ public class LevelParser {
 				else break;
 			}
 			br.close();
-
 		} catch (IOException e) {
 			throw new RuntimeException("file reading failed."+e);
 		}
-
 	}
-
 	private Item parseItem(String itemName){
 		switch(itemName){
 		case "CHEST": 
 			return new Chest();
 
 		case "KEY":
-			return new Key(keyCounter++, colors[doorCounter-1]);
+			return new Key(keyCounter++);
 		case "BUTTON":
 			return new Button();
 		default: return null;

@@ -1,14 +1,20 @@
 package items;
 
-public class Key implements InteractableItem{
+import java.io.Serializable;
+
+public class Key implements InteractableItem, Serializable{
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -1623059651144318193L;
 
 	
 	private int roomCode;
 	private String color;
 
-	public Key(int code, String color){
+	public Key(int code){
 		this.roomCode = code;
-		this.color = color;
 	} 
 
 

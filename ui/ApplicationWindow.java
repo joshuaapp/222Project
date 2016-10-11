@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -16,15 +17,17 @@ import javax.swing.JTextArea;
 import control.Client;
 
 public class ApplicationWindow extends JFrame{
+
 	
 	private InventoryPanel inventoryPanel; 
+
 	private DungeonCanvas gameCanvas;
 	//private Console console;
 	private StartMenu start;
 	private Client client;
 
 	public ApplicationWindow(String title, Client user) {
-		super(title);	
+		super(title);
 		gameCanvas = new DungeonCanvas();
 		
 		//this.messagePanel = new MessagePanel();
@@ -36,6 +39,7 @@ public class ApplicationWindow extends JFrame{
 		this.start = new StartMenu();
 		this.start.addMenuListeners( new GameListener());
 		gameCanvas.setFocusable(true);
+		this.client = user;
 	}
 
 	public void createAndShowGUI() {
@@ -98,6 +102,7 @@ public class ApplicationWindow extends JFrame{
 			try{
 			int code = e.getKeyCode();
 			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
+				System.out.println("telling "+client+" to move");
 				client.tellServerImMoving("UP");
 			} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN) {
 				client.tellServerImMoving("DOWN");
@@ -110,10 +115,11 @@ public class ApplicationWindow extends JFrame{
 			}
 			else if(code == KeyEvent.VK_SPACE) {
 				client.tellServerAction("PICK", null);
-				Thread.sleep(100);
+				Thread.sleep(200);
+				System.out.println("Back to appwin");
 				inventoryPanel.foundChest();
+				System.out.println("about to update inventory");
 				inventoryPanel.updateInventoryPanel();
-				
 			}
 			//Need an action here where when a button is pressed it calls client.tellServerAction("DROP", a string called itemName);
 			//for now pressing d will drop an 'item'
@@ -131,10 +137,13 @@ public class ApplicationWindow extends JFrame{
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-			
+
 			gameCanvas.repaint();
-			
+
 		}
 
 		@Override
@@ -158,7 +167,7 @@ public class ApplicationWindow extends JFrame{
 			String pushed = e.getActionCommand();
 			if(pushed.equals("Restart")){
 				System.out.println("Reset");
-				client.resetLevel();
+				//client.resetLevel();
 			}
 			else if(pushed.equals("Exit")){
 				System.exit(0);
@@ -184,6 +193,11 @@ public class ApplicationWindow extends JFrame{
 		if(client != null){
 			this.client = client;
 		}
+	}
+
+	public void updateAll() {
+		this.gameCanvas.repaint();
+		this.inventoryPanel.repaint();
 	}
 
 }

@@ -1,0 +1,7 @@
+Chest image
+Ground tile with flowers on it
+another animal
+level 3 map
+implement fog in rooms
+new trees in level 1
+overlay text
