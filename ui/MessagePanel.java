@@ -27,7 +27,7 @@ public class MessagePanel extends JPanel{
 	
 	public void makeMessagePanel(Console console) {
         JTextArea textPane = new JTextArea();
-        console.setArea(textPane);					
+      //  console.setArea(textPane);					
         this.add(textPane);
 	}
 }

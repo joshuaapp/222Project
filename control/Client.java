@@ -18,7 +18,7 @@ public class Client implements Runnable, Serializable {
 	private Player player;
 	private int portNum = 8001;
 	private String name;
-	private String serverIp = "10.140.33.121";
+	private String serverIp = "10.140.42.197";
 	private transient ApplicationWindow clientsWindow;
 	private String lastDirectionMoved;
 	private GameState state;
@@ -78,6 +78,7 @@ public class Client implements Runnable, Serializable {
 	public Socket getSocket() {
 		return this.clientSocket;
 	}
+
 	public void tellServerImMoving(String direction) throws IOException {
 		this.listenerForServerInput.tellServerImMoving(direction);
 	}
@@ -110,5 +111,6 @@ public class Client implements Runnable, Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 }

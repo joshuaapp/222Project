@@ -1,7 +1,6 @@
 package ui;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
@@ -9,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Queue;
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import gameWorld.Player;
 import tiles.DoorTile;
@@ -18,7 +18,6 @@ public class DungeonCanvas extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private Player player;
 	private RenderPerspective rp;
-	
 	private Image flat;
 	private Image raisedTile;
 	private Image wall;
@@ -49,8 +48,13 @@ public class DungeonCanvas extends JPanel{
 	//speed it up
 
 	public DungeonCanvas(){
+
+		if(player != null){
+			level = player.level;
+		}
 		loadImages();
 	}
+	
 	
 	public void loadImages(){
 		wall = loadImage("wall"+level+".png");
