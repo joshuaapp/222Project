@@ -20,37 +20,32 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import control.Client;
+import items.Crystal;
 import items.Item;
 import items.Key;
 
 public class InventoryPanel extends JPanel {
-	//JTextField text = new JTextField();
-	int buttonSize = 115;
+	DungeonCanvas gameCanvas;
+	int buttonSize = 100;
 	JPanel buttonPanel = new JPanel();
-	JButton[] itemButtons = new JButton[3];
+	JButton[] itemButtons = new JButton[5];
 	boolean gotInventoryBag = false;
 	private Client client;
-	Icon placeholderKey;
-	DungeonCanvas gameCanvas;
+	private Icon placeholderKey;
 	private Icon activeKey;
+	private Icon activeCrystal;
+	private Icon placeholderCrystal;
+	
 	public InventoryPanel(Client client, DungeonCanvas gameCanvas) {
 		this.client = client;
 		this.gameCanvas = gameCanvas;
 		setBorder(BorderFactory.createLineBorder(Color.black));
-		//buttonPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
-		//text.setText("Find the Chest to gain your Backpack");
-		//text.setBackground(Color.green);
+		buttonPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		buttonPanel.setBackground(Color.DARK_GRAY);
 		this.setLayout(new BorderLayout());
-		//text.setBorder(null);
-		//text.setHorizontalAlignment(JTextField.CENTER);
-		this.add(new JLabel("Le Label"));
 		this.add(buttonPanel, BorderLayout.CENTER);
-		//this.add(text, BorderLayout.PAGE_END);
 		setupIcons();
-
 		updateInventoryPanel();
-
 	}
 
 	public void foundChest(){
@@ -58,8 +53,7 @@ public class InventoryPanel extends JPanel {
 			if(gotInventoryBag == false){
 				this.gotInventoryBag = true;
 				int x = 0;
-				while(x < 3){
-					//addButton();
+				while(x < 5){
 					itemButtons[x] = addButton(x);
 					x++;
 				}
@@ -79,9 +73,16 @@ public class InventoryPanel extends JPanel {
 			image = ImageIO.read(new File("keybuttonicon.png"));
 			image = image.getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
 			this.activeKey = new ImageIcon(image);
+			
+			image = ImageIO.read(new File("activeCrystal.png"));
+			image = image.getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
+			this.activeCrystal = new ImageIcon(image);
+			
+			image = ImageIO.read(new File("placeholderCrystal.png"));
+			image = image.getScaledInstance(buttonSize, buttonSize, Image.SCALE_SMOOTH);
+			this.placeholderCrystal = new ImageIcon(image);
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -120,8 +121,6 @@ public class InventoryPanel extends JPanel {
 				switch(command){
 				case "0":
 					client.tellServerAction("DROP", "Key1");
-					System.out.println("Key1");
-
 					break;
 				case "1":
 					client.tellServerAction("DROP", "Key2");
@@ -162,24 +161,31 @@ public class InventoryPanel extends JPanel {
 	public void updateInventoryPanel(){
 		if(gotInventoryBag){
 			System.out.println("Here");
-			//text.setText("Select Inventory Item to drop");
 			ArrayList<Item> inventory = client.getPlayer().inven;
-			for(JButton button: itemButtons){
-				button.setIcon(placeholderKey);
-				button.setText("");
+			for (int i = 0; i < itemButtons.length; i++) {
+				JButton button = itemButtons[i];
+				if(i == 4){
+					button.setIcon(placeholderCrystal);
+				}
+				else{
+					button.setIcon(placeholderKey);
+					button.setText("");
+				}
 			}
 			int bagCount = 0;
 			for(Item m : inventory){
+				JButton button = itemButtons[bagCount];
+				if(m instanceof Crystal){
+					//Crystal c = (Crystal)m;
+					itemButtons[4].setIcon(activeCrystal);
+				}
 				if(m instanceof Key){
 					Key key = (Key)m;
-					//switch(key.getColor()){
-					//case "YELLOW":
-						//itemButtons[bagCount].set;
-						itemButtons[bagCount].setText(key.getCode()+1+"");
-						itemButtons[bagCount].setHorizontalTextPosition(JButton.CENTER);
-						itemButtons[bagCount].setVerticalTextPosition(JButton.CENTER);
-						itemButtons[bagCount].setIcon(activeKey);
-						if(bagCount < 2){bagCount++;}
+						button.setText(key.getCode()+1+"");
+						button.setHorizontalTextPosition(JButton.CENTER);
+						button.setVerticalTextPosition(JButton.CENTER);
+						button.setIcon(activeKey);
+						if(bagCount < 3){bagCount++;}
 					//	break;
 				//	default:
 				//	}
