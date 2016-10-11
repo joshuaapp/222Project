@@ -78,6 +78,7 @@ public class Client implements Runnable, Serializable {
 	public Socket getSocket() {
 		return this.clientSocket;
 	}
+
 	public void tellServerImMoving(String direction) throws IOException {
 		this.listenerForServerInput.tellServerImMoving(direction);
 	}
@@ -110,5 +111,6 @@ public class Client implements Runnable, Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 }

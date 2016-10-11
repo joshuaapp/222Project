@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Queue;
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import gameWorld.Player;
 import tiles.DoorTile;
@@ -17,7 +18,6 @@ public class DungeonCanvas extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private Player player;
 	private RenderPerspective rp;
-	
 	private Image flat;
 	private Image raisedTile;
 	private Image wall;
@@ -33,6 +33,8 @@ public class DungeonCanvas extends JPanel{
 	private Image start;
 	private Image words;
 	private Image chestopen;
+	private Image fog;
+	private Image pillar;
 	
 	public int level = 1;
 	private final int squareWidth = 10;
@@ -48,14 +50,19 @@ public class DungeonCanvas extends JPanel{
 	//speed it up
 
 	public DungeonCanvas(){
+
+		if(player != null){
+			level = player.level;
+		}
 		loadImages();
 	}
+	
 	
 	public void loadImages(){
 		wall = loadImage("wall"+level+".png");
 		empty = loadImage("empty.png");
 		brick = loadImage("raised_brick.png");
-		flat = loadImage("flat"+level+".png");
+		flat = loadImage("longgrass"+level+".png");
 		players = loadImage("placeholder_player.png");
 		monster = loadImage("monster"+level+".png");
 		door = loadImage("placeholder_door.png");
@@ -66,6 +73,8 @@ public class DungeonCanvas extends JPanel{
 		key = loadImage("key_item.png");
 		start = loadImage("start.png");
 		words = loadImage("words.png");
+		fog = loadImage("backfog.png");
+		pillar = loadImage("pillar.png");
 	}
 	
 	@Override
@@ -87,8 +96,8 @@ public class DungeonCanvas extends JPanel{
 		if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof StartTile)
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof DoorTile)){
-			g.setColor(Color.BLACK);
-			g.fillRect(0,0,getWidth(),getHeight());
+			fog = fog.getScaledInstance(this.getWidth(), this.getHeight(), 0);
+			g.drawImage(fog, 0, 0, null);
 		}
 		else{
 			back = back.getScaledInstance(this.getWidth(), this.getHeight(), 0);
@@ -160,9 +169,7 @@ public class DungeonCanvas extends JPanel{
 			drawMap(g);
 			healthBar(g);
 		}
-	}
-	
-	
+	}	
 	
 	private Image getTileImage(String tileImageName){
 		if(tileImageName.equals("GRASS")){
@@ -191,6 +198,9 @@ public class DungeonCanvas extends JPanel{
 		}
 		else if(tileImageName.equals("START")){
 			return start;
+		}
+		else if(tileImageName.equals("PILLAR")){
+			return pillar;
 		}
 		else{
 			return flat;

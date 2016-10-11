@@ -61,7 +61,10 @@ public class GameLogic implements Serializable {
 		player.hp--;
 		player.getRenderPerspective().updatePerspective();
 		if(player.hp <= 0){
-			//player.isMonster = true;
+			for(Player p: game.curPlayers){
+				p.hp = 15;
+			}
+			game.resetLevel();
 		}
 	}
 
@@ -211,6 +214,7 @@ public class GameLogic implements Serializable {
 		}
 		if(item instanceof Chest){
 			p.gotBag = true;
+			System.out.println("In pickup");
 		}
 	}
 
