@@ -23,7 +23,13 @@ import control.Client;
 import items.Crystal;
 import items.Item;
 import items.Key;
-
+/**
+ * Inventory Panel contains a JPanel for the JButtons, 
+ * stores the icons for the buttons and methods to
+ * update the panel for the players' viewing.
+ * @author anna
+ *
+ */
 public class InventoryPanel extends JPanel {
 	DungeonCanvas gameCanvas;
 	int buttonSize = 100;
@@ -121,10 +127,7 @@ public class InventoryPanel extends JPanel {
 	 *
 	 */
 	public class ButtonListener implements ActionListener{
-		/**
-		 * ActionCommand is read from Action event and passed though a switch statement 
-		 * 
-		 */
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();

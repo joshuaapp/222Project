@@ -12,91 +12,61 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import control.Client;
-
+/**
+ * Application window is the main class that handles Swing
+ *  and the JFrame that contains all the related Swing components.
+ *  Also contains useful Button and Key Listeners
+ * @author anna
+ *
+ */
 public class ApplicationWindow extends JFrame{
-
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1305558202319031926L;
-
 	private InventoryPanel inventoryPanel; 
-
 	private DungeonCanvas gameCanvas;
-	//private Console console;
 	private StartMenu start;
 	private Client client;
 
 	public ApplicationWindow(String title, Client user) {
 		super(title);
 		gameCanvas = new DungeonCanvas();
-		
-		//this.messagePanel = new MessagePanel();
-		
 		this.inventoryPanel = new InventoryPanel(user, gameCanvas);
-		//this.console = new Console();
-		//console.setArea(new JLabel("Image and Text"));
-		//this.messagePanel.makeMessagePanel(console);
 		this.start = new StartMenu();
 		this.start.addMenuListeners( new GameListener());
-		gameCanvas.setFocusable(true);
+		gameCanvas.setFocusable(true);			//make sure you return focus to canvas after clicking buttons
 		this.client = user;
 	}
-
+	
+	/**
+	 * createAndShowGui essentially loads up the main part of the GUI 
+	 * including creating the JFrame and adding all necessary components, setting layout
+	 * and making it all visable
+	 */
 	public void createAndShowGUI() {
 
 		JFrame f = new JFrame(this.getTitle());
 		f.setSize(800, 900);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLayout(new BorderLayout());
-		//console.setBackground(Color.CYAN);
-		//console.setPreferredSize(getPreferredSize());
-		//console.setOpaque(false);
-		
-		//gameCanvas.add(console);
-		//gamePanel.setPreferredSize(getPreferredSize());
-		//messagePanel.setPreferredSize(getPreferredSize());
 		inventoryPanel.setPreferredSize(getPreferredSize());
-		//f.add(messagePanel, BorderLayout.LINE_END);
 		f.add(inventoryPanel, BorderLayout.PAGE_END);
 		f.add(gameCanvas, BorderLayout.CENTER);
 		gameCanvas.addKeyListener(new GameKeyListener());
-
-		//  messagePanel.setMaximumSize(getPreferredSize());
-		//  messagePanel.setPreferredSize(getPreferredSize());
-		// f.setLayout(new GridLayout(1,2));
-		//f.setLayout(new BorderLayout());
 		f.setJMenuBar(start);
-		//gameCanvas.add(gameCanvas.label);
 		f.pack();
 		f.setVisible(true);
-		//this.writeOut("Player messages go here :)");
 	}
 
 	public DungeonCanvas getGameCanvas() {
 		return gameCanvas;
 	}
 
-	/**
-	 * Creates a basic text panel
-	 * @return
-	 */
-	protected static JComponent makeTextPanel() {
-		JPanel panel = new JPanel(false);
-		JTextArea textPane = new JTextArea();
-		panel.setLayout(new GridLayout(1, 1));
-		panel.add(textPane);
-		return panel;
-	}
-//	/**
-//	 * Put a message to the 'console' for the player to see
-//	 * @param string
-//	 */
-//	public void writeOut(String string) {
-//
-//	}
 
+	/**
+	 * GameKeyListener is a KeyListener that gives direction for when certain keys are pressed. 
+	 * The main ones handled here are the arrow keys, WSDA and Space. 
+	 * Each one has its own personal call to the server.
+	 * @author anna
+	 *
+	 */
 	public class GameKeyListener implements KeyListener{
 
 		@Override
@@ -116,12 +86,10 @@ public class ApplicationWindow extends JFrame{
 			}
 			else if(code == KeyEvent.VK_SPACE) {
 				client.tellServerAction("PICK", null);
-				Thread.sleep(200);
-				inventoryPanel.foundChest();
+				Thread.sleep(200);								//Thread sleep is added in many places 
+				inventoryPanel.foundChest();					//due to a lag in some data returning from the server
 				inventoryPanel.updateInventoryPanel();
 			}
-			//Need an action here where when a button is pressed it calls client.tellServerAction("DROP", a string called itemName);
-			//for now pressing d will drop an 'item'
 			else if(code == KeyEvent.VK_D) {
 				client.tellServerAction("DROP", "Key");
 				Thread.sleep(100);
@@ -134,51 +102,41 @@ public class ApplicationWindow extends JFrame{
 			catch(NullPointerException ee){
 				System.out.println(ee.getMessage());
 			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
 			gameCanvas.repaint();
-
 		}
 
 		@Override
 		public void keyReleased(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void keyTyped(KeyEvent arg0) {
-			// TODO Auto-generated method stub
-
 		}
 
 	}
-
+	/**
+	 * GameListener is specifically for the menu bar, 
+	 * which in this case holds only the exit option but could hold any other options 
+	 * such as a level reset
+	 * @author anna
+	 *
+	 */
 	public class GameListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String pushed = e.getActionCommand();
-			if(pushed.equals("Restart")){
-				System.out.println("Reset");
-				//client.resetLevel();
-			}
-			else if(pushed.equals("Exit")){
+			if(pushed.equals("Exit")){
 				System.exit(0);
 			}
 		}
+
 	}
-	/**
-	 * Put a message to the 'console' for the player to see
-	 * @param string
-	 */
-	public void writeOut(String string) {
-	}
+	
 	/**Method to connect a client to a certain window so the window can send requests
 	 * from client to server.
 	 * @param client
@@ -188,10 +146,4 @@ public class ApplicationWindow extends JFrame{
 			this.client = client;
 		}
 	}
-
-	public void updateAll() {
-		this.gameCanvas.repaint();
-		this.inventoryPanel.repaint();
-	}
-
 }
