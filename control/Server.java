@@ -100,7 +100,6 @@ public class Server implements Runnable{
 				toAct = c.getPlayer();
 			}
 		}
-		System.out.println("updating player with action");
 		currentGameState.updatePlayerAct(toAct, action, item);
 	}
 	
@@ -114,9 +113,5 @@ public class Server implements Runnable{
 			}
 		}
 		return null;
-	}
-	public void shutdown() {
-		System.out.println("Shutting down the server!");
-
 	}
 }

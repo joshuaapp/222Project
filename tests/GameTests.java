@@ -15,7 +15,6 @@ import gameWorld.LevelParser;
 
 public class GameTests {
 
-
 	@Test
 	public void testPlayerPlacedOnBoard() throws Exception {
 		Board b = createBoard();

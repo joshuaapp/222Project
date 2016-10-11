@@ -52,6 +52,7 @@ public class ClientListener implements Runnable,Serializable {
 
 	@Override
 	public void run() {
+		outer :
 		while(running){
 			try {
 				Object serverOutput = objectInputFromServer.readObject();
@@ -94,6 +95,9 @@ public class ClientListener implements Runnable,Serializable {
 			}
 			catch (IOException e) {
 				System.out.println("CLIENT IOException when reading object from server, error "+e.getStackTrace());
+				//server has shutdown therefore stop client
+				System.exit(1);
+				break outer;
 			} catch (ClassNotFoundException e1) {
 				System.out.println("CLIENT: Class not found when reading object from server, error "+e1.getStackTrace());
 			}

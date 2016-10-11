@@ -107,7 +107,6 @@ public class ApplicationWindow extends JFrame{
 			try{
 			int code = e.getKeyCode();
 			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_W) {
-				System.out.println("telling "+client+" to move");
 				client.tellServerImMoving("UP");
 			} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN || code == KeyEvent.VK_S) {
 				client.tellServerImMoving("DOWN");
@@ -172,7 +171,6 @@ public class ApplicationWindow extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			String pushed = e.getActionCommand();
 			if(pushed.equals("Restart")){
-				System.out.println("Reset");
 				//client.resetLevel();
 			}
 			else if(pushed.equals("Exit")){
