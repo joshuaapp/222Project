@@ -130,7 +130,6 @@ public class GameState implements Serializable{
 	public void levelPushToPlayers(){
 		for(Player p: curPlayers){
 			if(p != null){
-				System.out.println(p);
 				p.level = level;
 				p.setBoard(currentBoard);
 				p.inven = new ArrayList<Item>();
@@ -153,7 +152,6 @@ public class GameState implements Serializable{
 		this.currentBoard = b;
 	}
 	public void updatePlayerAct(Player p, String a, String item) {
-		System.out.println("Attempting to update player action");
 		if(a.equals("PICK")){
 			logic.isThereAnItem(p);
 		}

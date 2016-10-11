@@ -124,22 +124,18 @@ public class InventoryPanel extends JPanel {
 					break;
 				case "1":
 					client.tellServerAction("DROP", "Key2");
-					System.out.println("Key2");
 
 					break;
 				case "2":
 					client.tellServerAction("DROP", "Key3");
-					System.out.println("Key3");
 
 					break;
 				case "3":
 					client.tellServerAction("DROP", "Key4");
-					System.out.println("Key4");
 
 					break;
 				case "4":
 					client.tellServerAction("DROP", "Key5");
-					System.out.println("Key5");
 
 					break;
 				default:
@@ -160,7 +156,6 @@ public class InventoryPanel extends JPanel {
 
 	public void updateInventoryPanel(){
 		if(gotInventoryBag){
-			System.out.println("Here");
 			ArrayList<Item> inventory = client.getPlayer().inven;
 			for (int i = 0; i < itemButtons.length; i++) {
 				JButton button = itemButtons[i];

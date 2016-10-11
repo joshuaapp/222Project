@@ -39,7 +39,6 @@ public class GameLogic implements Serializable {
 	//If an up or down key has been pressed the player will move
 	//If a left or right key is pressed, rotate the users direction facing
 	public void rotateOrMove(Player p, String movement){
-		System.out.println("rotateOrMove("+p+","+movement+")");
 		switch(movement){
 		case "UP":
 			legalPlayerMove(p, p.getDirectionFacing());
@@ -105,12 +104,10 @@ public class GameLogic implements Serializable {
 
 		if(newTile != null){
 			if(newTile.isWalkable() && newTile.getPlayer() == null){
-				System.out.println("Calling actuallyMove("+player+","+facing+") from inside gameLogic legalPlayerMove method");
 				actuallyMove(player, facing);
 			}
 			else if(newTile instanceof DoorTile){
 				DoorTile doorTile = (DoorTile)newTile;
-				System.out.println("Door code = "+doorTile.getDoorCode());
 				ArrayList<Item> inven = player.getInven();
 				for(int i = 0; i <inven.size(); i++){
 					if(inven.get(i) instanceof Key){
@@ -139,7 +136,6 @@ public class GameLogic implements Serializable {
 		for(Player m: game.curMonsters){
 			Random rand = new Random();
 			int rand2 = rand.nextInt(4);
-			System.out.println(rand2);
 			switch(rand2){
 			case 0: m.setDirectionFacing(Direction.North); break;
 			case 1: m.setDirectionFacing(Direction.South); break;
@@ -171,7 +167,6 @@ public class GameLogic implements Serializable {
 						Player monster = game.getGameBoard().getTile(i, j).getPlayer();
 						if(monster.isMonster){
 							lowerHP(p);
-							//System.out.println("Player HP: "+p.hp);
 							return;
 						}
 					}catch(NullPointerException e){
