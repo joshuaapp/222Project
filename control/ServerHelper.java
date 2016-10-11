@@ -52,7 +52,6 @@ public class ServerHelper implements Runnable{
 						sendGameState(brokenRequest[1]);
 					}
 					else if(brokenRequest[0].equals("PICK") || brokenRequest[0].equals("DROP")){
-						System.out.println("Processing pickup or drop request");
 						this.server.processClientActionRequest(brokenRequest[0], brokenRequest[1], brokenRequest[2]);
 						sendGameState(brokenRequest[2]);
 					}
@@ -120,9 +119,6 @@ public class ServerHelper implements Runnable{
 	 * @param clientName
 	 */
 	public synchronized void sendGameState(String clientName) {
-		//		ReadWriteLock lock = new ReentrantReadWriteLock();
-		//		Lock writeLock = lock.writeLock();
-		//		writeLock.lock();
 		for(Client c : this.server.getClients()){
 			if(c.getName().equals(clientName)){
 				try {
@@ -137,6 +133,5 @@ public class ServerHelper implements Runnable{
 				}
 			}
 		}
-		//		writeLock.unlock();
 	}
 }

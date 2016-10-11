@@ -54,7 +54,6 @@ public class InventoryPanel extends JPanel {
 	}
 
 	public void foundChest(){
-		System.out.println("In found chest");
 		if(client.getPlayer().gotBag == true){
 			if(gotInventoryBag == false){
 				this.gotInventoryBag = true;
@@ -110,8 +109,6 @@ public class InventoryPanel extends JPanel {
 
 		button.addActionListener(new ButtonListener());
 		buttonPanel.add(button);
-
-		System.out.println("Made button "+i);
 		return button;
 	}
 	public class ButtonListener implements ActionListener{
@@ -119,7 +116,6 @@ public class InventoryPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
-			System.out.println(command);
 			try {
 				switch(command){
 				case "0":
@@ -174,16 +170,10 @@ public class InventoryPanel extends JPanel {
 			}
 			int bagCount = 0;
 			for(Item m : inventory){
-				System.out.println(m.getName());
 				if(m instanceof Key){
 					Key key = (Key)m;
-
-					System.out.println("instance of key, code = "+key.getCode());
-
 					//switch(key.getColor()){
 					//case "YELLOW":
-						System.out.println("Change button "+bagCount);
-						
 						//itemButtons[bagCount].set;
 						itemButtons[bagCount].setText(key.getCode()+1+"");
 						itemButtons[bagCount].setHorizontalTextPosition(JButton.CENTER);
@@ -192,7 +182,6 @@ public class InventoryPanel extends JPanel {
 						if(bagCount < 2){bagCount++;}
 					//	break;
 				//	default:
-					//	System.out.println("YOU found DEFAULT");
 				//	}
 
 				}
