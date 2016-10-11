@@ -160,7 +160,6 @@ public class InventoryPanel extends JPanel {
 
 	public void updateInventoryPanel(){
 		if(gotInventoryBag){
-			System.out.println("Here");
 			ArrayList<Item> inventory = client.getPlayer().inven;
 			for (int i = 0; i < itemButtons.length; i++) {
 				JButton button = itemButtons[i];

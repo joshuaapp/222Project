@@ -96,7 +96,6 @@ public class Player implements Serializable{
 	}
 
 	public void setBoard(Board b){
-		System.out.println("Setting board of player "+this+" with renderperspective "+getRp()+" to \n"+b);
 		getRp().setBoard(b);
 		board = b;
 	}

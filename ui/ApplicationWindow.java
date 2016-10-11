@@ -102,7 +102,6 @@ public class ApplicationWindow extends JFrame{
 			try{
 			int code = e.getKeyCode();
 			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_W) {
-				System.out.println("telling "+client+" to move");
 				client.tellServerImMoving("UP");
 			} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN || code == KeyEvent.VK_S) {
 				client.tellServerImMoving("DOWN");
@@ -116,9 +115,7 @@ public class ApplicationWindow extends JFrame{
 			else if(code == KeyEvent.VK_SPACE) {
 				client.tellServerAction("PICK", null);
 				Thread.sleep(200);
-				System.out.println("Back to appwin");
 				inventoryPanel.foundChest();
-				System.out.println("about to update inventory");
 				inventoryPanel.updateInventoryPanel();
 			}
 			//Need an action here where when a button is pressed it calls client.tellServerAction("DROP", a string called itemName);
@@ -172,12 +169,7 @@ public class ApplicationWindow extends JFrame{
 			else if(pushed.equals("Exit")){
 				System.exit(0);
 			}
-			
-			
-
-			
 		}
-		
 	}
 	/**
 	 * Put a message to the 'console' for the player to see

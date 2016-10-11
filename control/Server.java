@@ -91,7 +91,7 @@ public class Server implements Runnable{
 				toMove = c.getPlayer();
 			}
 		}
-		System.out.println("Updating game state player positions["+direction+","+clientObjectAsString+"]");
+		
 		updateGameStatePlayerPositions(direction, toMove);
 	}
 	public  void processClientActionRequest(String action, String item, String clientObjectAsString) {
@@ -101,7 +101,6 @@ public class Server implements Runnable{
 				toAct = c.getPlayer();
 			}
 		}
-		System.out.println("updating player with action");
 		currentGameState.updatePlayerAct(toAct, action, item);
 	}
 	
@@ -118,6 +117,5 @@ public class Server implements Runnable{
 	}
 	public void shutdown() {
 		System.out.println("Shutting down the server!");
-
 	}
 }

@@ -14,6 +14,7 @@ import tiles.GroundTile;
 import tiles.StartTile;
 import tiles.Tile;
 import tiles.WallTile;
+
 public class LevelParser {
 	int doorCounter = 0;
 	/*Strings of imagenames to refer to*/
@@ -139,7 +140,7 @@ public class LevelParser {
 		//~ represents an end tile
 		else if(c == 'E'){
 			//return new EndTile(xPos, yPos);
-			return new EndTile("BRICK"); //for now until door img is done
+			return new EndTile("END"); //for now until door img is done
 		}
 		//~ represents an pillar tile
 		else if(c == 'P'){
