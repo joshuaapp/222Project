@@ -234,15 +234,22 @@ public class GameLogic implements Serializable {
 		}
 		
 		else if(currentTile instanceof EndTile){
-			for(Item i: player.inven){
-				if(item.equals("CRYSTAL")){
-					((Crystal) i).placeOnEnd();
-					currentTile.setItem(i);
-					player.inven.remove(i);
-					game.levelUp();
-					break;
+			if(item.equals("CRYSTAL")){
+				for(Item i: player.inven){
+					if(i.getName().equals("CRYSTAL")){
+						((Crystal) i).placeOnEnd();
+						currentTile.setItem(i);
+						player.inven.remove(i);						
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						game.levelUp();
+						break;
+					}	
 				}
-				
+					
 			}
 		}
 		
