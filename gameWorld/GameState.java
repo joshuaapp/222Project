@@ -92,9 +92,11 @@ public class GameState implements Serializable{
 		Player monster = new Player(currentBoard, "Monster", true);
 		Player monster1 = new Player(currentBoard, "Monster1", true);
 		Player monster2 = new Player(currentBoard, "Monster2", true);
+		Player monster3 = new Player(currentBoard, "Monster3", true);
 		curMonsters.add(monster);
 		curMonsters.add(monster1);
 		curMonsters.add(monster2);
+		curMonsters.add(monster3);
 
 		ArrayList<Position> monTiles = currentBoard.getMonsterStartingTiles();
 
