@@ -245,6 +245,11 @@ public class GameLogic implements Serializable {
 					((Crystal) i).placeOnEnd();
 					currentTile.setItem(i);
 					player.inven.remove(i);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 					game.levelUp();
 					break;
 				}
