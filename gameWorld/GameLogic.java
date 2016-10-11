@@ -229,6 +229,7 @@ public class GameLogic implements Serializable {
 		Tile currentTile = currentBoard.getTile(playerY, playerX);
 		if(currentTile.getItem() == null && !(currentTile instanceof EndTile)){
 			for(Item i: player.inven){
+
 				if(i instanceof Key){
 					currentTile.setItem(i);
 					player.inven.remove(i);
