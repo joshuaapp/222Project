@@ -223,8 +223,8 @@ public class DungeonCanvas extends JPanel{
 		if(itemImageName.equals("CRYSTAL")){
 			return crystal;
 		}
-		if(itemImageName.equals("CRYSTAL")){
-			return crystal;
+		if(itemImageName.equals("CRYSTAL_GLOW")){
+			return crystalglow;
 		}
 		if(itemImageName.equals("CHEST_OPEN")){
 			return chestopen;

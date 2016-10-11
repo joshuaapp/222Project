@@ -22,6 +22,10 @@ public class Crystal implements InteractableItem, Serializable{
 	public void placeOnEnd() {
 		onEnd = true;
 	}
+	
+	public void removeFromEnd() {
+		onEnd = false;
+	}
 
 	@Override
 	public boolean isRetrieveable() {

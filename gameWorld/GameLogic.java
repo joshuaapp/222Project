@@ -207,12 +207,16 @@ public class GameLogic implements Serializable {
 	}
 
 	public void pickUp(Player p, Item item){
+		if(item.equals("CRYSTAL")){
+			((Crystal) item).removeFromEnd();
+		}
 		if(p.gotBag == true && p.inven.size() < 5){
 			p.inven.add(item);
 		}
 		if(item instanceof Chest){
 			p.gotBag = true;
 		}
+		
 		
 	}
 
@@ -222,6 +226,7 @@ public class GameLogic implements Serializable {
 		//		switch(item){
 		//		case "Key": dropit = new Key("YELLOW");
 		//		}
+		
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
@@ -229,20 +234,21 @@ public class GameLogic implements Serializable {
 		Tile currentTile = currentBoard.getTile(playerY, playerX);
 		if(currentTile.getItem() == null && !(currentTile instanceof EndTile)){
 			for(Item i: player.inven){
-
-				if(i instanceof Key){
+				if(i.getName().equals(item)){
 					currentTile.setItem(i);
 					player.inven.remove(i);
 					break;
 				}
-				
-			}
+			}		
 		}
+		
 		else if(currentTile instanceof EndTile){
 			for(Item i: player.inven){
-				if(i instanceof Crystal){
+				if(item.equals("CRYSTAL")){
 					((Crystal) i).placeOnEnd();
 					currentTile.setItem(i);
+					player.inven.remove(i);
+					game.levelUp();
 					break;
 				}
 				
