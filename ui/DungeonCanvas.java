@@ -38,6 +38,7 @@ public class DungeonCanvas extends JPanel{
 	private Image fog;
 	private Image pillar;
 	private Image crystal;
+	private Image crystalglow;
 	
 	public int level = 1;
 	private final int squareWidth = 10;
@@ -79,6 +80,7 @@ public class DungeonCanvas extends JPanel{
 		fog = loadImage("backfog.png");
 		pillar = loadImage("pillar.png");
 		crystal = loadImage("crystal.png");
+		crystalglow = loadImage("crystal_glow.png");
 	}
 	
 	@Override
@@ -217,6 +219,9 @@ public class DungeonCanvas extends JPanel{
 		}
 		if(itemImageName.equals("CHEST")){
 			return chest;
+		}
+		if(itemImageName.equals("CRYSTAL")){
+			return crystal;
 		}
 		if(itemImageName.equals("CRYSTAL")){
 			return crystal;

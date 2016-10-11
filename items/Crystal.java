@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Crystal implements InteractableItem, Serializable{
 
+	private boolean onEnd = false;
+	
 	/**
 	 * 
 	 */
@@ -11,7 +13,14 @@ public class Crystal implements InteractableItem, Serializable{
 
 	@Override
 	public String getName() {
+		if(onEnd){
+			return "CRYSTAL_GLOW";
+		}
 		return "CRYSTAL";
+	}
+	
+	public void placeOnEnd() {
+		onEnd = true;
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import java.util.Random;
 import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
 import items.Chest;
+import items.Crystal;
 import items.Item;
 import items.Key;
 import tiles.DoorTile;
@@ -229,7 +230,7 @@ public class GameLogic implements Serializable {
 		if(currentTile.getItem() == null && !(currentTile instanceof EndTile)){
 			for(Item i: player.inven){
 				if(i instanceof Key){
-					currentBoard.getTile(playerY, playerX).setItem(i);
+					currentTile.setItem(i);
 					player.inven.remove(i);
 					break;
 				}
@@ -237,10 +238,16 @@ public class GameLogic implements Serializable {
 			}
 		}
 		else if(currentTile instanceof EndTile){
-			if(item.equals("CRYSTAL")){
-				game.levelUp();
+			for(Item i: player.inven){
+				if(i instanceof Crystal){
+					((Crystal) i).placeOnEnd();
+					currentTile.setItem(i);
+					break;
+				}
+				
 			}
 		}
+		
 		
 
 	}
