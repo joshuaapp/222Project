@@ -18,13 +18,12 @@ public class Client implements Runnable, Serializable {
 	private Player player;
 	private int portNum = 8001;
 	private String name;
-
-	private String serverIp = "10.140.42.197";
+	private String serverIp = "10.140.38.3";
 	private transient ApplicationWindow clientsWindow;
 	private String lastDirectionMoved;
 	private GameState state;
 	/**When a client is created with a player it does the following things:
-	 * - Creates the connection between client a 	nd server.
+	 * - Creates the connection between client and server.
 	 * - Places the player on the board in a valid starting position.
 	 * -
 	 */

@@ -71,7 +71,8 @@ public class Board implements Serializable {
 		ArrayList<Position> toReturn = new ArrayList<>();
 		for(int row=0;row<this.ROWS;row++){
 			for(int col=0;col<this.COLS;col++){
-				if(templateBoard[row][col] instanceof GroundTile){
+				Tile cur = templateBoard[row][col];
+				if(cur instanceof GroundTile && !cur.getTileImage().equals("BRICK")){
 					toReturn.add(new Position(col, row));
 				}
 			}

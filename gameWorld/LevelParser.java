@@ -187,7 +187,6 @@ public class LevelParser {
 		switch(itemName){
 		case "CHEST": 
 			return new Chest();
-
 		case "KEY":
 			return new Key(keyCounter++);
 		case "CRYSTAL":
