@@ -14,6 +14,7 @@ import tiles.GroundTile;
 import tiles.StartTile;
 import tiles.Tile;
 import tiles.WallTile;
+
 public class LevelParser {
 	int doorCounter = 0;
 	/*Strings of imagenames to refer to*/

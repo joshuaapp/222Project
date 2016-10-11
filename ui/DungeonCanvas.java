@@ -42,7 +42,7 @@ public class DungeonCanvas extends JPanel{
 	private Image stars;
 	private Image blacktile;
 	private Image end;
-	
+	private Image crystalglow;
 
 	public int level = 1;
 	private final int squareWidth = 10;
@@ -87,6 +87,7 @@ public class DungeonCanvas extends JPanel{
 		stars = loadImage("stars.png");
 		blacktile = loadImage("blacktiles.png");
 		end = loadImage("endtile.png");
+		crystalglow = loadImage("crystal_glow.png");
 	}
 
 	@Override
@@ -239,6 +240,9 @@ public class DungeonCanvas extends JPanel{
 		}
 		if(itemImageName.equals("CRYSTAL")){
 			return crystal;
+		}
+		if(itemImageName.equals("CRYSTAL_GLOW")){
+			return crystalglow;
 		}
 		if(itemImageName.equals("CHEST_OPEN")){
 			return chestopen;

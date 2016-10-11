@@ -152,7 +152,6 @@ public class GameState implements Serializable{
 			}
 		}
 		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
-
 		for(int i=0;i<curPlayers.length;i++){
 			if(curPlayers[i] != null){
 				StartTile t = startTiles.get(i);
