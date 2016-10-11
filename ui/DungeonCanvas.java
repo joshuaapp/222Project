@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import gameWorld.Player;
 import tiles.DoorTile;
+import tiles.EndTile;
 import tiles.StartTile;
 import tiles.Tile;
 public class DungeonCanvas extends JPanel{
@@ -38,13 +39,17 @@ public class DungeonCanvas extends JPanel{
 	private Image fog;
 	private Image pillar;
 	private Image crystal;
-	
+	private Image stars;
+	private Image blacktile;
+	private Image end;
+	private Image crystalglow;
+
 	public int level = 1;
 	private final int squareWidth = 10;
 	private int[] imageXPositions = {0, 212, 424, 824, 1036, 1248,
 			1648, 1860, 2072, 2472};
 	private int[] screenXPositions = {0, 388, 100};
-	
+
 	private final int thinSpriteSection = 212;
 	private final int wideSpriteSection = 400;
 	private double thinSection;
@@ -59,8 +64,8 @@ public class DungeonCanvas extends JPanel{
 		}
 		loadImages();
 	}
-	
-	
+
+
 	public void loadImages(){
 		wall = loadImage("wall"+level+".png");
 		empty = loadImage("empty.png");
@@ -79,25 +84,32 @@ public class DungeonCanvas extends JPanel{
 		fog = loadImage("backfog.png");
 		pillar = loadImage("pillar.png");
 		crystal = loadImage("crystal.png");
+		stars = loadImage("stars.png");
+		blacktile = loadImage("blacktiles.png");
+		end = loadImage("endtile.png");
+		crystalglow = loadImage("crystal_glow.png");
 	}
-	
+
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(600, 600);
 	}
-	
+
 	private void updateScreenPositions(){
 		thinSection = (int) (this.getWidth()*0.3533);
 		wideSection = (int) (this.getWidth()*(2.0/3.0));
-		
+
 		screenXPositions[1] = (int) (this.getWidth()-thinSection);
 		screenXPositions[2] = (int) (this.getWidth()*0.167);
 	}
-	
+
 	@Override
 	public void paint(Graphics g){
-		
-		if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
+		if(player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof EndTile){
+			stars = stars.getScaledInstance(this.getWidth(), this.getHeight(), 0);
+			g.drawImage(stars, 0, 0, null);
+		}
+		else if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof StartTile)
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof DoorTile)){
 			fog = fog.getScaledInstance(this.getWidth(), this.getHeight(), 0);
@@ -107,19 +119,19 @@ public class DungeonCanvas extends JPanel{
 			back = back.getScaledInstance(this.getWidth(), this.getHeight(), 0);
 			g.drawImage(back, 0, 0, null);
 		}
-		
+
 		if(player != null){	
-			
+
 			if(player.getLevel() != level){
 				this.level = player.getLevel();
 				loadImages();
 			}
-			
+
 			rp.updatePerspective();
 			Queue<Tile> tiles = rp.getTilesInSight();
-			
+
 			updateScreenPositions();
-			
+
 			int col = 0;
 			int count = 0;
 			int spriteSize = 212;
@@ -127,11 +139,11 @@ public class DungeonCanvas extends JPanel{
 			//While there is still a tile in the queue adjust the X position
 			//and remove the Tile to get the image. 
 			while(!tiles.isEmpty()){
-				
+
 				//The screen is split into 3 columns, the two on the left and right
 				//are 212 and the one in the center is 400. This is used when snipping
 				//the correct sized image off the sprite sheet.
-				
+
 				if(col != 2){
 					spriteSize = thinSpriteSection;
 					scaleSize = (int) thinSection;
@@ -139,8 +151,8 @@ public class DungeonCanvas extends JPanel{
 				else{
 					spriteSize = wideSpriteSection;
 					scaleSize = (int) wideSection;
-					}
-				
+				}
+
 				Tile tile = tiles.remove();
 				Image tileImage = getTileImage(tile.getTileImage());
 				Image itemImage = getItemImage(tile.getItemImage());
@@ -169,12 +181,17 @@ public class DungeonCanvas extends JPanel{
 				if(count == 9){
 					count = 0;
 				}
-			}	
+			}
+			if(player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof EndTile){
+				Color c = new Color(123, 142, 155, 127);
+				g.setColor(c);
+				g.drawRect(0, 0, this.getWidth(), this.getHeight());
+			}
 			drawMap(g);
 			healthBar(g);
 		}
 	}	
-	
+
 	private Image getTileImage(String tileImageName){
 		if(tileImageName.equals("GRASS")){
 			return flat;
@@ -206,6 +223,9 @@ public class DungeonCanvas extends JPanel{
 		else if(tileImageName.equals("PILLAR")){
 			return pillar;
 		}
+		else if(tileImageName.equals("END")){
+			return end;
+		}
 		else{
 			return flat;
 		}
@@ -221,12 +241,15 @@ public class DungeonCanvas extends JPanel{
 		if(itemImageName.equals("CRYSTAL")){
 			return crystal;
 		}
+		if(itemImageName.equals("CRYSTAL_GLOW")){
+			return crystalglow;
+		}
 		if(itemImageName.equals("CHEST_OPEN")){
 			return chestopen;
 		}
 		return null;
 	}
-	
+
 	public void healthBar(Graphics g){
 		Color cur;
 		int health = player.hp;
@@ -255,7 +278,7 @@ public class DungeonCanvas extends JPanel{
 		int xPos = 0;
 		int yPos = 0;
 		int lineLength = 11;
-		
+
 		//Size the miniMap draws as
 		for(String s : map){
 			//Everything other than a wall will be blank so find the wall and 
@@ -267,12 +290,12 @@ public class DungeonCanvas extends JPanel{
 			else if(s.equals("p")){
 				g.setColor(Color.GREEN);
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
-				
+
 			}
 			else if(s.equals("i")){
 				g.setColor(Color.MAGENTA);
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
-				
+
 			}
 			else if(s.equals("o")){
 				g.setColor(Color.GREEN);
@@ -303,22 +326,22 @@ public class DungeonCanvas extends JPanel{
 				yPos++;
 			}
 		}
-		
+
 		//Passes in the xPos that is half the length + 1 which is usually gonna be 6
 		//unless we change the size. 
 		drawFacingPlayer(g,(lineLength/2)*squareWidth,(lineLength/2)*squareWidth);
-		
+
 		//Draws the border around the map
 		g.setColor(Color.ORANGE);
 		g.drawRect(0, 0, lineLength*squareWidth, lineLength*squareWidth);
 	}
 
 	private void drawFacingPlayer(Graphics g, int x, int y){
-		
+
 		//Size of the white rec for facing direction
 		int recSize = squareWidth/3;
 		g.setColor(Color.white);
-		
+
 		switch(player.getDirectionFacing()){
 		case North:
 			g.fillRect(x, y, squareWidth, recSize);

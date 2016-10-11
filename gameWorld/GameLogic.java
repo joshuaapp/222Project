@@ -9,6 +9,7 @@ import java.util.Random;
 import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
 import items.Chest;
+import items.Crystal;
 import items.Item;
 import items.Key;
 import tiles.DoorTile;
@@ -39,7 +40,6 @@ public class GameLogic implements Serializable {
 	//If an up or down key has been pressed the player will move
 	//If a left or right key is pressed, rotate the users direction facing
 	public void rotateOrMove(Player p, String movement){
-		System.out.println("rotateOrMove("+p+","+movement+")");
 		switch(movement){
 		case "UP":
 			legalPlayerMove(p, p.getDirectionFacing());
@@ -62,9 +62,11 @@ public class GameLogic implements Serializable {
 		player.getRenderPerspective().updatePerspective();
 		if(player.hp <= 0){
 			for(Player p: game.curPlayers){
-				p.hp = 15;
+				if(p!=null){
+					p.hp = 15;
+				}
 			}
-			game.resetLevel();
+			game.resetLevel();;
 		}
 	}
 
@@ -105,12 +107,10 @@ public class GameLogic implements Serializable {
 
 		if(newTile != null){
 			if(newTile.isWalkable() && newTile.getPlayer() == null){
-				System.out.println("Calling actuallyMove("+player+","+facing+") from inside gameLogic legalPlayerMove method");
 				actuallyMove(player, facing);
 			}
 			else if(newTile instanceof DoorTile){
 				DoorTile doorTile = (DoorTile)newTile;
-				System.out.println("Door code = "+doorTile.getDoorCode());
 				ArrayList<Item> inven = player.getInven();
 				for(int i = 0; i <inven.size(); i++){
 					if(inven.get(i) instanceof Key){
@@ -139,7 +139,6 @@ public class GameLogic implements Serializable {
 		for(Player m: game.curMonsters){
 			Random rand = new Random();
 			int rand2 = rand.nextInt(4);
-			System.out.println(rand2);
 			switch(rand2){
 			case 0: m.setDirectionFacing(Direction.North); break;
 			case 1: m.setDirectionFacing(Direction.South); break;
@@ -171,7 +170,6 @@ public class GameLogic implements Serializable {
 						Player monster = game.getGameBoard().getTile(i, j).getPlayer();
 						if(monster.isMonster){
 							lowerHP(p);
-							//System.out.println("Player HP: "+p.hp);
 							return;
 						}
 					}catch(NullPointerException e){
@@ -206,12 +204,16 @@ public class GameLogic implements Serializable {
 	}
 
 	public void pickUp(Player p, Item item){
+		if(item.equals("CRYSTAL")){
+			((Crystal) item).removeFromEnd();
+		}
 		if(p.gotBag == true && p.inven.size() < 5){
 			p.inven.add(item);
 		}
 		if(item instanceof Chest){
 			p.gotBag = true;
 		}
+		
 		
 	}
 
@@ -221,6 +223,7 @@ public class GameLogic implements Serializable {
 		//		switch(item){
 		//		case "Key": dropit = new Key("YELLOW");
 		//		}
+		
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
@@ -228,19 +231,27 @@ public class GameLogic implements Serializable {
 		Tile currentTile = currentBoard.getTile(playerY, playerX);
 		if(currentTile.getItem() == null && !(currentTile instanceof EndTile)){
 			for(Item i: player.inven){
-				if(i instanceof Key){
-					currentBoard.getTile(playerY, playerX).setItem(i);
+				if(i.getName().equals(item)){
+					currentTile.setItem(i);
 					player.inven.remove(i);
+					break;
+				}
+			}		
+		}
+		
+		else if(currentTile instanceof EndTile){
+			for(Item i: player.inven){
+				if(item.equals("CRYSTAL")){
+					((Crystal) i).placeOnEnd();
+					currentTile.setItem(i);
+					player.inven.remove(i);
+					game.levelUp();
 					break;
 				}
 				
 			}
 		}
-		else if(currentTile instanceof EndTile){
-			if(item.equals("CRYSTAL")){
-				game.levelUp();
-			}
-		}
+		
 		
 
 	}

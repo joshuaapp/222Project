@@ -30,7 +30,6 @@ public class Console extends JPanel{
 	 */
 //		  public void print(String msg){
 //			mainString = mainString.append(msg);
-//			System.out.println(mainString.toString());
 //		    area.setText(mainString.toString()); 
 //		    area.paint(area.getGraphics());
 //		  }

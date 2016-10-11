@@ -47,7 +47,9 @@ public class InventoryPanel extends JPanel {
 		setupIcons();
 		updateInventoryPanel();
 	}
-
+/**
+ * 
+ */
 	public void foundChest(){
 		if(client.getPlayer().gotBag == true){
 			if(gotInventoryBag == false){
@@ -120,25 +122,25 @@ public class InventoryPanel extends JPanel {
 			try {
 				switch(command){
 				case "0":
-					client.tellServerAction("DROP", "Key1");
+					client.tellServerAction("DROP", "KEY");
 					break;
 				case "1":
-					client.tellServerAction("DROP", "Key2");
+					client.tellServerAction("DROP", "KEY");
 					System.out.println("Key2");
 
 					break;
 				case "2":
-					client.tellServerAction("DROP", "Key3");
+					client.tellServerAction("DROP", "KEY");
 					System.out.println("Key3");
 
 					break;
 				case "3":
-					client.tellServerAction("DROP", "Key4");
+					client.tellServerAction("DROP", "KEY");
 					System.out.println("Key4");
 
 					break;
 				case "4":
-					client.tellServerAction("DROP", "Key5");
+					client.tellServerAction("DROP", "CRYSTAL");
 					System.out.println("Key5");
 
 					break;
@@ -147,10 +149,8 @@ public class InventoryPanel extends JPanel {
 
 				Thread.sleep(200);
 			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			updateInventoryPanel();
@@ -160,7 +160,6 @@ public class InventoryPanel extends JPanel {
 
 	public void updateInventoryPanel(){
 		if(gotInventoryBag){
-			System.out.println("Here");
 			ArrayList<Item> inventory = client.getPlayer().inven;
 			for (int i = 0; i < itemButtons.length; i++) {
 				JButton button = itemButtons[i];
@@ -186,10 +185,6 @@ public class InventoryPanel extends JPanel {
 						button.setVerticalTextPosition(JButton.CENTER);
 						button.setIcon(activeKey);
 						if(bagCount < 3){bagCount++;}
-					//	break;
-				//	default:
-				//	}
-
 				}
 			}
 		}
