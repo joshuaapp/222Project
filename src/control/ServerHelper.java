@@ -6,7 +6,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import gameWorld.Player;
-import gameWorld.Player.Direction;
 import tiles.StartTile;
 public class ServerHelper implements Runnable{
 	private Socket clientSocket;

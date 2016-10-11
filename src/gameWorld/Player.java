@@ -1,12 +1,9 @@
 package gameWorld;
 
-
-
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import gameWorld.Player.Direction;
+import gameWorld.GameState.direction;
 import items.Item;
 import ui.RenderPerspective;
 
@@ -20,7 +17,7 @@ public class Player implements Serializable{
 	public int hp = 15;
 	private Position playerPosition;
 
-	Direction facing = Direction.North;
+	direction facing = direction.NORTH;
 	private RenderPerspective rp;
 	public int level =1;
 	private Board board;
@@ -33,14 +30,6 @@ public class Player implements Serializable{
 	int Ycoord;
 
 	private boolean notSet = true;
-
-	public enum Direction{
-		North,
-		South,
-		East,
-		West;
-	}
-
 
 	public Player(Board b, String name){
 		this.board=b;
@@ -75,11 +64,11 @@ public class Player implements Serializable{
 	}
 
 
-	public Direction getDirectionFacing() {
+	public direction getDirectionFacing() {
 		return this.facing;
 	}
 
-	public void setDirectionFacing(Direction direction) {
+	public void setDirectionFacing(direction direction) {
 		this.facing = direction;
 	}
 

@@ -380,16 +380,16 @@ public class DungeonCanvas extends JPanel{
 
 		//Adjust the placement of the white rec depending on where the player is facing
 		switch(player.getDirectionFacing()){
-		case North:
+		case NORTH:
 			g.fillRect(x, y, squareWidth, recSize);
 			break;
-		case East:
+		case EAST:
 			g.fillRect((x + squareWidth)-recSize, y, recSize, squareWidth);
 			break;
-		case South:
+		case SOUTH:
 			g.fillRect(x, (y + squareWidth)-recSize, squareWidth, recSize);
 			break;
-		case West:
+		case WEST:
 			g.fillRect(x, y, recSize, squareWidth);
 			break;
 		}

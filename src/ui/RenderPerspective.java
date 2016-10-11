@@ -11,10 +11,10 @@ import java.util.Queue;
 import javax.imageio.ImageIO;
 
 import gameWorld.Board;
+import gameWorld.GameState.direction;
 import gameWorld.Player;
 import tiles.Tile;
 import tiles.WallTile;
-import gameWorld.Player.Direction;
 import gameWorld.Position;
 
 
@@ -41,12 +41,12 @@ public class RenderPerspective implements Serializable{
 	private void fillTilesInSight(){
 		//Depending on the way the player is facing the tiles must be loaded in
 		//a different order. Here, it grabs the direction and position of the player
-		Direction facing = player.getDirectionFacing();
+		direction facing = player.getDirectionFacing();
 		Position playerPos = player.getPosition();
 		int xPos = playerPos.getX();
 		int yPos = playerPos.getY();
 
-		if(facing.equals(Direction.North)){
+		if(facing.equals(direction.NORTH)){
 			addTileImageToSight(xPos-1, yPos-2);
 			addTileImageToSight(xPos+1, yPos-2);
 			addTileImageToSight(xPos, yPos-2);
@@ -59,7 +59,7 @@ public class RenderPerspective implements Serializable{
 
 		}
 
-		if(facing.equals(Direction.South)){
+		if(facing.equals(direction.SOUTH)){
 			addTileImageToSight(xPos+1, yPos+2);
 			addTileImageToSight(xPos-1, yPos+2);
 			addTileImageToSight(xPos, yPos+2);
@@ -72,7 +72,7 @@ public class RenderPerspective implements Serializable{
 
 		}
 
-		if(facing.equals(Direction.East)){
+		if(facing.equals(direction.EAST)){
 			addTileImageToSight(xPos+2, yPos-1);
 			addTileImageToSight(xPos+2, yPos+1);
 			addTileImageToSight(xPos+2, yPos);
@@ -85,7 +85,7 @@ public class RenderPerspective implements Serializable{
 
 		}
 
-		if(facing.equals(Direction.West)){
+		if(facing.equals(direction.WEST)){
 			addTileImageToSight(xPos-2, yPos+1);
 			addTileImageToSight(xPos-2, yPos-1);
 			addTileImageToSight(xPos-2, yPos);
