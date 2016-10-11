@@ -86,11 +86,10 @@ public class ClientListener implements Runnable,Serializable {
 									this.client.setGameState(state);
 									if(this.lastRequest != null){
 										Player p = state.getPlayerOfClient(this.client.getName());
-										p.createRenderPerspective();
 										client.addPlayer(p);
 										client.getApplicationWindow().getGameCanvas().setPlayer(p);
 										p.getRP().updatePerspective();
-										client.getApplicationWindow().repaint();
+										client.getApplicationWindow().updateAll();
 									}
 								}
 							}

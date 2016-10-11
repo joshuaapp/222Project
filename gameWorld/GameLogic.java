@@ -39,7 +39,7 @@ public class GameLogic implements Serializable {
 	//If an up or down key has been pressed the player will move
 	//If a left or right key is pressed, rotate the users direction facing
 	public void rotateOrMove(Player p, String movement){
-
+		System.out.println("rotateOrMove("+p+","+movement+")");
 		switch(movement){
 		case "UP":
 			legalPlayerMove(p, p.getDirectionFacing());
@@ -102,6 +102,7 @@ public class GameLogic implements Serializable {
 
 		if(newTile != null){
 			if(newTile.isWalkable() && newTile.getPlayer() == null){
+				System.out.println("Calling actuallyMove("+player+","+facing+") from inside gameLogic legalPlayerMove method");
 				actuallyMove(player, facing);
 			}
 			else if(newTile instanceof DoorTile){

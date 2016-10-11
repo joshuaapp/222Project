@@ -166,4 +166,9 @@ public class ApplicationWindow extends JFrame{
 		}
 	}
 
+	public void updateAll() {
+		this.gameCanvas.repaint();
+		this.inventoryPanel.repaint();
+	}
+
 }

@@ -81,12 +81,9 @@ public class GameState implements Serializable{
 
 	public void addMonsters(){
 		curMonsters.removeAll(curMonsters);
-		Player monster = new Player(currentBoard, "Monster");
-		Player monster1 = new Player(currentBoard, "Monster1");
-		Player monster2 = new Player(currentBoard, "Monster2");
-		monster.isMonster = true;
-		monster1.isMonster = true;
-		monster2.isMonster = true;
+		Player monster = new Player(currentBoard, "Monster", true);
+		Player monster1 = new Player(currentBoard, "Monster1", true);
+		Player monster2 = new Player(currentBoard, "Monster2", true);
 		curMonsters.add(monster);
 		curMonsters.add(monster1);
 		curMonsters.add(monster2);
@@ -127,10 +124,16 @@ public class GameState implements Serializable{
 	}
 
 	public void levelPushToPlayers(){
+		System.out.println("pushing to "+curPlayers.length);
 		for(Player p: curPlayers){
-			p.level = level;
-			p.setBoard(currentBoard);
-			p.inven = new ArrayList<Item>();
+			if(p != null){
+				System.out.println(p);
+				System.out.println("Pushing up to level "+level);
+				p.level = level;
+				System.out.println("Pushing level to player "+p+", board = \n"+currentBoard);
+				p.setBoard(currentBoard);
+				p.inven = new ArrayList<Item>();
+			}
 		}
 		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
 		if(curPlayers.length <= startTiles.size()){
@@ -143,6 +146,7 @@ public class GameState implements Serializable{
 	}
 
 	public void updatePlayerPosition(Player p, String d){
+		System.out.println("Game state calling rotateormove("+p+","+d+") on logic("+logic+")");
 		logic.rotateOrMove(p, d);
 	}
 	public void attatchBoard(Board b){

@@ -18,7 +18,7 @@ public class Client implements Runnable, Serializable {
 	private Player player;
 	private int portNum = 8001;
 	private String name;
-	private String serverIp = "la-boca-loca.ecs.vuw.ac.nz";
+	private String serverIp = "flying-burrito-brothers.ecs.vuw.ac.nz";
 	private transient ApplicationWindow clientsWindow;
 	private String lastDirectionMoved;
 	private GameState state;
@@ -58,7 +58,6 @@ public class Client implements Runnable, Serializable {
 		}
 		//place player on board.
 		this.player = state.getPlayerOfClient(this.name);
-		this.player.createRenderPerspective();
 		clientsWindow = new ApplicationWindow("Clean up on Isle 14", this);
 		clientsWindow.createAndShowGUI();
 		clientsWindow.getGameCanvas().setPlayer(player);

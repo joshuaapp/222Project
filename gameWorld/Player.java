@@ -32,6 +32,8 @@ public class Player implements Serializable{
 	int Xcoord;
 	int Ycoord;
 
+	private boolean notSet = true;
+
 	public enum Direction{
 		North,
 		South,
@@ -45,10 +47,11 @@ public class Player implements Serializable{
 		this.name = name;
 	}
 
-	public void createRenderPerspective(){
-		rp = new RenderPerspective(this, board);
+	public Player(Board b, String name, boolean isMonster){
+		this.board=b;
+		this.name = name;
+		this.isMonster = isMonster;
 	}
-
 
 	public RenderPerspective getRP(){
 		return rp;
@@ -65,6 +68,10 @@ public class Player implements Serializable{
 
 	public void setPosition(Position toSet){
 		this.playerPosition = toSet;
+		if(notSet && !isMonster){
+			rp = new RenderPerspective(this, board);
+			this.notSet = false;
+		}
 	}
 
 
@@ -89,6 +96,7 @@ public class Player implements Serializable{
 	}
 
 	public void setBoard(Board b){
+		System.out.println("Setting board of player "+this+" with renderperspective "+rp+" to \n"+b);
 		rp.setBoard(b);
 		board = b;
 	}
