@@ -29,13 +29,18 @@ public class RenderPerspective implements Serializable{
 		board = b;
 		updatePerspective();
 	}
-
+	
+	/**
+	 * Called from other classes to fill the players perspective tiles
+	 */
 	public void updatePerspective(){
 		tilesInSight.clear();
 		fillTilesInSight();
 	}
-
+	
 	private void fillTilesInSight(){
+		//Depending on the way the player is facing the tiles must be loaded in
+		//a different order. Here, it grabs the direction and position of the player
 		Direction facing = player.getDirectionFacing();
 		Position playerPos = player.getPosition();
 		int xPos = playerPos.getX();
@@ -113,12 +118,25 @@ public class RenderPerspective implements Serializable{
 
 		 //Finally adds the tile to the queue
 		 tilesInSight.add(t);
-
-	}
-
+		
+	}	
+	 
+	/**
+	* Returns the queue of all the tiles the player can see
+	* @return Queue<Tile> 
+	*/ 
+	 
 	public Queue<Tile> getTilesInSight(){
 		return tilesInSight;
 	}
+	
+	/**
+	 * Gets the tile at the specified location and returns it
+	 * 
+	 * @param int
+	 * @param int
+	 * @return Tile
+	 */
 
 	public void setBoard(Board b){
 		board =b;

@@ -83,6 +83,7 @@ public class DungeonCanvas extends JPanel{
 	
 	@Override
 	public void paint(Graphics g){
+		
 		if((player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()).getTileImage().equals("BRICK"))
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof StartTile)
 				|| (player.getBoard().getTile(player.getPosition().getY(), player.getPosition().getX()) instanceof DoorTile)){
@@ -93,6 +94,7 @@ public class DungeonCanvas extends JPanel{
 			back = back.getScaledInstance(this.getWidth(), this.getHeight(), 0);
 			g.drawImage(back, 0, 0, null);
 		}
+		
 		if(player != null){	
 			
 			if(player.getLevel() != level){
@@ -104,6 +106,7 @@ public class DungeonCanvas extends JPanel{
 			Queue<Tile> tiles = rp.getTilesInSight();
 			
 			updateScreenPositions();
+			
 			int col = 0;
 			int count = 0;
 			int spriteSize = 212;
@@ -158,6 +161,9 @@ public class DungeonCanvas extends JPanel{
 			healthBar(g);
 		}
 	}
+	
+	
+	
 	private Image getTileImage(String tileImageName){
 		if(tileImageName.equals("GRASS")){
 			return flat;
@@ -246,6 +252,18 @@ public class DungeonCanvas extends JPanel{
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
 				
 			}
+			else if(s.equals("i")){
+				g.setColor(Color.MAGENTA);
+				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
+				
+			}
+			else if(s.equals("o")){
+				g.setColor(Color.GREEN);
+				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
+				g.setColor(Color.MAGENTA);
+				g.fillRect((xPos*squareWidth)+(squareWidth/5),(yPos*squareWidth)+(squareWidth/5),
+						squareWidth - ((squareWidth/5) * 2),squareWidth - ((squareWidth/5) * 2));
+			}
 			else if(s.equals("m")){
 				g.setColor(Color.RED);
 				g.fillRect(xPos * squareWidth, yPos * squareWidth, squareWidth, squareWidth);
@@ -277,7 +295,7 @@ public class DungeonCanvas extends JPanel{
 		g.setColor(Color.ORANGE);
 		g.drawRect(0, 0, lineLength*squareWidth, lineLength*squareWidth);
 	}
-	
+
 	private void drawFacingPlayer(Graphics g, int x, int y){
 		
 		//Size of the white rec for facing direction
