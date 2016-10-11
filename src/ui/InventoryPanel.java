@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -193,7 +195,9 @@ public class InventoryPanel extends JPanel {
 			int bagCount = 0;										//Bag count keeps count of where the next key needs to be added from the array
 			for(Item m : inventory){
 				JButton button = itemButtons[bagCount];
-				if(m instanceof Crystal){							//If the item found is a crystal it must be placed in a specific place in the inventory panel
+				if(m instanceof Crystal){	//If the item found is a crystal it must be placed in a specific place in the inventory panel
+					List<String> text = Arrays.asList("You have found the magic crystal! I wonder what it does...There must be a special place to activate it somewhere.".split(" "));
+					this.gameCanvas.updateCanvasText(text);
 					itemButtons[4].setIcon(activeCrystal);
 				}
 				if(m instanceof Key){								//The keys can be added in the order they were collected in
