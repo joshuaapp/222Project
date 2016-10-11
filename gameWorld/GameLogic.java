@@ -117,12 +117,13 @@ public class GameLogic {
 				}
 			}
 		}
-
+		/*
 		if(monsterTime == 0){
 			Random rand = new Random();
 			monsterTime = rand.nextInt(6);
 			moveMonsters();
 		}	
+		*/
 	}
 
 
