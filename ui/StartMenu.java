@@ -12,7 +12,6 @@ public class StartMenu extends JMenuBar{
 		
 		
 		public StartMenu(){
-			System.out.println("In start");
 			this.add(start);
 			start.add(exit);
 		}

@@ -1,19 +1,13 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import control.Client;
 /**
  * Application window is the main class that handles Swing
@@ -35,10 +29,15 @@ public class ApplicationWindow extends JFrame{
 		this.inventoryPanel = new InventoryPanel(user, gameCanvas);
 		this.start = new StartMenu();
 		this.start.addMenuListeners( new GameListener());
-		gameCanvas.setFocusable(true);			//make sure you
+		gameCanvas.setFocusable(true);			//make sure you return focus to canvas after clicking buttons
 		this.client = user;
 	}
-
+	
+	/**
+	 * createAndShowGui essentially loads up the main part of the GUI 
+	 * including creating the JFrame and adding all necessary components, setting layout
+	 * and making it all visable
+	 */
 	public void createAndShowGUI() {
 
 		JFrame f = new JFrame(this.getTitle());
@@ -59,7 +58,13 @@ public class ApplicationWindow extends JFrame{
 	}
 
 
-
+	/**
+	 * GameKeyListener is a KeyListener that gives direction for when certain keys are pressed. 
+	 * The main ones handled here are the arrow keys, WSDA and Space. 
+	 * Each one has its own personal call to the server.
+	 * @author anna
+	 *
+	 */
 	public class GameKeyListener implements KeyListener{
 
 		@Override
@@ -79,8 +84,8 @@ public class ApplicationWindow extends JFrame{
 			}
 			else if(code == KeyEvent.VK_SPACE) {
 				client.tellServerAction("PICK", null);
-				Thread.sleep(200);
-				inventoryPanel.foundChest();
+				Thread.sleep(200);								//Thread sleep is added in many places 
+				inventoryPanel.foundChest();					//due to a lag in some data returning from the server
 				inventoryPanel.updateInventoryPanel();
 			}
 			else if(code == KeyEvent.VK_D) {
@@ -111,7 +116,13 @@ public class ApplicationWindow extends JFrame{
 		}
 
 	}
-
+	/**
+	 * GameListener is specifically for the menu bar, 
+	 * which in this case holds only the exit option but could hold any other options 
+	 * such as a level reset
+	 * @author anna
+	 *
+	 */
 	public class GameListener implements ActionListener{
 
 		@Override
@@ -121,6 +132,7 @@ public class ApplicationWindow extends JFrame{
 				System.exit(0);
 			}
 		}
+
 	}
 	
 	/**Method to connect a client to a certain window so the window can send requests

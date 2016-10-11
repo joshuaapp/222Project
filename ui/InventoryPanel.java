@@ -137,20 +137,20 @@ public class InventoryPanel extends JPanel {
 			try {
 				switch(command){
 				case "0":
-					client.tellServerAction("DROP", "Key");
+					client.tellServerAction("DROP", "KEY");
 					break;
 				case "1":
-					client.tellServerAction("DROP", "Key");
+					client.tellServerAction("DROP", "KEY");
 					System.out.println("Key2");
 
 					break;
 				case "2":
-					client.tellServerAction("DROP", "Key");
+					client.tellServerAction("DROP", "KEY");
 					System.out.println("Key3");
 
 					break;
 				case "3":
-					client.tellServerAction("DROP", "Key");
+					client.tellServerAction("DROP", "KEY");
 					System.out.println("Key4");
 
 					break;
