@@ -16,7 +16,6 @@ import tiles.Tile;
 import tiles.WallTile;
 public class LevelParser {
 	int doorCounter = 0;
-	String[] colors = {"YELLOW", "BLUE", "RED"};
 	/*Strings of imagenames to refer to*/
 	private int keyCounter = 0;
 
@@ -194,7 +193,7 @@ public class LevelParser {
 			return new Chest();
 
 		case "KEY":
-			return new Key(keyCounter++, colors[doorCounter-1]);
+			return new Key(keyCounter++);
 		case "BUTTON":
 			return new Button();
 		default: return null;

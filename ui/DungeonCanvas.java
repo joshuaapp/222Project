@@ -1,6 +1,7 @@
 package ui;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
@@ -160,9 +161,7 @@ public class DungeonCanvas extends JPanel{
 			drawMap(g);
 			healthBar(g);
 		}
-	}
-	
-	
+	}	
 	
 	private Image getTileImage(String tileImageName){
 		if(tileImageName.equals("GRASS")){
