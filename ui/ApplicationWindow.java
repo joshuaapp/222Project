@@ -1,12 +1,14 @@
 package ui;
 
 import java.awt.BorderLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
-
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.JFrame;
 import control.Client;
 /**
@@ -18,6 +20,7 @@ import control.Client;
  */
 public class ApplicationWindow extends JFrame{
 
+	private static final long serialVersionUID = -1305558202319031926L;
 	private InventoryPanel inventoryPanel; 
 	private DungeonCanvas gameCanvas;
 	private StartMenu start;
@@ -84,9 +87,12 @@ public class ApplicationWindow extends JFrame{
 			}
 			else if(code == KeyEvent.VK_SPACE) {
 				client.tellServerAction("PICK", null);
-				Thread.sleep(200);								//Thread sleep is added in many places 
-				inventoryPanel.foundChest();					//due to a lag in some data returning from the server
+				Thread.sleep(200);								//Thread sleep added to make animation smoother 
+				inventoryPanel.foundChest();					
 				inventoryPanel.updateInventoryPanel();
+				//update game text
+				List<String> textToUpdate = Arrays.asList("You found a bag! You can now pick up keys. Keys unlock doors. I heard there is a magic crystal floating around in a room somewhere....".split(" "));	
+				gameCanvas.updateCanvasText(textToUpdate);
 			}
 			else if(code == KeyEvent.VK_D) {
 				client.tellServerAction("DROP", "Key");
@@ -128,7 +134,10 @@ public class ApplicationWindow extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String pushed = e.getActionCommand();
-			if(pushed.equals("Exit")){
+			if(pushed.equals("Restart")){
+				//client.resetLevel();
+			}
+			else if(pushed.equals("Exit")){
 				System.exit(0);
 			}
 		}

@@ -1,11 +1,8 @@
 package gameWorld;
-import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import tiles.DoorTile;
 import tiles.GroundTile;
-import tiles.PlayerTile;
 import tiles.StartTile;
 import tiles.Tile;
 import tiles.WallTile;
@@ -126,7 +123,7 @@ public class Board implements Serializable {
 
 				Tile t = getTile(row,col);
 
-				if(t.getPlayer()!=null && t.getPlayer().isMonster){
+				if(t.getPlayer()!=null && t.getPlayer().isMonster()){
 					map.add("m");
 				}
 				//Player
