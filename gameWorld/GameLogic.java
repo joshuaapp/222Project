@@ -9,6 +9,7 @@ import java.util.Random;
 import gameWorld.GameState.direction;
 import gameWorld.Player.Direction;
 import items.Chest;
+import items.Crystal;
 import items.Item;
 import items.Key;
 import tiles.DoorTile;
@@ -228,7 +229,10 @@ public class GameLogic implements Serializable {
 		Tile currentTile = currentBoard.getTile(playerY, playerX);
 		if(currentTile.getItem() == null && !(currentTile instanceof EndTile)){
 			for(Item i: player.inven){
-				if(i instanceof Key){
+//				if(i instanceof Crystal && item.equals("CRYSTAL")){
+//					System.out.println("Hi im a fucking crystal");
+//				}
+				if(i instanceof Key && item.equals("Key")){
 					currentBoard.getTile(playerY, playerX).setItem(i);
 					player.inven.remove(i);
 					break;
