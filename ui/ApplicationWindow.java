@@ -90,9 +90,6 @@ public class ApplicationWindow extends JFrame{
 				Thread.sleep(200);								//Thread sleep added to make animation smoother 
 				inventoryPanel.foundChest();					
 				inventoryPanel.updateInventoryPanel();
-				//update game text
-				List<String> textToUpdate = Arrays.asList("You found a bag! You can now pick up keys. Keys unlock doors. I heard there is a magic crystal floating around in a room somewhere....".split(" "));	
-				gameCanvas.updateCanvasText(textToUpdate);
 			}
 			else if(code == KeyEvent.VK_D) {
 				client.tellServerAction("DROP", "Key");
