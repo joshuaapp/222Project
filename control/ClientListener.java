@@ -5,6 +5,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.List;
+
 import gameWorld.GameState;
 import gameWorld.Player;
 
@@ -101,6 +104,11 @@ public class ClientListener implements Runnable,Serializable {
 										client.addPlayer(p);
 										client.getApplicationWindow().getGameCanvas().setPlayer(p);
 										p.getRP().updatePerspective();
+										if(p.isGotBag()){
+											//update game text
+											List<String> textToUpdate = Arrays.asList("You found a bag! You can now pick up keys. Keys unlock doors. I heard there is a magic crystal floating around in a room somewhere....".split(" "));	
+											this.client.getApplicationWindow().getGameCanvas().updateCanvasText(textToUpdate);
+										}
 									}
 								}
 							}

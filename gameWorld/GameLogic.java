@@ -53,6 +53,7 @@ public class GameLogic implements Serializable {
 	}
 
 	public void lowerHP(Player player){
+		
 		player.setHp(player.getHp()-1);
 		player.getRenderPerspective().updatePerspective();
 		if(player.getHp() <= 0){
@@ -61,8 +62,8 @@ public class GameLogic implements Serializable {
 					p.setHp(15);
 				}
 			}
+			game.resetLevel();
 		}
-		game.resetLevel();;
 	}
 
 
