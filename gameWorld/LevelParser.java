@@ -35,13 +35,13 @@ public class LevelParser {
 		try {
 			//Gets the bounds of the 2D array
 			Tile[][] board = getSizedArray(boardFile);
-			
+
 			//Makes a reader
 			BufferedReader br = new BufferedReader(new FileReader(boardFile));
-			
+
 			//Splits line into characters
 			char[] line = br.readLine().toCharArray();		
-			
+
 			//int y is used to store the info for which line is in use
 			// this is mainly used for assigning the tile to board
 			int row = 0;
@@ -65,21 +65,21 @@ public class LevelParser {
 			throw new RuntimeException("file reading failed."+e);
 		}
 	}
-	
+
 	private Tile[][] getSizedArray(String boardFile) throws IOException{
-		
+
 		//Makes a reader
 		BufferedReader br = new BufferedReader(new FileReader(boardFile));
 		//Splits line into characters
 		char[] line = br.readLine().toCharArray();		
-		
-		
+
+
 		int col = line.length;
 		int row = 1;
-		
+
 		//Iterates all the way down the file to get the rows
 		while(line != null){
-			
+
 			String s = br.readLine();
 			if(s != null){
 				row++;
@@ -87,7 +87,7 @@ public class LevelParser {
 			}
 			else{line = null;}
 		}
-		
+
 		//Returns the correct sized 2D Array
 		return new Tile[row][col];
 	}
@@ -120,9 +120,9 @@ public class LevelParser {
 		//D represents LOCKED a door
 		else if(c == 'D'){
 			//return new DoorTile(xPos, yPos);
-			
+
 			return new DoorTile("DOOR", doorCounter++); //for now until door img is done
-			
+
 		}
 		//F represents a raised ground tile (non-grassy)
 		else if(c == 'R'){
@@ -142,14 +142,10 @@ public class LevelParser {
 			//return new EndTile(xPos, yPos);
 			return new EndTile("BRICK"); //for now until door img is done
 		}
-
-
-		//* represents a fountain ie decrative tile
-		else if(c == 'F'){
-			return new WallTile("WALL");
-		}
-		else if(c == '?'){
-			return new GroundTile("WORDS");
+		//~ represents an pillar tile
+		else if(c == 'P'){
+			//return new EndTile(xPos, yPos);
+			return new WallTile("PILLAR"); //for now until door img is done
 		}
 		//* represents a pillar ie decrative tile
 		else if(c == 'P'){
@@ -176,7 +172,7 @@ public class LevelParser {
 				Position p = new Position(Integer.parseInt(line[1]), Integer.parseInt(line[2]));
 				Tile tileToAddItemTo = board.getTile(p.getY(), p.getX()); //row, col
 				tileToAddItemTo.setItem(itemToAddToBoard);
-				
+
 				String s = br.readLine();
 				if(s != null){
 					line = s.split(" ");
