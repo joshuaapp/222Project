@@ -11,7 +11,8 @@ import tiles.Tile;
 import tiles.WallTile;
 public class Board implements Serializable {
 	/**
-	 *
+	 *Board is created in the Parser and initialized with a 2D Array of Tiles,
+	 *it maintains both an original version of Game board and a template board
 	 */
 	private static final long serialVersionUID = -6287684435326608226L;
 	private Tile[][] templateBoard;
@@ -19,19 +20,18 @@ public class Board implements Serializable {
 	public int ROWS;
 	public int COLS;
 
-	//Board is reated in the parser and handed a 2D Tile array
 	public Board(Tile[][] newBoard) {
 
 		ROWS = newBoard.length;
 		COLS = newBoard[0].length;
 
 		templateBoard = new Tile[ROWS][COLS];
-		for(int row=0;row<templateBoard.length; row++){
+		for(int row=0;row<templateBoard.length; row++){				//Copying values into the tempBoard
 			for(int col=0;col<newBoard[0].length; col++){
 				this.templateBoard[row][col] = newBoard[row][col];
 			}
 		}
-		gameBoard = new Tile[ROWS][COLS];
+		gameBoard = new Tile[ROWS][COLS];							//Cloning tempBoard into gameBoard
 		for(int i = 0; i < templateBoard.length; i++){
 		    gameBoard[i] = templateBoard[i].clone();
 		}
@@ -42,9 +42,14 @@ public class Board implements Serializable {
 	}
 
 	public Tile getTile(int row, int col){
-		return gameBoard[row][col]; //row col
+		return gameBoard[row][col]; 
 	}
-
+	
+	/**
+	 * Taking a player as input, x and y coordinates are extracted and translated 
+	 * to refer to a position on the gameBoard. That position has the player added to it.
+	 * @param p - The player to place on the board
+	 */
 	public void placePlayerOnBoard(Player p){
 		Position playerPos = p.getPosition();
 		int row = playerPos.getY();
@@ -54,6 +59,12 @@ public class Board implements Serializable {
 		}
 	}
 
+	/**
+	 * Iterates through the templateBoard and finds instances of StartTile, 
+	 * which are then added to and array and returned.
+	 * 
+	 * @return ArrayList - instances of StartTile
+	 */
 	public ArrayList<StartTile> getStartingTiles(){
 		ArrayList<StartTile> toReturn = new ArrayList<>();
 		for(int row=0;row<this.ROWS;row++){
@@ -67,6 +78,11 @@ public class Board implements Serializable {
 		return toReturn;
 	}
 
+	/**
+	 * Collects positions that could be monster starting tiles, 
+	 * checks if they are an instance of ground tile and not a brick texture.  
+	 * @return ArrayList - Start tiles for monsters
+	 */
 	public ArrayList<Position> getMonsterStartingTiles(){
 		ArrayList<Position> toReturn = new ArrayList<>();
 		for(int row=0;row<this.ROWS;row++){
@@ -80,6 +96,12 @@ public class Board implements Serializable {
 		return toReturn;
 	}
 
+	/**
+	 * Creates and returns our current 'MiniMap', the diagram that appears in the top corner 
+	 * of the GUI and shows the players immediate surroundings
+	 * @param player - current player
+	 * @return ArrayList - The 'MiniMap'
+	 */
 	public ArrayList<String> getMiniMap(Player player){
 
 		//'map' contains a list of the tiles around the player.

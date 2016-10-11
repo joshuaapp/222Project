@@ -127,10 +127,7 @@ public class InventoryPanel extends JPanel {
 	 *
 	 */
 	public class ButtonListener implements ActionListener{
-		/**
-		 * ActionCommand is read from Action event and passed though a switch statement 
-		 * 
-		 */
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String command = e.getActionCommand();
