@@ -2,8 +2,6 @@ package gameWorld;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
 import items.Chest;
 import items.Crystal;
 import items.Item;
@@ -155,7 +153,7 @@ public class LevelParser {
 		return null;
 	}
 	/**Parse file containing information about items in a level.
-	 * format: type_position, e.g: 
+	 * format: type_position, e.g: CHEST 15 10
 	 * 
 	 * @param filename
 	 */

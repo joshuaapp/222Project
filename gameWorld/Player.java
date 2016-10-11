@@ -6,7 +6,7 @@ package gameWorld;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import gameWorld.Player.Direction;
+import gameWorld.GameState.direction;
 import items.Item;
 import ui.RenderPerspective;
 
@@ -17,29 +17,23 @@ public class Player implements Serializable{
 	 */
 	private static final long serialVersionUID = 7626039719764482671L;
 
-	public int hp = 15;
+	private int hp = 15;
 	private Position playerPosition;
 
-	Direction facing = Direction.North;
+	direction facing = direction.NORTH;
 	private RenderPerspective rp;
-	public int level =1;
+	private int level =1;
 	private Board board;
-	public boolean gotBag = false;
+	private boolean gotBag = false;
 	String name;
-	public ArrayList<Item> inven = new ArrayList<Item>();
-	public boolean isMonster = false;
+	private ArrayList<Item> inven = new ArrayList<Item>();
+	private boolean isMonster = false;
 
 	int Xcoord;
 	int Ycoord;
 
 	private boolean notSet = true;
 
-	public enum Direction{
-		North,
-		South,
-		East,
-		West;
-	}
 
 
 	public Player(Board b, String name){
@@ -75,11 +69,11 @@ public class Player implements Serializable{
 	}
 
 
-	public Direction getDirectionFacing() {
+	public direction getDirectionFacing() {
 		return this.facing;
 	}
 
-	public void setDirectionFacing(Direction direction) {
+	public void setDirectionFacing(direction direction) {
 		this.facing = direction;
 	}
 
@@ -106,6 +100,38 @@ public class Player implements Serializable{
 
 	public void setRp(RenderPerspective rp) {
 		this.rp = rp;
+	}
+
+	public int getHp() {
+		return hp;
+	}
+
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
+
+	public boolean isGotBag() {
+		return gotBag;
+	}
+
+	public void setGotBag(boolean gotBag) {
+		this.gotBag = gotBag;
+	}
+
+	public boolean isMonster() {
+		return isMonster;
+	}
+
+	public void setMonster(boolean isMonster) {
+		this.isMonster = isMonster;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public void setInven(ArrayList<Item> inven) {
+		this.inven = inven;
 	}
 
 

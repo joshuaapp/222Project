@@ -1,16 +1,17 @@
 package ui;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Queue;
 import javax.imageio.ImageIO;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import gameWorld.Player;
 import tiles.DoorTile;
@@ -19,6 +20,7 @@ import tiles.StartTile;
 import tiles.Tile;
 public class DungeonCanvas extends JPanel{
 	private static final long serialVersionUID = 1L;
+	private List<String> canvasText;
 	private Player player;
 	private RenderPerspective rp;
 	private Image flat;
@@ -44,6 +46,7 @@ public class DungeonCanvas extends JPanel{
 	private Image end;
 	private Image crystalglow;
 
+
 	public int level = 1;
 	private final int squareWidth = 10;
 	private int[] imageXPositions = {0, 212, 424, 824, 1036, 1248,
@@ -58,10 +61,10 @@ public class DungeonCanvas extends JPanel{
 	//speed it up
 
 	public DungeonCanvas(){
-
 		if(player != null){
-			level = player.level;
+			level = player.getLevel();
 		}
+		this.canvasText = Arrays.asList("Welcome to the game! You can't pick anything up yet...maybe try look for a bag? Perhaps it's hidden in a chest...(P.S Watch out for the rabid sheep!)".split(" "));
 		loadImages();
 	}
 
@@ -160,11 +163,11 @@ public class DungeonCanvas extends JPanel{
 				g.drawImage(tileImage, screenXPositions[col], 0,screenXPositions[col] + scaleSize, getHeight(), imageXPositions[count],0,
 						imageXPositions[count] + spriteSize, 600, null);
 				//If there is a player then draws them
-				if(tile.getPlayer() != null && !tile.getPlayer().isMonster){
+				if(tile.getPlayer() != null && !tile.getPlayer().isMonster()){
 					g.drawImage(players, screenXPositions[col], 0,screenXPositions[col] + scaleSize, getHeight(), imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
-				if(tile.getPlayer() != null && tile.getPlayer().isMonster){
+				if(tile.getPlayer() != null && tile.getPlayer().isMonster()){
 					g.drawImage(monster, screenXPositions[col], 0,screenXPositions[col] + scaleSize, getHeight(), imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
@@ -189,8 +192,44 @@ public class DungeonCanvas extends JPanel{
 			}
 			drawMap(g);
 			healthBar(g);
+			drawMessage(g);
 		}
 	}	
+
+	public void drawMessage(Graphics g){
+		g.setFont(new Font("default", Font.BOLD, 14));
+		int textXPos = 140;
+		int textYPos = 40;
+		int cutoff = this.getWidth()-10;
+		int alpha = 127; // 50% transparent
+		Color myColour = new Color(56, 58, 60, alpha);
+		for(String s : this.canvasText){
+			int stringWidth = g.getFontMetrics().stringWidth(s);
+			if(textXPos+stringWidth < cutoff){
+
+				g.setColor(myColour);
+				g.fillRect(textXPos, textYPos-15, stringWidth+5, 15);
+				g.setColor(Color.white);
+				g.drawString(s, textXPos, textYPos);
+				textXPos += stringWidth + 5;
+
+			}
+			else{
+				textXPos = 140;
+				textYPos += 15;
+				g.setColor(myColour);
+				g.fillRect(textXPos, textYPos-15, stringWidth+5, 15);
+				g.setColor(Color.white);
+				g.drawString(s, textXPos, textYPos);
+				textXPos += stringWidth + 5;
+			}
+		}
+
+	}
+
+	public void updateCanvasText(List<String> text){
+		this.canvasText = text;
+	}
 
 	private Image getTileImage(String tileImageName){
 		if(tileImageName.equals("GRASS")){
@@ -252,7 +291,7 @@ public class DungeonCanvas extends JPanel{
 
 	public void healthBar(Graphics g){
 		Color cur;
-		int health = player.hp;
+		int health = player.getHp();
 		int bar = 0;
 		int xPos = 215;
 		int yPos = 5;
@@ -343,16 +382,16 @@ public class DungeonCanvas extends JPanel{
 		g.setColor(Color.white);
 
 		switch(player.getDirectionFacing()){
-		case North:
+		case NORTH:
 			g.fillRect(x, y, squareWidth, recSize);
 			break;
-		case East:
+		case EAST:
 			g.fillRect((x + squareWidth)-recSize, y, recSize, squareWidth);
 			break;
-		case South:
+		case SOUTH:
 			g.fillRect(x, (y + squareWidth)-recSize, squareWidth, recSize);
 			break;
-		case West:
+		case WEST:
 			g.fillRect(x, y, recSize, squareWidth);
 			break;
 		}
