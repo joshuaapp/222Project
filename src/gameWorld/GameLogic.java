@@ -169,7 +169,7 @@ public class GameLogic implements Serializable {
 					try{
 						Player monster = game.getGameBoard().getTile(i, j).getPlayer();
 						if(monster.isMonster){
-							lowerHP(p);
+							//lowerHP(p);
 							return;
 						}
 					}catch(NullPointerException e){
