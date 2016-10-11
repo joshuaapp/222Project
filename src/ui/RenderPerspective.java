@@ -12,6 +12,11 @@ import tiles.Tile;
 import tiles.WallTile;
 import gameWorld.Position;
 
+/**
+ * 
+ * @author Tom Mcculloch
+ *
+ */
 
 public class RenderPerspective implements Serializable{
 

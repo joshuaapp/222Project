@@ -18,6 +18,13 @@ import tiles.DoorTile;
 import tiles.EndTile;
 import tiles.StartTile;
 import tiles.Tile;
+
+/**
+ * 
+ * @author Tom Mcculloch
+ *
+ */
+
 public class DungeonCanvas extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private List<String> canvasText;

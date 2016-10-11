@@ -12,7 +12,7 @@ import control.Client;
  * Application window is the main class that handles Swing
  *  and the JFrame that contains all the related Swing components.
  *  Also contains useful Button and Key Listeners
- * @author anna
+ * @author Anna Henderson
  *
  */
 public class ApplicationWindow extends JFrame{

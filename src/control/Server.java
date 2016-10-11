@@ -6,6 +6,12 @@ import gameWorld.GameState;
 import gameWorld.Player;
 import java.net.ServerSocket;
 
+/**
+ * 
+ * @author Josh Apperley
+ *
+ */
+
 /**This is the sever application which allows up to maxNumClients to connect to the serverSocket.
  * It communicates between the clients and the game logic/game state in order to perform game actions.
  *

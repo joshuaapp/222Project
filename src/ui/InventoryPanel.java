@@ -26,7 +26,7 @@ import items.Key;
  * Inventory Panel contains a JPanel for the JButtons, 
  * stores the icons for the buttons and methods to
  * update the panel for the players' viewing.
- * @author anna
+ * @author Anna Henderson
  *
  */
 public class InventoryPanel extends JPanel {

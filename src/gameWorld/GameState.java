@@ -7,6 +7,13 @@ import control.Client;
 import items.Item;
 import tiles.StartTile;
 import tiles.Tile;
+
+/**
+ * 
+ * @author Hunter Lindsay
+ *
+ */
+
 public class GameState implements Serializable{
 
 	private static final long serialVersionUID = 6924348678532121507L;
@@ -35,7 +42,7 @@ public class GameState implements Serializable{
 	}
 
 	/**
-	 * Places players at starting locations
+	 * Applys a player to client object
 	 * @param client the client to add a player too
 	 */
 	public void addPlayer(Client c) {
@@ -50,7 +57,7 @@ public class GameState implements Serializable{
 	}
 
 	/**
-	 * Places players at starting locations
+	 * Removes a player form a client object
 	 * @param client the client who is quitting game
 	 */
 	public void removePlayer(Client c){
@@ -72,7 +79,7 @@ public class GameState implements Serializable{
 	}
 
 	/**
-	 * Places players at starting locations
+	 * Checks for spaces in the players array
 	 * @return int number of current players
 	 */
 	public int findAvailableSpaceInCurrentPlayers(){
@@ -128,7 +135,7 @@ public class GameState implements Serializable{
 	}
 
 	/**
-	 * Level up 
+	 * Level up, gets a new map, new items and new graphics, ensures players are put in the right place
 	 */
 	public void levelUp(){
 		setLevel(getLevel() + 1);
@@ -138,6 +145,9 @@ public class GameState implements Serializable{
 		levelPushToPlayers();
 	}
 
+	/**
+	 * Resets level if a player dies
+	 */
 	public void resetLevel(){
 		LevelParser parser = new LevelParser();
 		currentBoard = parser.buildBoard("src/assets/level"+getLevel()+".txt");
@@ -145,6 +155,9 @@ public class GameState implements Serializable{
 		levelPushToPlayers();
 	}
 
+	/**
+	 * Pushes some gamestate info to players
+	 */
 	public void levelPushToPlayers(){
 		for(Player p: curPlayers){
 			if(p != null){
@@ -171,11 +184,14 @@ public class GameState implements Serializable{
 		this.currentBoard = b;
 	}
 	
+	/**
+	 * Is part of the pipeline of methods that allows player to pick up items
+	 */
 	public void updatePlayerAct(Player p, String a, String item) {
-		if(a.equals("PICK")){
+		if(a.equals("PICK")){ //Player is picking up an item
 			logic.isThereAnItem(p);
 		}
-		else if(a.equals("DROP")){
+		else if(a.equals("DROP")){ //Player is dropping an item
 			logic.drop(p, item);
 		}
 	}
@@ -197,6 +213,10 @@ public class GameState implements Serializable{
 		addPlayer(c);
 	}
 	
+	/**
+	 * Finds out which player a client is associated with
+	 * @param name name of client
+	 */
 	public Player getPlayerOfClient(String name){
 		for(Client c : this.clients){
 			if(c.getName().equals(name)){

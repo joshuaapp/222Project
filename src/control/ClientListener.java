@@ -11,6 +11,12 @@ import java.util.List;
 import gameWorld.GameState;
 import gameWorld.Player;
 
+/**
+ * 
+ * @author Josh Apperley
+ *
+ */
+
 public class ClientListener implements Runnable,Serializable {
 
 	/**

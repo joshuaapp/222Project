@@ -8,6 +8,12 @@ public class ServerHelper implements Runnable{
 	private ObjectInputStream objectInputFromClient;
 	private boolean running;
 	
+	/**
+	 * 
+	 * @author Josh Apperley
+	 *
+	 */
+	
 	public ServerHelper(Server server, Socket clientSocket){
 		this.server = server;
 		this.clientSocket = clientSocket;

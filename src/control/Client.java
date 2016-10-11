@@ -5,6 +5,13 @@ import java.net.Socket;
 import gameWorld.GameState;
 import gameWorld.Player;
 import ui.ApplicationWindow;
+
+/**
+ * 
+ * @author Josh Apperley
+ *
+ */
+
 public class Client implements Runnable, Serializable {
 	/**
 	 *

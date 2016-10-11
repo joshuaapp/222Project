@@ -12,6 +12,12 @@ import tiles.DoorTile;
 import tiles.EndTile;
 import tiles.Tile;
 
+/**
+ * 
+ * @author Hunter Lindsay
+ *
+ */
+
 
 public class GameLogic implements Serializable {
 	/**
@@ -43,6 +49,10 @@ public class GameLogic implements Serializable {
 
 	}
 
+	/**
+	 *Lowers the life of a player
+	 *@param player to lose health
+	 */
 	public void lowerHP(Player player){
 
 		player.setHp(player.getHp()-1);
@@ -57,6 +67,11 @@ public class GameLogic implements Serializable {
 		}
 	}
 
+	/**
+	 *Ensures player is allowed to move in disired way
+	 *@param player player to move
+	 *@param direction facing
+	 */
 	public void legalPlayerMove(Player player, direction facing){
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
@@ -121,7 +136,10 @@ public class GameLogic implements Serializable {
 		}
 	}
 
-
+	/**
+	 **Serves as AI for monsters, they choose a random direction and move there after
+	 *the player has moved a random amount of steps
+	 */
 	public void moveMonsters(){
 		for(Player m: game.curMonsters){
 			Random rand = new Random();
@@ -136,6 +154,11 @@ public class GameLogic implements Serializable {
 		}
 	}
 
+	/**
+	 *Performs the actual movement of a player
+	 *@param player player to move
+	 *@param direction facing
+	 */
 	public void actuallyMove(Player p, direction facing){
 		Position pos = p.getPosition();
 		int y = pos.getY();
@@ -174,6 +197,11 @@ public class GameLogic implements Serializable {
 		else{return direction.NORTH;}
 	}
 
+	/**
+	 *An old method that was designed to check what aplayer was trying to interact with
+	 *@param player player to move
+	 *@param direction facing
+	 */
 	//method to return what the player is attempting to interact with
 	public Tile interactWith(Player p, direction facing){
 		switch(facing){
@@ -189,6 +217,11 @@ public class GameLogic implements Serializable {
 		}
 	}
 
+	/**
+	 *Allows players to pick up
+	 *@param player player
+	 *@param item item the player is interacting with
+	 */
 	public void pickUp(Player p, Item item){
 		if(item.equals("CRYSTAL")){
 			((Crystal) item).removeFromEnd();
@@ -203,13 +236,18 @@ public class GameLogic implements Serializable {
 
 	}
 
+	/**
+	 *Takes an item form player inventory  and puts it on the map
+	 *@param player player
+	 *@param item string of item to be dropped
+	 */
 	public void drop(Player player, String item){
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
 		Tile currentTile = currentBoard.getTile(playerY, playerX);
-		if(currentTile.getItem() == null && !(currentTile instanceof EndTile)){
+		if(currentTile.getItem() == null && !(currentTile instanceof EndTile)){ //Check if there is room to put an item down
 			for(Item i: player.getInven()){
 				if(i.getName().equals(item)){
 					currentTile.setItem(i);
@@ -219,7 +257,7 @@ public class GameLogic implements Serializable {
 			}		
 		}
 
-		else if(currentTile instanceof EndTile){
+		else if(currentTile instanceof EndTile){ //Deals with putting the crystal on the end tile to level up
 			if(item.equals("CRYSTAL")){
 				for(Item i: player.getInven()){
 					if(i.getName().equals("CRYSTAL")){
@@ -243,6 +281,10 @@ public class GameLogic implements Serializable {
 
 	}
 
+	/**
+	 *Checks if there is an item in front of the player
+	 *@param player player to move
+	 */
 	public void isThereAnItem(Player player) {
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
@@ -250,14 +292,14 @@ public class GameLogic implements Serializable {
 		Board currentBoard = game.getGameBoard();
 		if(currentBoard.getTile(playerY, playerX).getItem() != null&& player.getInven().size() < 5){
 			pickUp(player, currentBoard.getTile(playerY, playerX).getItem());
-			if(player.isGotBag()){
+			if(player.isGotBag()){ //Ensure player has a bag
 				if(currentBoard.getTile(playerY, playerX).getItem() instanceof Chest){
 					Chest ch = (Chest)currentBoard.getTile(playerY, playerX).getItem();
 					ch.open();
-					currentBoard.getTile(playerY, playerX).setItemImage("/chest_open.png");
+					currentBoard.getTile(playerY, playerX).setItemImage("/chest_open.png"); //Update chest image to open
 					return;
 				}
-				currentBoard.getTile(playerY, playerX).setItem(null);
+				currentBoard.getTile(playerY, playerX).setItem(null); //Delete item form map
 			}
 		}
 	}
