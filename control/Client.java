@@ -18,7 +18,7 @@ public class Client implements Runnable, Serializable {
 	private Player player;
 	private int portNum = 8001;
 	private String name;
-	private String serverIp = "flying-burrito-brothers.ecs.vuw.ac.nz";
+	private String serverIp = "10.140.42.197";
 	private transient ApplicationWindow clientsWindow;
 	private String lastDirectionMoved;
 	private GameState state;

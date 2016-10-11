@@ -209,7 +209,7 @@ public class GameLogic implements Serializable {
 	}
 
 	public void pickUp(Player p, Item item){
-		if(p.gotBag == true && p.inven.size() < 3){
+		if(p.gotBag == true && p.inven.size() < 5){
 			p.inven.add(item);
 		}
 		if(item instanceof Chest){
@@ -245,7 +245,7 @@ public class GameLogic implements Serializable {
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
-		if(currentBoard.getTile(playerY, playerX).getItem() != null&& player.inven.size() < 3){
+		if(currentBoard.getTile(playerY, playerX).getItem() != null&& player.inven.size() < 5){
 			pickUp(player, currentBoard.getTile(playerY, playerX).getItem());
 			if(player.gotBag){
 				if(currentBoard.getTile(playerY, playerX).getItem() instanceof Chest){
