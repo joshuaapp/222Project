@@ -52,6 +52,7 @@ public class GameState implements Serializable{
 		currentBoard.placePlayerOnBoard(p1);
 		c.addPlayer(p1);
 	}
+	
 	public void removePlayer(Client c){
 		Player toRemove = c.getPlayer();
 		Position playerPos = toRemove.getPosition();
