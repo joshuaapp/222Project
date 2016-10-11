@@ -30,18 +30,16 @@ public class ServerHelper implements Runnable{
 	}
 	@Override
 	public void run() {
+		System.out.println("Server is running!");
 		String clientRequest = null;
 		String[] brokenRequest = new String[3];
 		//get client to add to list of servers clients
 		try{
-			System.out.println("SERVER requesting to get client");
 			this.objectOutputToClient.writeObject("GET_CLIENT");
 			this.objectOutputToClient.flush();
 			while(running){
-				System.out.println("SERVER trying to read an object");
 				Object clientOutput = this.objectInputFromClient.readObject();
 				if(clientOutput instanceof String){
-					System.out.println("SERVER read a string object: "+clientOutput);
 					clientRequest = (String) clientOutput;
 					brokenRequest = clientRequest.split(" ");
 				}
@@ -50,14 +48,12 @@ public class ServerHelper implements Runnable{
 					if(brokenRequest[0].equals("UP") || brokenRequest[0].equals("DOWN") ||
 							brokenRequest[0].equals("LEFT") ||brokenRequest[0].equals("RIGHT")){
 						this.server.processClientMovementRequest(brokenRequest[0], brokenRequest[1]);
-						System.out.println("Server processed movement request");
 						//send updates back to client
 						sendGameState(brokenRequest[1]);
 					}
 					else if(brokenRequest[0].equals("PICK") || brokenRequest[0].equals("DROP")){
 						System.out.println("Processing pickup or drop request");
 						this.server.processClientActionRequest(brokenRequest[0], brokenRequest[1], brokenRequest[2]);
-						System.out.println("Sending state back. Does player have bag? "+server.getClientFromName(brokenRequest[2]).getPlayer().gotBag);
 						sendGameState(brokenRequest[2]);
 					}
 					else if(brokenRequest[0].equals("SENDING_CLIENT")){
@@ -82,6 +78,7 @@ public class ServerHelper implements Runnable{
 						}
 					}
 					else if(brokenRequest[0].equals("DISCONNECTING")){
+						this.objectOutputToClient.writeObject("ACKNOWLEDGED");
 						Client toRemove = this.server.getClientFromName(brokenRequest[1]);
 						System.out.println("Removing "+toRemove+" from connected clients");
 						this.server.getCurrentGameState().removePlayer(toRemove);
@@ -129,7 +126,7 @@ public class ServerHelper implements Runnable{
 		for(Client c : this.server.getClients()){
 			if(c.getName().equals(clientName)){
 				try {
-					//reset
+					//reset so that we can overwrite existing data in the output stream
 					this.objectOutputToClient.reset();
 					this.objectOutputToClient.writeObject("SENDING_UPDATED_STATE");
 					this.objectOutputToClient.flush();
