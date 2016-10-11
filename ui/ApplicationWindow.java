@@ -1,23 +1,18 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-
 import control.Client;
-import items.Button;
-import items.Item;
 
 public class ApplicationWindow extends JFrame{
 	//private static BoardPanel boardPanel;
@@ -25,19 +20,24 @@ public class ApplicationWindow extends JFrame{
 	private InventoryPanel inventoryPanel; 
 	//private Console console;
 	private DungeonCanvas gameCanvas;
-
+	private StartMenu start;
 	private Client client;
 
 	public ApplicationWindow(String title, Client user) {
 		super(title);	
 		gameCanvas = new DungeonCanvas();
+		
 		//this.messagePanel = new MessagePanel();
+		
 		this.inventoryPanel = new InventoryPanel(user, gameCanvas);
 		//this.console = new Console();
 		//this.messagePanel.makeMessagePanel(console);
-		this.pack(); // pack components tightly together
-		this.setResizable(false); // prevent us from being resizeable
-		this.setVisible(true); // make sure we are visible!
+		this.start = new StartMenu();
+		this.start.addMenuListeners( new GameListener());
+		
+		//this.pack(); // pack components tightly together
+		//this.setResizable(false); // prevent us from being resizeable
+		//this.setVisible(true); // make sure we are visible!
 		gameCanvas.setFocusable(true);
 	}
 
@@ -47,6 +47,7 @@ public class ApplicationWindow extends JFrame{
 		f.setSize(800, 900);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLayout(new BorderLayout());
+		
 		//gamePanel.setPreferredSize(getPreferredSize());
 		//messagePanel.setPreferredSize(getPreferredSize());
 		inventoryPanel.setPreferredSize(getPreferredSize());
@@ -59,7 +60,7 @@ public class ApplicationWindow extends JFrame{
 		//  messagePanel.setPreferredSize(getPreferredSize());
 		// f.setLayout(new GridLayout(1,2));
 		//f.setLayout(new BorderLayout());
-
+		f.setJMenuBar(start);
 		f.pack();
 		f.setVisible(true);
 		//this.writeOut("Player messages go here :)");
@@ -148,7 +149,23 @@ public class ApplicationWindow extends JFrame{
 
 	}
 
+	public class GameListener implements ActionListener{
 
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String pushed = e.getActionCommand();
+			if(pushed.equals("Restart")){
+				System.out.println("Reset");
+			}
+			else if(pushed.equals("Exit")){
+				System.exit(0);
+			}
+			
+			
+
+			
+		}
+	}
 	/**Method to connect a client to a certain window so the window can send requests
 	 * from client to server.
 	 * @param client
