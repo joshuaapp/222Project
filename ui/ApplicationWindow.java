@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -116,10 +118,11 @@ public class ApplicationWindow extends JFrame{
 			else if(code == KeyEvent.VK_SPACE) {
 				client.tellServerAction("PICK", null);
 				Thread.sleep(200);
-				System.out.println("Back to appwin");
 				inventoryPanel.foundChest();
-				System.out.println("about to update inventory");
 				inventoryPanel.updateInventoryPanel();
+				//update game text
+				List<String> textToUpdate = Arrays.asList("You found a bag! You can now pick up keys. Keys unlock doors. I heard there is a magic crystal floating around in a room somewhere....".split(" "));	
+				gameCanvas.updateCanvasText(textToUpdate);
 			}
 			//Need an action here where when a button is pressed it calls client.tellServerAction("DROP", a string called itemName);
 			//for now pressing d will drop an 'item'

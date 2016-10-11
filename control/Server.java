@@ -91,7 +91,6 @@ public class Server implements Runnable{
 				toMove = c.getPlayer();
 			}
 		}
-		System.out.println("Updating game state player positions["+direction+","+clientObjectAsString+"]");
 		updateGameStatePlayerPositions(direction, toMove);
 	}
 	public  void processClientActionRequest(String action, String item, String clientObjectAsString) {
