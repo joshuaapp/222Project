@@ -139,7 +139,7 @@ public class LevelParser {
 		//~ represents an end tile
 		else if(c == 'E'){
 			//return new EndTile(xPos, yPos);
-			return new EndTile("BRICK"); //for now until door img is done
+			return new EndTile("END"); //for now until door img is done
 		}
 		//~ represents an pillar tile
 		else if(c == 'P'){

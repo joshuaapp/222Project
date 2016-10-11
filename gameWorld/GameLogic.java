@@ -59,11 +59,15 @@ public class GameLogic implements Serializable {
 	public void lowerHP(Player player){
 		player.hp--;
 		player.getRenderPerspective().updatePerspective();
+		System.out.println("Reset called upper");
 		if(player.hp <= 0){
 			for(Player p: game.curPlayers){
-				p.hp = 15;
+				if(p!=null){
+					p.hp = 15;
+				}
 			}
-			game.resetLevel();
+			System.out.println("Reset called");
+			game.resetLevel();;
 		}
 	}
 

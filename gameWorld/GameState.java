@@ -22,32 +22,37 @@ public class GameState implements Serializable{
 	private int numPlayers = 0;
 
 	public GameState(){
-		attachLogic(new GameLogic(this));
+		attachLogic(new GameLogic(this)); //Create a gamelogic object to update gamestate
 		curPlayers = new Player[5];
 		curMonsters = new ArrayList<Player>();
 		clients = new ArrayList<Client>();
 		run();
 	}
 
-	public void run(){
+	public void run(){ //Initiliase gameState with a map and NPCs
 		initMap();
 		addMonsters();
 	}
 
 	/**
 	 * Places players at starting locations
+	 * @param client the client to add a player too
 	 */
 	public void addPlayer(Client c) {
 		numPlayers++;
 		Player p1 = new Player(currentBoard, "Player"+numPlayers);
-		int pos = findAvailableSpaceInCurrentPlayers();
-		curPlayers[pos] = p1;
+		int pos = findAvailableSpaceInCurrentPlayers(); //Check the array isnt full
+		curPlayers[pos] = p1; //Add this new player into GameStates store of them
 		StartTile t = currentBoard.getStartingTiles().get(pos);
 		p1.setPosition(t.getStartPosition());
 		currentBoard.placePlayerOnBoard(p1);
-		c.addPlayer(p1);
+		c.addPlayer(p1); //Offer client its player object
 	}
-	
+
+	/**
+	 * Places players at starting locations
+	 * @param client the client who is quitting game
+	 */
 	public void removePlayer(Client c){
 		Player toRemove = c.getPlayer();
 		Position playerPos = toRemove.getPosition();
@@ -66,6 +71,10 @@ public class GameState implements Serializable{
 		numPlayers--;
 	}
 
+	/**
+	 * Places players at starting locations
+	 * @return int number of current players
+	 */
 	public int findAvailableSpaceInCurrentPlayers(){
 		for(int i=0;i<curPlayers.length; i++){
 			if(curPlayers[i] == null){
@@ -75,6 +84,9 @@ public class GameState implements Serializable{
 		return -1;
 	}
 
+	/**
+	 * Add NPC monsters to the map
+	 */
 	public void addMonsters(){
 		curMonsters.removeAll(curMonsters);
 		Player monster = new Player(currentBoard, "Monster", true);
@@ -100,8 +112,10 @@ public class GameState implements Serializable{
 		return this.currentBoard;
 	}
 
+	/**
+	 * Build a map, by parsing through a text file
+	 */
 	public void initMap(){
-
 		LevelParser parser = new LevelParser();
 		currentBoard = parser.buildBoard("level"+getLevel()+".txt");
 		parser.parseItemsAndAddToBoard("level"+getLevel()+"Items.txt", currentBoard);
@@ -110,23 +124,25 @@ public class GameState implements Serializable{
 	public void attachLogic(GameLogic logic){
 		this.logic = logic;
 	}
-	
+
+	/**
+	 * Level up 
+	 */
 	public void levelUp(){
 		setLevel(getLevel() + 1);
 		LevelParser parser = new LevelParser();
 		currentBoard = parser.buildBoard("level"+getLevel()+".txt");
 		parser.parseItemsAndAddToBoard("level"+getLevel()+"Items.txt", currentBoard);
 		levelPushToPlayers();
-
 	}
-	
+
 	public void resetLevel(){
 		LevelParser parser = new LevelParser();
 		currentBoard = parser.buildBoard("level"+getLevel()+".txt");
 		parser.parseItemsAndAddToBoard("level"+getLevel()+"Items.txt", currentBoard);
 		levelPushToPlayers();
 	}
-	
+
 	public void levelPushToPlayers(){
 		for(Player p: curPlayers){
 			if(p != null){
@@ -136,8 +152,9 @@ public class GameState implements Serializable{
 			}
 		}
 		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
-		if(curPlayers.length <= startTiles.size()){
-			for(int i=0;i<curPlayers.length;i++){
+
+		for(int i=0;i<curPlayers.length;i++){
+			if(curPlayers[i] != null){
 				StartTile t = startTiles.get(i);
 				curPlayers[i].setPosition(t.getStartPosition());
 				currentBoard.placePlayerOnBoard(curPlayers[i]);
@@ -148,9 +165,11 @@ public class GameState implements Serializable{
 	public void updatePlayerPosition(Player p, String d){
 		logic.rotateOrMove(p, d);
 	}
+	
 	public void attatchBoard(Board b){
 		this.currentBoard = b;
 	}
+	
 	public void updatePlayerAct(Player p, String a, String item) {
 		if(a.equals("PICK")){
 			logic.isThereAnItem(p);
@@ -159,9 +178,11 @@ public class GameState implements Serializable{
 			logic.drop(p, item);
 		}
 	}
+	
 	public int getLevel() {
 		return level;
 	}
+	
 	public void setLevel(int level) {
 		this.level = level;
 	}
@@ -174,6 +195,7 @@ public class GameState implements Serializable{
 		this.clients.add(c);
 		addPlayer(c);
 	}
+	
 	public Player getPlayerOfClient(String name){
 		for(Client c : this.clients){
 			if(c.getName().equals(name)){
