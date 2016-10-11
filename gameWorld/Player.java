@@ -54,7 +54,7 @@ public class Player implements Serializable{
 	}
 
 	public RenderPerspective getRP(){
-		return rp;
+		return getRp();
 	}
 
 
@@ -69,7 +69,7 @@ public class Player implements Serializable{
 	public void setPosition(Position toSet){
 		this.playerPosition = toSet;
 		if(notSet && !isMonster){
-			rp = new RenderPerspective(this, board);
+			setRp(new RenderPerspective(this, board));
 			this.notSet = false;
 		}
 	}
@@ -84,7 +84,7 @@ public class Player implements Serializable{
 	}
 
 	public RenderPerspective getRenderPerspective() {
-		return this.rp;
+		return this.getRp();
 	}
 
 	public ArrayList<Item> getInven(){
@@ -96,9 +96,17 @@ public class Player implements Serializable{
 	}
 
 	public void setBoard(Board b){
-		System.out.println("Setting board of player "+this+" with renderperspective "+rp+" to \n"+b);
-		rp.setBoard(b);
+		System.out.println("Setting board of player "+this+" with renderperspective "+getRp()+" to \n"+b);
+		getRp().setBoard(b);
 		board = b;
+	}
+
+	public RenderPerspective getRp() {
+		return rp;
+	}
+
+	public void setRp(RenderPerspective rp) {
+		this.rp = rp;
 	}
 
 

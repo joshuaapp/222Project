@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import control.Client;
-import gameWorld.GameState.direction;
-import gameWorld.Player.Direction;
 import items.Item;
-import main.Main;
-import tiles.GroundTile;
 import tiles.StartTile;
 import tiles.Tile;
 public class GameState implements Serializable{
@@ -36,7 +32,6 @@ public class GameState implements Serializable{
 	public void run(){
 		initMap();
 		addMonsters();
-		//levelPushToPlayers();
 	}
 
 	/**
@@ -52,6 +47,7 @@ public class GameState implements Serializable{
 		currentBoard.placePlayerOnBoard(p1);
 		c.addPlayer(p1);
 	}
+	
 	public void removePlayer(Client c){
 		Player toRemove = c.getPlayer();
 		Position playerPos = toRemove.getPosition();
@@ -114,6 +110,7 @@ public class GameState implements Serializable{
 	public void attachLogic(GameLogic logic){
 		this.logic = logic;
 	}
+	
 	public void levelUp(){
 		setLevel(getLevel() + 1);
 		LevelParser parser = new LevelParser();
@@ -122,15 +119,19 @@ public class GameState implements Serializable{
 		levelPushToPlayers();
 
 	}
-
+	
+	public void resetLevel(){
+		LevelParser parser = new LevelParser();
+		currentBoard = parser.buildBoard("level"+getLevel()+".txt");
+		parser.parseItemsAndAddToBoard("level"+getLevel()+"Items.txt", currentBoard);
+		levelPushToPlayers();
+	}
+	
 	public void levelPushToPlayers(){
-		System.out.println("pushing to "+curPlayers.length);
 		for(Player p: curPlayers){
 			if(p != null){
 				System.out.println(p);
-				System.out.println("Pushing up to level "+level);
 				p.level = level;
-				System.out.println("Pushing level to player "+p+", board = \n"+currentBoard);
 				p.setBoard(currentBoard);
 				p.inven = new ArrayList<Item>();
 			}
@@ -146,7 +147,6 @@ public class GameState implements Serializable{
 	}
 
 	public void updatePlayerPosition(Player p, String d){
-		System.out.println("Game state calling rotateormove("+p+","+d+") on logic("+logic+")");
 		logic.rotateOrMove(p, d);
 	}
 	public void attatchBoard(Board b){
