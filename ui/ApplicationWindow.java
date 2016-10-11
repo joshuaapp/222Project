@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,17 +10,16 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import control.Client;
 
 public class ApplicationWindow extends JFrame{
-	//private static BoardPanel boardPanel;
-	//private MessagePanel messagePanel;
+	
 	private InventoryPanel inventoryPanel; 
-	//private Console console;
 	private DungeonCanvas gameCanvas;
+	//private Console console;
 	private StartMenu start;
 	private Client client;
 
@@ -31,13 +31,10 @@ public class ApplicationWindow extends JFrame{
 		
 		this.inventoryPanel = new InventoryPanel(user, gameCanvas);
 		//this.console = new Console();
+		//console.setArea(new JLabel("Image and Text"));
 		//this.messagePanel.makeMessagePanel(console);
 		this.start = new StartMenu();
 		this.start.addMenuListeners( new GameListener());
-		
-		//this.pack(); // pack components tightly together
-		//this.setResizable(false); // prevent us from being resizeable
-		//this.setVisible(true); // make sure we are visible!
 		gameCanvas.setFocusable(true);
 	}
 
@@ -47,7 +44,11 @@ public class ApplicationWindow extends JFrame{
 		f.setSize(800, 900);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setLayout(new BorderLayout());
+		//console.setBackground(Color.CYAN);
+		//console.setPreferredSize(getPreferredSize());
+		//console.setOpaque(false);
 		
+		//gameCanvas.add(console);
 		//gamePanel.setPreferredSize(getPreferredSize());
 		//messagePanel.setPreferredSize(getPreferredSize());
 		inventoryPanel.setPreferredSize(getPreferredSize());
@@ -61,6 +62,7 @@ public class ApplicationWindow extends JFrame{
 		// f.setLayout(new GridLayout(1,2));
 		//f.setLayout(new BorderLayout());
 		f.setJMenuBar(start);
+		//gameCanvas.add(gameCanvas.label);
 		f.pack();
 		f.setVisible(true);
 		//this.writeOut("Player messages go here :)");
@@ -156,6 +158,7 @@ public class ApplicationWindow extends JFrame{
 			String pushed = e.getActionCommand();
 			if(pushed.equals("Restart")){
 				System.out.println("Reset");
+				client.resetLevel();
 			}
 			else if(pushed.equals("Exit")){
 				System.exit(0);
@@ -165,6 +168,13 @@ public class ApplicationWindow extends JFrame{
 
 			
 		}
+		
+	}
+	/**
+	 * Put a message to the 'console' for the player to see
+	 * @param string
+	 */
+	public void writeOut(String string) {
 	}
 	/**Method to connect a client to a certain window so the window can send requests
 	 * from client to server.

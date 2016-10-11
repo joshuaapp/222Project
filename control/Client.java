@@ -84,4 +84,9 @@ public class Client implements Runnable {
 	public Socket getSocket() {
 		return this.clientSocket;
 	}
+	public void resetLevel() {
+		this.outputToServer.println("RESET");
+		this.outputToServer.flush();
+		
+	}
 }
