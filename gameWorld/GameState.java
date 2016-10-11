@@ -1,4 +1,5 @@
 package gameWorld;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,67 +10,86 @@ import items.Item;
 import main.Main;
 import tiles.GroundTile;
 import tiles.StartTile;
-public class GameState {
+import tiles.Tile;
+public class GameState implements Serializable{
+
+	private static final long serialVersionUID = 6924348678532121507L;
 	private Board currentBoard;
 	private int level = 1;
-	public ArrayList<Player> curPlayers;
 	public ArrayList<Client> curUsers = new ArrayList<Client>();
+	public Player[] curPlayers;
 	public ArrayList<Player> curMonsters;
+	public ArrayList<Client> clients;
+
 	public enum direction {NORTH, SOUTH, EAST, WEST};
 	public GameLogic logic;
-	
+	private int numPlayers = 0;
+
 	public GameState(){
 		attachLogic(new GameLogic(this));
-		curPlayers = new ArrayList<Player>();
+		curPlayers = new Player[5];
 		curMonsters = new ArrayList<Player>();
+		clients = new ArrayList<Client>();
 		run();
 	}
-	
+
 	public void run(){
 		initMap();
-		addPlayers();
 		addMonsters();
-		levelPushToPlayers();
+		//levelPushToPlayers();
 	}
-	
+
 	/**
 	 * Places players at starting locations
 	 */
-	public void addPlayers() {
-		
-		curPlayers.removeAll(curPlayers);
-		Player p1 = new Player(currentBoard, "Player1");
-		Player p2 = new Player(currentBoard, "Player2");
-		curPlayers.add(p1);	
-		curPlayers.add(p2);		
-		
-		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
-		if(curPlayers.size() <= startTiles.size()){
-			for(int i=0;i<curPlayers.size();i++){
-				StartTile t = startTiles.get(i);
-				curPlayers.get(i).setPosition(t.getStartPosition());
-				currentBoard.placePlayerOnBoard(curPlayers.get(i));
+	public void addPlayer(Client c) {
+		numPlayers++;
+		Player p1 = new Player(currentBoard, "Player"+numPlayers);
+		int pos = findAvailableSpaceInCurrentPlayers();
+		curPlayers[pos] = p1;
+		StartTile t = currentBoard.getStartingTiles().get(pos);
+		p1.setPosition(t.getStartPosition());
+		currentBoard.placePlayerOnBoard(p1);
+		c.addPlayer(p1);
+	}
+	public void removePlayer(Client c){
+		Player toRemove = c.getPlayer();
+		Position playerPos = toRemove.getPosition();
+		int index = -1;
+		Tile t = this.currentBoard.getTile(playerPos.getY(), playerPos.getX());
+		t.setPlayer(null);
+		for(int i=0; i<curPlayers.length; i++){
+			if(curPlayers[i] != null){
+				if(curPlayers[i].equals(toRemove)){
+					index = i;
+					break;
+				}
 			}
 		}
-		
-		curPlayers.get(0).createRenderPerspective();
-		curPlayers.get(1).createRenderPerspective();
+		curPlayers[index] = null;
+		numPlayers--;
 	}
-	
+
+	public int findAvailableSpaceInCurrentPlayers(){
+		for(int i=0;i<curPlayers.length; i++){
+			if(curPlayers[i] == null){
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	public void addMonsters(){
 		curMonsters.removeAll(curMonsters);
-		Player monster = new Player(currentBoard, "Monster");
-		Player monster1 = new Player(currentBoard, "Monster1");
-		Player monster2 = new Player(currentBoard, "Monster2");
-		monster.isMonster = true;
-		monster1.isMonster = true;
-		monster2.isMonster = true;
+		Player monster = new Player(currentBoard, "Monster", true);
+		Player monster1 = new Player(currentBoard, "Monster1", true);
+		Player monster2 = new Player(currentBoard, "Monster2", true);
 		curMonsters.add(monster);
 		curMonsters.add(monster1);
 		curMonsters.add(monster2);
-		
+
 		ArrayList<Position> monTiles = currentBoard.getMonsterStartingTiles();
-		
+
 		if(curMonsters.size() <= monTiles.size()){
 			for(int i=0;i<curMonsters.size();i++){
 				Random rand = new Random();
@@ -79,18 +99,18 @@ public class GameState {
 			}
 		}
 	}
-	
+
 	public Board getGameBoard(){
 		return this.currentBoard;
 	}
-	
+
 	public void initMap(){
 
 		LevelParser parser = new LevelParser();
 		currentBoard = parser.buildBoard("level"+getLevel()+".txt");
 		parser.parseItemsAndAddToBoard("level"+getLevel()+"Items.txt", currentBoard);
 	}
-	
+
 	public void attachLogic(GameLogic logic){
 		this.logic = logic;
 	}
@@ -100,25 +120,33 @@ public class GameState {
 		currentBoard = parser.buildBoard("level"+getLevel()+".txt");
 		parser.parseItemsAndAddToBoard("level"+getLevel()+"Items.txt", currentBoard);
 		levelPushToPlayers();
+
 	}
-	
+
 	public void levelPushToPlayers(){
+		System.out.println("pushing to "+curPlayers.length);
 		for(Player p: curPlayers){
-			p.level = level;
-			p.setBoard(currentBoard);
-			p.inven = new ArrayList<Item>();
+			if(p != null){
+				System.out.println(p);
+				System.out.println("Pushing up to level "+level);
+				p.level = level;
+				System.out.println("Pushing level to player "+p+", board = \n"+currentBoard);
+				p.setBoard(currentBoard);
+				p.inven = new ArrayList<Item>();
+			}
 		}
 		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
-		if(curPlayers.size() <= startTiles.size()){
-			for(int i=0;i<curPlayers.size();i++){
+		if(curPlayers.length <= startTiles.size()){
+			for(int i=0;i<curPlayers.length;i++){
 				StartTile t = startTiles.get(i);
-				curPlayers.get(i).setPosition(t.getStartPosition());
-				currentBoard.placePlayerOnBoard(curPlayers.get(i));
+				curPlayers[i].setPosition(t.getStartPosition());
+				currentBoard.placePlayerOnBoard(curPlayers[i]);
 			}
 		}
 	}
-	
+
 	public void updatePlayerPosition(Player p, String d){
+		System.out.println("Game state calling rotateormove("+p+","+d+") on logic("+logic+")");
 		logic.rotateOrMove(p, d);
 	}
 	public void attatchBoard(Board b){
@@ -138,8 +166,25 @@ public class GameState {
 	public void setLevel(int level) {
 		this.level = level;
 	}
-	
+
 	public void setClient(Client c){
 		curUsers.add(c);
 	}
+
+	public void addClient(Client c) {
+		this.clients.add(c);
+		addPlayer(c);
+	}
+	public Player getPlayerOfClient(String name){
+		for(Client c : this.clients){
+			if(c.getName().equals(name)){
+				return c.getPlayer();
+			}
+		}
+		return null;
+	}
+	public GameLogic getLogic() {
+		return this.logic;
+	}
+
 }
