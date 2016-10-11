@@ -9,6 +9,7 @@ public class ServerHelper implements Runnable{
 	private ObjectOutputStream objectOutputToClient;
 	private ObjectInputStream objectInputFromClient;
 	private boolean running;
+	
 	public ServerHelper(Server server, Socket clientSocket){
 		this.server = server;
 		this.clientSocket = clientSocket;
@@ -22,6 +23,11 @@ public class ServerHelper implements Runnable{
 		}
 		this.running = true;
 	}
+	
+	/**Continuously reads output from the client and carries out the appropriate server side
+	 * action. Then if need be, sends back an updated state to update client.
+	 * 
+	 */
 	@Override
 	public void run() {
 		System.out.println("Server is running!");
@@ -87,29 +93,8 @@ public class ServerHelper implements Runnable{
 			System.out.println(e);
 		}
 	}
-	public void processClientMovementRequest(String direction, String clientObjectAsString) {
-		//		Player toMove = null;
-		//		for(Client c : clients){
-		//			if(c.getName().equals(clientObjectAsString)){
-		//				toMove = c.getPlayer();
-		//			}
-		//		}
-		//		updateGameStatePlayerPositions(direction, toMove);
-	}
-	public void processClientActionRequest(String action, String clientObjectAsString) {
-		//		Player toAct = null;
-		//		for(Client c : clients){
-		//			if(c.toString().equals(clientObjectAsString)){
-		//				toAct = c.getPlayer();
-		//			}
-		//		}
-		//		updateGameStatePlayerAction(action, toAct);
-	}
-	public void updateGameStatePlayerAction(String s, Player p){
-		//currentGameState.updatePlayerAct(p, s);
-	}
-	/**
-	 * Will need to send updated board and rederperspective to client with name clientName+
+
+	/**Sends the updated state back to the client so they can update their window appropriately
 	 * @param clientName
 	 */
 	public synchronized void sendGameState(String clientName) {

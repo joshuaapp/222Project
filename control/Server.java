@@ -46,6 +46,7 @@ public class Server implements Runnable{
 	public void run(){
 		while (true) {
 			try {
+				//only accept clients if there is room left
 				if(this.clients.size() < maxClientsCount){
 					Socket client = serverSocket.accept();
 					ServerHelper helper = new ServerHelper(this, client);
@@ -55,15 +56,6 @@ public class Server implements Runnable{
 				System.out.println(e);
 			}
 		}
-	}
-
-	/**This method updates the position of a player based on the current game state.
-	 *
-	 * @param direction - direction player is trying to move in
-	 * @param p - player to move
-	 */
-	public  void updateGameStatePlayerPositions(String direction, Player p){
-		currentGameState.updatePlayerPosition(p, direction);
 	}
 
 	/**Adds a client to the current list of clients connected to the server.
@@ -83,7 +75,12 @@ public class Server implements Runnable{
 		return clients;
 	}
 
-
+	/**This method is called when a server has requested to move. It takes the movement request
+	 * and asks the gameState to update player positions based on the movement request.
+	 * 
+	 * @param direction
+	 * @param clientObjectAsString
+	 */
 	public  void processClientMovementRequest(String direction, String clientObjectAsString) {
 		Player toMove = null;
 		for(Client c : clients){
@@ -91,8 +88,15 @@ public class Server implements Runnable{
 				toMove = c.getPlayer();
 			}
 		}
-		updateGameStatePlayerPositions(direction, toMove);
+		currentGameState.updatePlayerPosition(toMove, direction);
 	}
+	
+	/**This method takes an action request from the client and asks the gameState to update depending on the action.
+	 * 
+	 * @param action 
+	 * @param item - item to perform action on (only used when dropping)
+	 * @param clientObjectAsString
+	 */
 	public  void processClientActionRequest(String action, String item, String clientObjectAsString) {
 		Player toAct = null;
 		for(Client c : clients){
@@ -103,9 +107,19 @@ public class Server implements Runnable{
 		currentGameState.updatePlayerAct(toAct, action, item);
 	}
 	
+	/**Returns the current game state of server
+	 * 
+	 * @return
+	 */
 	public GameState getCurrentGameState() {
 		return this.currentGameState;
 	}
+	
+	/**Gets the name of a client from the list of clients connected to the server
+	 * 
+	 * @param clientName
+	 * @return
+	 */
 	public Client getClientFromName(String clientName) {
 		for(Client c : this.clients){
 			if(c.getName().equals(clientName)){

@@ -22,6 +22,11 @@ public class ClientListener implements Runnable,Serializable {
 	private transient boolean running;
 
 
+	/**Create a client and connect to server
+	 * 
+	 * @param client
+	 * @param clientSocket
+	 */
 	public ClientListener(Client client, Socket clientSocket){
 		this.client = client;
 		this.clientSocket = clientSocket;
@@ -37,6 +42,11 @@ public class ClientListener implements Runnable,Serializable {
 		this.running = true;
 	}
 
+	/**Sends a movement request to the server based on the application window key press
+	 * 
+	 * @param movement
+	 * @throws IOException
+	 */
 	public void tellServerImMoving(String movement) throws IOException{
 		this.objectOutputToServer.writeObject(movement+" "+this.client.getName());
 		this.client.setLastDirectionMoved(movement);
@@ -44,12 +54,22 @@ public class ClientListener implements Runnable,Serializable {
 		this.lastRequest = "MOVE";
 	}
 
+	/**Sends an action to the server that the client wants to perform. 
+	 * 
+	 * @param action
+	 * @param item
+	 * @throws IOException
+	 */
 	public void tellServerAction(String action, String item) throws IOException{
 		this.objectOutputToServer.writeObject(action+" "+item+" "+this.client.getName());
 		this.objectOutputToServer.flush();
 		this.lastRequest = "ACTION";
 	}
 
+	/**The run method constantly loops, asking for input from the server and performing 
+	 * whatever actions necessary to update the application window based on the server output.
+	 * 
+	 */
 	@Override
 	public void run() {
 		outer :
@@ -103,7 +123,11 @@ public class ClientListener implements Runnable,Serializable {
 			}
 		}
 	}
-
+	
+	/**Shuts down the client listener and disconnects the client from server
+	 * 
+	 * @throws IOException
+	 */
 	public void shutdown() throws IOException {
 		this.running = false;
 		this.objectOutputToServer.writeObject("DISCONNECTING "+this.client.getName());
