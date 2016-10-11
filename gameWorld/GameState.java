@@ -47,6 +47,7 @@ public class GameState implements Serializable{
 		currentBoard.placePlayerOnBoard(p1);
 		c.addPlayer(p1);
 	}
+	
 	public void removePlayer(Client c){
 		Player toRemove = c.getPlayer();
 		Position playerPos = toRemove.getPosition();
@@ -109,6 +110,7 @@ public class GameState implements Serializable{
 	public void attachLogic(GameLogic logic){
 		this.logic = logic;
 	}
+	
 	public void levelUp(){
 		setLevel(getLevel() + 1);
 		LevelParser parser = new LevelParser();
@@ -117,7 +119,14 @@ public class GameState implements Serializable{
 		levelPushToPlayers();
 
 	}
-
+	
+	public void resetLevel(){
+		LevelParser parser = new LevelParser();
+		currentBoard = parser.buildBoard("level"+getLevel()+".txt");
+		parser.parseItemsAndAddToBoard("level"+getLevel()+"Items.txt", currentBoard);
+		levelPushToPlayers();
+	}
+	
 	public void levelPushToPlayers(){
 		for(Player p: curPlayers){
 			if(p != null){
