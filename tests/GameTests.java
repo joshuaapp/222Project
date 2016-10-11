@@ -60,7 +60,7 @@ public class GameTests {
 		g.getLogic().isThereAnItem(p);
 		assertEquals(1, p.getInven().size());
 		g.getLogic().drop(p, "Key");
-		assertEquals(p.getInven().size(), 0);
+		assertEquals(0, p.getInven().size());
 
 	}
 	
