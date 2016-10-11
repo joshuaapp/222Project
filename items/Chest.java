@@ -1,10 +1,16 @@
 package items;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chest implements StorageItem, InteractableItem{
-	
+
+public class Chest implements StorageItem, InteractableItem, Serializable{
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -6084076119986289636L;
 	private List<Item> contents;
 	private boolean isOpen = false;
 	
@@ -28,8 +34,8 @@ public class Chest implements StorageItem, InteractableItem{
 	}
 
 	/**Add an item into the chest. Can be used for populating or if a player wishes to
-	 * store an item inside the chest. 
-	 * 
+	 * store an item inside the chest.
+	 *
 	 * @param itemToAdd - the item to add to the chest
 	 */
 	public void addItem(Item itemToAdd){
@@ -42,7 +48,7 @@ public class Chest implements StorageItem, InteractableItem{
 	}
 
 	/**Opens chest to see what is inside, returns list of items that are inside
-	 * 
+	 *
 	 * @return
 	 */
 	public List<Item> openChest(){
