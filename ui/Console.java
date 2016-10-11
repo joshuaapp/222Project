@@ -5,6 +5,10 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 public class Console extends JPanel{
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2633181333354865077L;
 		StringBuilder mainString = new StringBuilder();
 		JLabel area;
 		private JLabel label;

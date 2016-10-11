@@ -17,13 +17,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import control.Client;
 import items.Item;
 import items.Key;
 
 public class InventoryPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4794236279260239484L;
 	//JTextField text = new JTextField();
 	int buttonSize = 115;
 	JPanel buttonPanel = new JPanel();

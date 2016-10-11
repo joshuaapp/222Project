@@ -2,16 +2,18 @@ package ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridLayout;
-
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 public class MessagePanel extends JPanel{
 
-    public MessagePanel() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5271535162224127480L;
+
+	public MessagePanel() {
         setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
