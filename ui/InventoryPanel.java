@@ -23,7 +23,13 @@ import control.Client;
 import items.Crystal;
 import items.Item;
 import items.Key;
-
+/**
+ * Inventory Panel contains a JPanel for the JButtons, 
+ * stores the icons for the buttons and methods to
+ * update the panel for the players' viewing.
+ * @author anna
+ *
+ */
 public class InventoryPanel extends JPanel {
 	DungeonCanvas gameCanvas;
 	int buttonSize = 100;
@@ -44,7 +50,7 @@ public class InventoryPanel extends JPanel {
 		buttonPanel.setBackground(Color.DARK_GRAY);
 		this.setLayout(new BorderLayout());
 		this.add(buttonPanel, BorderLayout.CENTER);
-		this.activeCrystal = setupIcons("activeCrystal.png");					//Button Icons
+		this.activeCrystal = setupIcons("activeCrystal.png");		//Button Icons
 		this.placeholderCrystal = setupIcons("placeholderCrystal.png");
 		this.activeKey = setupIcons("keybuttonicon.png");
 		this.placeholderKey = setupIcons("placeholderkeybutton.png");

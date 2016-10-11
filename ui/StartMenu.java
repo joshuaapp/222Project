@@ -7,7 +7,6 @@ import javax.swing.JMenuItem;
 public class StartMenu extends JMenuBar{
 
 		JMenu start = new JMenu("Menu");
-		JMenuItem restart = new JMenuItem("Restart");
 		JMenuItem exit = new JMenuItem("Exit");
 		
 		
@@ -15,7 +14,6 @@ public class StartMenu extends JMenuBar{
 		public StartMenu(){
 			System.out.println("In start");
 			this.add(start);
-			start.add(restart);
 			start.add(exit);
 		}
 	/**
@@ -23,7 +21,6 @@ public class StartMenu extends JMenuBar{
 	 * @param cluedoListener
 	 */
 		public void addMenuListeners(ActionListener gameListener){
-			restart.addActionListener(gameListener);
 			exit.addActionListener(gameListener);
 		}
 }
