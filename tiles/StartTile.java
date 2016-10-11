@@ -3,7 +3,6 @@ package tiles;
 import java.io.Serializable;
 
 import gameWorld.Position;
-import items.Item;
 
 public class StartTile extends Tile implements Serializable{
 

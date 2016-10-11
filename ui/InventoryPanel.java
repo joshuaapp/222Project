@@ -54,7 +54,7 @@ public class InventoryPanel extends JPanel {
 	}
 
 	public void foundChest(){
-		if(client.getPlayer().gotBag == true){
+		if(client.getPlayer().isGotBag() == true){
 			if(gotInventoryBag == false){
 				this.gotInventoryBag = true;
 				int x = 0;
@@ -163,7 +163,7 @@ public class InventoryPanel extends JPanel {
 		if(gotInventoryBag){
 			System.out.println("Here");
 			//text.setText("Select Inventory Item to drop");
-			ArrayList<Item> inventory = client.getPlayer().inven;
+			ArrayList<Item> inventory = client.getPlayer().getInven();
 			for(JButton button: itemButtons){
 				button.setIcon(placeholderKey);
 				button.setText("");

@@ -55,7 +55,7 @@ public class DungeonCanvas extends JPanel{
 
 	public DungeonCanvas(){
 		if(player != null){
-			level = player.level;
+			level = player.getLevel();
 		}
 		this.canvasText = Arrays.asList("Welcome to the game! You can't pick anything up yet...maybe try look for a bag? Perhaps it's hidden in a chest...(P.S Watch out for the rabid sheep!)".split(" "));
 		loadImages();
@@ -148,11 +148,11 @@ public class DungeonCanvas extends JPanel{
 				g.drawImage(tileImage, screenXPositions[col], 0,screenXPositions[col] + scaleSize, getHeight(), imageXPositions[count],0,
 						imageXPositions[count] + spriteSize, 600, null);
 				//If there is a player then draws them
-				if(tile.getPlayer() != null && !tile.getPlayer().isMonster){
+				if(tile.getPlayer() != null && !tile.getPlayer().isMonster()){
 					g.drawImage(players, screenXPositions[col], 0,screenXPositions[col] + scaleSize, getHeight(), imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
-				if(tile.getPlayer() != null && tile.getPlayer().isMonster){
+				if(tile.getPlayer() != null && tile.getPlayer().isMonster()){
 					g.drawImage(monster, screenXPositions[col], 0,screenXPositions[col] + scaleSize, getHeight(), imageXPositions[count],0,
 							imageXPositions[count] + spriteSize, 600, null);
 				}
@@ -262,7 +262,7 @@ public class DungeonCanvas extends JPanel{
 
 	public void healthBar(Graphics g){
 		Color cur;
-		int health = player.hp;
+		int health = player.getHp();
 		int bar = 0;
 		int xPos = 215;
 		int yPos = 5;
@@ -353,16 +353,16 @@ public class DungeonCanvas extends JPanel{
 		g.setColor(Color.white);
 
 		switch(player.getDirectionFacing()){
-		case North:
+		case NORTH:
 			g.fillRect(x, y, squareWidth, recSize);
 			break;
-		case East:
+		case EAST:
 			g.fillRect((x + squareWidth)-recSize, y, recSize, squareWidth);
 			break;
-		case South:
+		case SOUTH:
 			g.fillRect(x, (y + squareWidth)-recSize, squareWidth, recSize);
 			break;
-		case West:
+		case WEST:
 			g.fillRect(x, y, recSize, squareWidth);
 			break;
 		}

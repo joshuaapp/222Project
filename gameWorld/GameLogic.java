@@ -1,21 +1,16 @@
 package gameWorld;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
-
 import gameWorld.GameState.direction;
-import gameWorld.Player.Direction;
 import items.Chest;
 import items.Item;
 import items.Key;
 import tiles.DoorTile;
 import tiles.EndTile;
-import tiles.GroundTile;
 import tiles.Tile;
-import ui.DungeonCanvas;
+
 
 public class GameLogic implements Serializable {
 	/**
@@ -58,44 +53,44 @@ public class GameLogic implements Serializable {
 	}
 
 	public void lowerHP(Player player){
-		player.hp--;
+		player.setHp(player.getHp()-1);
 		player.getRenderPerspective().updatePerspective();
-		if(player.hp <= 0){
+		if(player.getHp() <= 0){
 			for(Player p: game.curPlayers){
-				p.hp = 15;
+				p.setHp(15);
 			}
 			game.resetLevel();
 		}
 	}
 
-	public void legalPlayerMove(Player player, Direction facing){
+	public void legalPlayerMove(Player player, direction facing){
 		Position playerPos = player.getPosition();
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
-		if(!player.isMonster){
+		if(!player.isMonster()){
 			monsterTime--;
 		}
 
 		Tile newTile = null;
 		switch(facing){
-		case North:
+		case NORTH:
 			if(playerY-1 >= 0){
 				newTile = currentBoard.getTile(playerY-1, playerX);
 			}
 			break;
-		case South:
+		case SOUTH:
 			if(playerY+1 < currentBoard.ROWS){
 				newTile = currentBoard.getTile(playerY+1, playerX);
 			}
 			break;
-		case East:
+		case EAST:
 			if(playerX+1 < currentBoard.COLS){
 				newTile = currentBoard.getTile(playerY, playerX+1);
 			}
 			break;
 
-		case West:
+		case WEST:
 			if(playerX-1 >= 0){
 				newTile = currentBoard.getTile(playerY, playerX-1);
 			}
@@ -126,7 +121,7 @@ public class GameLogic implements Serializable {
 				}
 			}
 		}
-		
+
 		if(monsterTime == 0){
 			Random rand = new Random();
 			monsterTime = rand.nextInt(6);
@@ -141,24 +136,24 @@ public class GameLogic implements Serializable {
 			int rand2 = rand.nextInt(4);
 			System.out.println(rand2);
 			switch(rand2){
-			case 0: m.setDirectionFacing(Direction.North); break;
-			case 1: m.setDirectionFacing(Direction.South); break;
-			case 2: m.setDirectionFacing(Direction.East); break;
-			case 3: m.setDirectionFacing(Direction.West); break;
+			case 0: m.setDirectionFacing(direction.NORTH); break;
+			case 1: m.setDirectionFacing(direction.SOUTH); break;
+			case 2: m.setDirectionFacing(direction.EAST); break;
+			case 3: m.setDirectionFacing(direction.WEST); break;
 			}
 			legalPlayerMove(m, m.facing);
 		}
 	}
 
-	public void actuallyMove(Player p, Direction facing){
+	public void actuallyMove(Player p, direction facing){
 		Position pos = p.getPosition();
 		int y = pos.getY();
 		int x = pos.getX();
 		switch(facing){
-		case North: pos.setY(y-1); break;
-		case South: pos.setY(y+1);break;
-		case East: pos.setX(x+1); break;
-		case West: pos.setX(x-1); break;
+		case NORTH: pos.setY(y-1); break;
+		case SOUTH: pos.setY(y+1);break;
+		case EAST: pos.setX(x+1); break;
+		case WEST: pos.setX(x-1); break;
 		default:
 			break;
 		}
@@ -167,30 +162,30 @@ public class GameLogic implements Serializable {
 		if(game.getGameBoard().getTile(p.getPosition().getY(), p.getPosition().getX()) instanceof EndTile){
 			game.levelUp();
 		}
-		if(!p.isMonster){
+		if(!p.isMonster()){
 			for(int i = y-1; i<=y+1; i++){
 				for(int j = x-1; j<=x+1; j++){
-					try{
-						Player monster = game.getGameBoard().getTile(i, j).getPlayer();
-						if(monster.isMonster){
+					if(game.getGameBoard().getTile(i, j).getPlayer() != null){
+						Player player = game.getGameBoard().getTile(i, j).getPlayer();
+						if(player.isMonster()){
 							lowerHP(p);
 							//System.out.println("Player HP: "+p.hp);
 							return;
+
 						}
-					}catch(NullPointerException e){
-						continue;
 					}
+
 				}
 			}
 		}
 	}
 
 	//This rotates the users view to right 90 degrees
-	private Direction getRightDirection(Direction dir){
-		if(dir.equals(Direction.North)){return Direction.East;}
-		else if(dir.equals(Direction.East)){return Direction.South;}
-		else if(dir.equals(Direction.South)){return Direction.West;}
-		else{return Direction.North;}
+	public direction getRightDirection(direction dir){
+		if(dir.equals(direction.NORTH)){return direction.EAST;}
+		else if(dir.equals(direction.EAST)){return direction.SOUTH;}
+		else if(dir.equals(direction.SOUTH)){return direction.WEST;}
+		else{return direction.NORTH;}
 	}
 
 	//method to return what the player is attempting to interact with
@@ -209,11 +204,11 @@ public class GameLogic implements Serializable {
 	}
 
 	public void pickUp(Player p, Item item){
-		if(p.gotBag == true && p.inven.size() < 3){
-			p.inven.add(item);
+		if(p.isGotBag() == true && p.getInven().size() < 3){
+			p.getInven().add(item);
 		}
 		if(item instanceof Chest){
-			p.gotBag = true;
+			p.setGotBag(true);
 			System.out.println("In pickup");
 		}
 	}
@@ -229,10 +224,10 @@ public class GameLogic implements Serializable {
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
 		if(currentBoard.getTile(playerY, playerX).getItem() == null){
-			for(Item i: player.inven){
+			for(Item i: player.getInven()){
 				if(i instanceof Key){
 					currentBoard.getTile(playerY, playerX).setItem(i);
-					player.inven.remove(i);
+					player.getInven().remove(i);
 					break;
 				}
 			}
@@ -245,9 +240,9 @@ public class GameLogic implements Serializable {
 		int playerX = playerPos.getX();
 		int playerY = playerPos.getY();
 		Board currentBoard = game.getGameBoard();
-		if(currentBoard.getTile(playerY, playerX).getItem() != null&& player.inven.size() < 3){
+		if(currentBoard.getTile(playerY, playerX).getItem() != null&& player.getInven().size() < 3){
 			pickUp(player, currentBoard.getTile(playerY, playerX).getItem());
-			if(player.gotBag){
+			if(player.isGotBag()){
 				if(currentBoard.getTile(playerY, playerX).getItem() instanceof Chest){
 					Chest ch = (Chest)currentBoard.getTile(playerY, playerX).getItem();
 					ch.open();

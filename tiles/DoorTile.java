@@ -2,8 +2,6 @@ package tiles;
 
 import java.io.Serializable;
 
-import items.Item;
-
 
 public class DoorTile extends Tile implements Serializable{
 

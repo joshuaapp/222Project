@@ -130,10 +130,9 @@ public class GameState implements Serializable{
 	public void levelPushToPlayers(){
 		for(Player p: curPlayers){
 			if(p != null){
-				System.out.println(p);
-				p.level = level;
+				p.setLevel(level);
 				p.setBoard(currentBoard);
-				p.inven = new ArrayList<Item>();
+			p.setInven(new ArrayList<Item>());
 			}
 		}
 		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();

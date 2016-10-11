@@ -2,8 +2,6 @@ package gameWorld;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
 import items.Button;
 import items.Chest;
 import items.Item;
@@ -14,6 +12,7 @@ import tiles.GroundTile;
 import tiles.StartTile;
 import tiles.Tile;
 import tiles.WallTile;
+
 public class LevelParser {
 	int doorCounter = 0;
 	/*Strings of imagenames to refer to*/
@@ -154,7 +153,7 @@ public class LevelParser {
 		return null;
 	}
 	/**Parse file containing information about items in a level.
-	 * format: type_position, e.g: 
+	 * format: type_position, e.g: CHEST 15 10
 	 * 
 	 * @param filename
 	 */
