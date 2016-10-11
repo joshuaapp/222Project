@@ -137,8 +137,8 @@ public class GameState implements Serializable{
 			}
 		}
 		ArrayList<StartTile> startTiles = currentBoard.getStartingTiles();
-		if(curPlayers.length <= startTiles.size()){
-			for(int i=0;i<curPlayers.length;i++){
+		for(int i=0;i<curPlayers.length;i++){
+			if(curPlayers[i] != null){
 				StartTile t = startTiles.get(i);
 				curPlayers[i].setPosition(t.getStartPosition());
 				currentBoard.placePlayerOnBoard(curPlayers[i]);
