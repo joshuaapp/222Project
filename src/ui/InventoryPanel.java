@@ -15,7 +15,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -33,6 +32,10 @@ import items.Key;
 public class InventoryPanel extends JPanel {
 	DungeonCanvas gameCanvas;
 	int buttonSize = 100;
+
+	private static final long serialVersionUID = -4794236279260239484L;
+	//JTextField text = new JTextField();
+
 	JPanel buttonPanel = new JPanel();
 	JButton[] itemButtons = new JButton[5];
 	boolean gotInventoryBag = false;
@@ -63,7 +66,7 @@ public class InventoryPanel extends JPanel {
 	 * 
 	 */
 	public void foundChest(){
-		if(client.getPlayer().gotBag == true){
+		if(client.getPlayer().isGotBag() == true){
 			if(gotInventoryBag == false){
 				this.gotInventoryBag = true;
 				int x = 0;
@@ -176,7 +179,7 @@ public class InventoryPanel extends JPanel {
  */
 	public void updateInventoryPanel(){
 		if(gotInventoryBag){
-			ArrayList<Item> inventory = client.getPlayer().inven;
+			ArrayList<Item> inventory = client.getPlayer().getInven();
 			for (int i = 0; i < itemButtons.length; i++) {
 				JButton button = itemButtons[i];
 				if(i == 4){											//Unique case of crystal

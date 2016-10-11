@@ -1,16 +1,12 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import control.Client;
 /**
  * Application window is the main class that handles Swing
@@ -20,6 +16,9 @@ import control.Client;
  *
  */
 public class ApplicationWindow extends JFrame{
+
+	private static final long serialVersionUID = -1305558202319031926L;
+
 	private InventoryPanel inventoryPanel; 
 	private DungeonCanvas gameCanvas;
 	private StartMenu start;
@@ -86,8 +85,8 @@ public class ApplicationWindow extends JFrame{
 			}
 			else if(code == KeyEvent.VK_SPACE) {
 				client.tellServerAction("PICK", null);
-				Thread.sleep(200);								//Thread sleep is added in many places 
-				inventoryPanel.foundChest();					//due to a lag in some data returning from the server
+				Thread.sleep(200);								//Thread sleep added to make animation smoother 
+				inventoryPanel.foundChest();					
 				inventoryPanel.updateInventoryPanel();
 			}
 			else if(code == KeyEvent.VK_D) {
@@ -130,7 +129,10 @@ public class ApplicationWindow extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String pushed = e.getActionCommand();
-			if(pushed.equals("Exit")){
+			if(pushed.equals("Restart")){
+				//client.resetLevel();
+			}
+			else if(pushed.equals("Exit")){
 				System.exit(0);
 			}
 		}

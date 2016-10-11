@@ -11,6 +11,10 @@ import javax.swing.JMenuItem;
  */
 public class StartMenu extends JMenuBar{
 
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5247608465342235687L;
 		JMenu start = new JMenu("Menu");
 		JMenuItem exit = new JMenuItem("Exit");
 		

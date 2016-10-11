@@ -2,7 +2,6 @@ package tiles;
 
 import java.io.Serializable;
 
-import items.Item;
 
 public class EndTile extends Tile implements Serializable{
 

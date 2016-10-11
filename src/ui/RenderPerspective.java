@@ -1,14 +1,9 @@
 package ui;
 
-import java.awt.Image;
-import java.awt.Point;
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import javax.imageio.ImageIO;
 
 import gameWorld.Board;
 import gameWorld.GameState.direction;
@@ -20,6 +15,10 @@ import gameWorld.Position;
 
 public class RenderPerspective implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4779545973282136845L;
 	private Player player;
 	private Board board;
 	private Queue<Tile> tilesInSight = new LinkedList<Tile>();

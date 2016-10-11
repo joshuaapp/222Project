@@ -1,18 +1,13 @@
 package control;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
-import java.io.StreamCorruptedException;
 import java.net.Socket;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.Arrays;
+import java.util.List;
 
-import gameWorld.Board;
 import gameWorld.GameState;
 import gameWorld.Player;
 
@@ -30,6 +25,11 @@ public class ClientListener implements Runnable,Serializable {
 	private transient boolean running;
 
 
+	/**Create a client and connect to server
+	 * 
+	 * @param client
+	 * @param clientSocket
+	 */
 	public ClientListener(Client client, Socket clientSocket){
 		this.client = client;
 		this.clientSocket = clientSocket;
@@ -45,6 +45,11 @@ public class ClientListener implements Runnable,Serializable {
 		this.running = true;
 	}
 
+	/**Sends a movement request to the server based on the application window key press
+	 * 
+	 * @param movement
+	 * @throws IOException
+	 */
 	public void tellServerImMoving(String movement) throws IOException{
 		this.objectOutputToServer.writeObject(movement+" "+this.client.getName());
 		this.client.setLastDirectionMoved(movement);
@@ -52,14 +57,25 @@ public class ClientListener implements Runnable,Serializable {
 		this.lastRequest = "MOVE";
 	}
 
+	/**Sends an action to the server that the client wants to perform. 
+	 * 
+	 * @param action
+	 * @param item
+	 * @throws IOException
+	 */
 	public void tellServerAction(String action, String item) throws IOException{
 		this.objectOutputToServer.writeObject(action+" "+item+" "+this.client.getName());
 		this.objectOutputToServer.flush();
 		this.lastRequest = "ACTION";
 	}
 
+	/**The run method constantly loops, asking for input from the server and performing 
+	 * whatever actions necessary to update the application window based on the server output.
+	 * 
+	 */
 	@Override
 	public void run() {
+		outer :
 		while(running){
 			try {
 				Object serverOutput = objectInputFromServer.readObject();
@@ -88,6 +104,11 @@ public class ClientListener implements Runnable,Serializable {
 										client.addPlayer(p);
 										client.getApplicationWindow().getGameCanvas().setPlayer(p);
 										p.getRP().updatePerspective();
+										if(p.isGotBag()){
+											//update game text
+											List<String> textToUpdate = Arrays.asList("You found a bag! You can now pick up keys. Keys unlock doors. I heard there is a magic crystal floating around in a room somewhere....".split(" "));	
+											this.client.getApplicationWindow().getGameCanvas().updateCanvasText(textToUpdate);
+										}
 									}
 								}
 							}
@@ -101,12 +122,19 @@ public class ClientListener implements Runnable,Serializable {
 			}
 			catch (IOException e) {
 				System.out.println("CLIENT IOException when reading object from server, error "+e.getStackTrace());
+				//server has shutdown therefore stop client
+				System.exit(1);
+				break outer;
 			} catch (ClassNotFoundException e1) {
 				System.out.println("CLIENT: Class not found when reading object from server, error "+e1.getStackTrace());
 			}
 		}
 	}
-
+	
+	/**Shuts down the client listener and disconnects the client from server
+	 * 
+	 * @throws IOException
+	 */
 	public void shutdown() throws IOException {
 		this.running = false;
 		this.objectOutputToServer.writeObject("DISCONNECTING "+this.client.getName());

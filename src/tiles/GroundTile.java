@@ -2,8 +2,6 @@ package tiles;
 
 import java.io.Serializable;
 
-import items.Item;
-
 public class GroundTile extends Tile implements Serializable{
 
 	/**
