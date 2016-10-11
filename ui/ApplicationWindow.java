@@ -97,16 +97,16 @@ public class ApplicationWindow extends JFrame{
 		public void keyPressed(KeyEvent e) {
 			try{
 			int code = e.getKeyCode();
-			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP) {
+			if(code == KeyEvent.VK_UP || code == KeyEvent.VK_KP_UP || code == KeyEvent.VK_W) {
 				System.out.println("telling "+client+" to move");
 				client.tellServerImMoving("UP");
-			} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN) {
+			} else if(code == KeyEvent.VK_DOWN || code == KeyEvent.VK_KP_DOWN || code == KeyEvent.VK_S) {
 				client.tellServerImMoving("DOWN");
 			}
-			else if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT) {
+			else if(code == KeyEvent.VK_RIGHT || code == KeyEvent.VK_KP_RIGHT || code == KeyEvent.VK_D) {
 				client.tellServerImMoving("RIGHT");
 			}
-			else if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT) {
+			else if(code == KeyEvent.VK_LEFT || code == KeyEvent.VK_KP_LEFT || code == KeyEvent.VK_A) {
 				client.tellServerImMoving("LEFT");
 			}
 			else if(code == KeyEvent.VK_SPACE) {

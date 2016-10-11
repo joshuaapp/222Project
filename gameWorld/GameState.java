@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import control.Client;
-import gameWorld.GameState.direction;
-import gameWorld.Player.Direction;
 import items.Item;
-import main.Main;
-import tiles.GroundTile;
 import tiles.StartTile;
 import tiles.Tile;
 public class GameState implements Serializable{
@@ -36,7 +32,6 @@ public class GameState implements Serializable{
 	public void run(){
 		initMap();
 		addMonsters();
-		//levelPushToPlayers();
 	}
 
 	/**
@@ -124,13 +119,10 @@ public class GameState implements Serializable{
 	}
 
 	public void levelPushToPlayers(){
-		System.out.println("pushing to "+curPlayers.length);
 		for(Player p: curPlayers){
 			if(p != null){
 				System.out.println(p);
-				System.out.println("Pushing up to level "+level);
 				p.level = level;
-				System.out.println("Pushing level to player "+p+", board = \n"+currentBoard);
 				p.setBoard(currentBoard);
 				p.inven = new ArrayList<Item>();
 			}
@@ -146,7 +138,6 @@ public class GameState implements Serializable{
 	}
 
 	public void updatePlayerPosition(Player p, String d){
-		System.out.println("Game state calling rotateormove("+p+","+d+") on logic("+logic+")");
 		logic.rotateOrMove(p, d);
 	}
 	public void attatchBoard(Board b){
